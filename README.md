@@ -1,21 +1,42 @@
 # Linux DO · 企业微信智能文档 / 团队知识库外观
 
-油猴脚本：把 [linux.do](https://linux.do/) 深度改版为**企业微信智能文档 / 团队知识库**版式。**只换皮，不碰数据**：帖子、链接、按钮、分类、标签和原交互都完整保留。
+油猴脚本：把 [linux.do](https://linux.do/) 改成**企业微信智能文档 / 团队知识库**版式。**只换皮，不碰数据**：帖子、链接、按钮、分类、标签和原交互都保留。
 
-- **主页**：知识库文件列表（行首 `#4b8cff` 蓝普通文档图标、压缩所有者头像、隐藏论坛大横幅与准则条、侧栏类别/标签清晰可用）。
-- **话题页**：智能文档画布（中栏主帖大标题 + 协作者元信息 + 1.75 行高正文 + Callout 提示卡片；右侧保留 Discourse 原生时间线/大纲；回复流在正文下做成轻量协作卡片）。
-- **色彩与模式**：浅色跟企微；深色跟 GitHub Primer `dark_dimmed`（Soft dark `#212830`）+ 企微智能文档蓝。
-- **架构保障**：零 DOM 挪动，绝不破坏 Discourse 原生 `post-stream` 虚拟滚动与无限加载。
+- **主页**：知识库文件表。行首蓝色普通文档图标，头像单行叠放，藏掉论坛大横幅；侧栏类别 / 标签可用。
+- **话题页**：中栏当文档画布（大标题、协作者元信息、正文与 Callout）；回复做成正文下方的轻量卡片；右侧保留 Discourse 原生时间线 / 大纲（帖子本身有才会出现）。
+- **顶栏**：官方企微图标 +「企业微信」；话题页路径为 `知识库 › 分类 › 标题`；标签页标题跟文档名走。
+- **色彩**：浅色跟企微网页；深色跟 GitHub Primer `dark_dimmed`（`#212830`）+ 智能文档蓝。
+- **架构**：不把回复搬出 `.post-stream`，不破坏 Discourse 虚拟滚动和无限加载。
 
 ## 效果图
 
-### 知识库文件表（主页）
+主页浅色：
 
-<img src="docs/screenshots/home-dark.png" alt="知识库文件表" width="1880" />
+<img src="docs/screenshots/home-light.jpg" alt="主页浅色：知识库文件表" width="1880" />
 
-### 智能文档画布与右侧原生时间线（话题页）
+话题页深色：
 
-<img src="docs/screenshots/topic-dark.png" alt="智能文档画布" width="1880" />
+<img src="docs/screenshots/topic-dark.jpg" alt="话题页深色：文档画布" width="1880" />
+
+话题页深色（回复卡片与右侧时间线）：
+
+<img src="docs/screenshots/topic-comments-dark.jpg" alt="话题页深色：回复卡片与原生时间线" width="1880" />
+
+话题页浅色（回复卡片与右侧时间线）：
+
+<img src="docs/screenshots/topic-comments-light.jpg" alt="话题页浅色：回复卡片与原生时间线" width="1880" />
+
+发帖深色：
+
+<img src="docs/screenshots/compose-dark.jpg" alt="发帖深色" width="1880" />
+
+发帖浅色：
+
+<img src="docs/screenshots/compose-light.jpg" alt="发帖浅色" width="1880" />
+
+标签页图标：
+
+<img src="docs/screenshots/tabs.png" alt="标签页企微图标" width="480" />
 
 ## 安装
 
@@ -23,14 +44,12 @@
 2. 打开 [`linuxdo-wecom.user.js`](./linuxdo-wecom.user.js)，点 **Raw** 后按提示安装。
 3. 访问 <https://linux.do/>。
 
-开发：
+当前安装包版本 **2.0.2**。改 `wecom-*.mjs` / `wecom-style.css` 后必须重新构建再装：
 
 ```bash
 npm test
 npm run build
 ```
-
-改 `wecom-*.mjs` / `wecom-style.css` 后必须 `npm run build` 再装生成的 `linuxdo-wecom.user.js`。
 
 ## 友链
 
