@@ -25,4 +25,17 @@ describe("brand", () => {
     assert.ok(icon);
     assert.match(icon.getAttribute("href"), /^data:image\/svg\+xml/);
   });
+  it("does not keep rewriting favicon attributes once set", async () => {
+    const { window } = new JSDOM(`<!doctype html><html><head></head>
+      <body><header class="d-header"><div class="title"><a href="/"></a></div></header></body></html>`);
+    const document = window.document;
+    global.XMLSerializer = window.XMLSerializer;
+    makeBrand(document);
+    makeFavicon(document);
+    const href = document.getElementById("wecom-favicon").getAttribute("href");
+    for (let i = 0; i < 25; i++) makeFavicon(document);
+    await new Promise((r) => setTimeout(r, 20));
+    assert.equal(document.querySelectorAll("link[rel~='icon']").length, 1);
+    assert.equal(document.getElementById("wecom-favicon").getAttribute("href"), href);
+  });
 });

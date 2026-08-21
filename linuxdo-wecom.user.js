@@ -143,6 +143,19 @@ function makeBrand(document) {
   titleLink.appendChild(brand);
 }
 
+const FAVICON_OBSERVE = {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ["href", "rel", "type", "sizes"]
+};
+
+function setAttrIfChanged(el, name, value) {
+  if (el.getAttribute(name) === value) return false;
+  el.setAttribute(name, value);
+  return true;
+}
+
 function makeFavicon(document) {
   const head = document.head;
   const logo = document.querySelector(".wecom-brand svg");
@@ -155,21 +168,20 @@ function makeFavicon(document) {
     favicon.rel = "icon";
     head.appendChild(favicon);
   }
+  if (faviconObserver) {
+    faviconObserver.disconnect();
+    faviconObserver.takeRecords();
+  }
   for (const icon of head.querySelectorAll("link[rel~='icon']")) {
-    icon.setAttribute("type", "image/svg+xml");
-    icon.setAttribute("sizes", "any");
-    icon.setAttribute("href", href);
+    setAttrIfChanged(icon, "type", "image/svg+xml");
+    setAttrIfChanged(icon, "sizes", "any");
+    setAttrIfChanged(icon, "href", href);
   }
   const Observer = document.defaultView?.MutationObserver;
   if (!faviconObserver && typeof Observer === "function") {
     faviconObserver = new Observer(() => makeFavicon(document));
-    faviconObserver.observe(head, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["href", "rel", "type", "sizes"]
-    });
   }
+  if (faviconObserver) faviconObserver.observe(head, FAVICON_OBSERVE);
 }
 
 function makeHomeHeading(document) {
@@ -438,20 +450,35 @@ function bindNavigation(window, document, css) {
   if (window.__wecomNavBound) return;
   window.__wecomNavBound = true;
   let scheduled = false;
+  let applying = false;
+  const Observer = window.MutationObserver || globalThis.MutationObserver;
+  const observer =
+    typeof Observer === "function"
+      ? new Observer(() => {
+          if (applying) return;
+          schedule();
+        })
+      : null;
   const schedule = () => {
-    if (scheduled) return;
+    if (scheduled || applying) return;
     scheduled = true;
     const raf = window.requestAnimationFrame || ((cb) => setTimeout(cb, 0));
     raf(() => {
       scheduled = false;
-      applyTheme(document, css);
+      applying = true;
+      try {
+        applyTheme(document, css);
+      } finally {
+        observer?.takeRecords();
+        applying = false;
+      }
     });
   };
   const restoreAndSchedule = () => {
     restoreComments(document);
     schedule();
   };
-  new MutationObserver(schedule).observe(document.documentElement, {
+  observer?.observe(document.documentElement, {
     childList: true,
     subtree: true
   });
