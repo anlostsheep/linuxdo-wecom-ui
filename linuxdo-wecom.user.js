@@ -12,7 +12,7 @@
 
 (function () {
   "use strict";
-  const CSS = "html.wecom-doc-theme {\n  color-scheme: light !important;\n  --wecom-bg: #ffffff;\n  --wecom-sidebar: #f6f7f9;\n  --wecom-line: #ebebeb;\n  --wecom-text: #1f1f1f;\n  --wecom-text-2: #6e6e6e;\n  --wecom-text-3: #8c8c8c;\n  --wecom-search: #f3f3f3;\n  --wecom-hover: #f0f0f0;\n  --wecom-active: rgba(18, 179, 168, 0.12);\n  --wecom-link: #12b3a8;\n  --wecom-doc: #4b8cff;\n  --wecom-header-h: 56px;\n  --wecom-nav-w: 248px;\n  --wecom-toc-w: 240px;\n  --wecom-comments-w: 320px;\n  --primary: #1f1f1f !important;\n  --secondary: #ffffff !important;\n  --header_background: #ffffff !important;\n  --header_primary: #1f1f1f !important;\n  --primary-low: #f6f7f9 !important;\n  --primary-very-low: #ffffff !important;\n  --d-hover: #f0f0f0 !important;\n}\n\nhtml.wecom-doc-theme.wecom-dark {\n  color-scheme: dark !important;\n  --wecom-bg: #212830;\n  --wecom-sidebar: #262c36;\n  --wecom-line: #3d444d;\n  --wecom-text: #d1d7e0;\n  --wecom-text-2: #9198a1;\n  --wecom-text-3: #9198a1;\n  --wecom-search: #2a313c;\n  --wecom-hover: #2f3742;\n  --wecom-active: rgba(61, 205, 196, 0.14);\n  --wecom-link: #3dcdc4;\n  --primary: #d1d7e0 !important;\n  --secondary: #212830 !important;\n  --header_background: #212830 !important;\n  --header_primary: #d1d7e0 !important;\n  --primary-low: #262c36 !important;\n  --primary-very-low: #151b23 !important;\n  --d-hover: #2f3742 !important;\n}\n\nhtml.wecom-doc-theme,\nhtml.wecom-doc-theme body {\n  background: var(--wecom-bg) !important;\n  color: var(--wecom-text) !important;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\",\n    \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif !important;\n}\n\nhtml.wecom-doc-theme body {\n  min-width: 980px;\n  margin: 0 !important;\n}\n\nhtml.wecom-doc-theme a { color: inherit; }\nhtml.wecom-doc-theme .cooked a { color: var(--wecom-link) !important; }\n\nhtml.wecom-doc-theme .global-notice,\nhtml.wecom-doc-theme .category-breadcrumb,\nhtml.wecom-doc-theme .top-lists,\nhtml.wecom-doc-theme .navigation-controls,\nhtml.wecom-doc-theme .topic-map.--bottom {\n  display: none !important;\n}\n\nhtml.wecom-doc-theme .d-header-wrap,\nhtml.wecom-doc-theme body .d-header {\n  position: fixed !important;\n  z-index: 1101 !important;\n  top: 0 !important;\n  left: 0 !important;\n  right: 0 !important;\n  height: var(--wecom-header-h) !important;\n  background: var(--wecom-bg) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet-wrapper {\n  width: 100% !important;\n  max-width: none !important;\n  display: grid !important;\n  grid-template-columns: var(--wecom-nav-w) minmax(0, 1fr) !important;\n  min-height: calc(100vh - var(--wecom-header-h)) !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.wecom-doc-theme .sidebar-wrapper {\n  width: var(--wecom-nav-w) !important;\n  min-width: var(--wecom-nav-w) !important;\n  background: var(--wecom-sidebar) !important;\n  border-right: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet {\n  background: var(--wecom-bg) !important;\n  padding-top: calc(var(--wecom-header-h) + 12px) !important;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link-wrapper.is-active,\nhtml.wecom-doc-theme .sidebar-section-link.active {\n  background: var(--wecom-active) !important;\n  color: var(--wecom-link) !important;\n}\n\nhtml.wecom-doc-theme .d-header .title img,\nhtml.wecom-doc-theme .d-header .title picture,\nhtml.wecom-doc-theme .d-header .title .logo-big,\nhtml.wecom-doc-theme .d-header .title .logo-small {\n  display: none !important;\n}\nhtml.wecom-doc-theme .wecom-brand {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 16px;\n  font-weight: 600;\n}\nhtml.wecom-doc-theme .wecom-app-icon {\n  width: 28px;\n  height: 28px;\n}\n";
+  const CSS = "html.wecom-doc-theme {\n  color-scheme: light !important;\n  --wecom-bg: #ffffff;\n  --wecom-sidebar: #f6f7f9;\n  --wecom-line: #ebebeb;\n  --wecom-text: #1f1f1f;\n  --wecom-text-2: #6e6e6e;\n  --wecom-text-3: #8c8c8c;\n  --wecom-search: #f3f3f3;\n  --wecom-hover: #f0f0f0;\n  --wecom-active: rgba(18, 179, 168, 0.12);\n  --wecom-link: #12b3a8;\n  --wecom-doc: #4b8cff;\n  --wecom-header-h: 56px;\n  --wecom-nav-w: 248px;\n  --wecom-toc-w: 240px;\n  --wecom-comments-w: 320px;\n  --primary: #1f1f1f !important;\n  --secondary: #ffffff !important;\n  --header_background: #ffffff !important;\n  --header_primary: #1f1f1f !important;\n  --primary-low: #f6f7f9 !important;\n  --primary-very-low: #ffffff !important;\n  --d-hover: #f0f0f0 !important;\n}\n\nhtml.wecom-doc-theme.wecom-dark {\n  color-scheme: dark !important;\n  --wecom-bg: #212830;\n  --wecom-sidebar: #262c36;\n  --wecom-line: #3d444d;\n  --wecom-text: #d1d7e0;\n  --wecom-text-2: #9198a1;\n  --wecom-text-3: #9198a1;\n  --wecom-search: #2a313c;\n  --wecom-hover: #2f3742;\n  --wecom-active: rgba(61, 205, 196, 0.14);\n  --wecom-link: #3dcdc4;\n  --primary: #d1d7e0 !important;\n  --secondary: #212830 !important;\n  --header_background: #212830 !important;\n  --header_primary: #d1d7e0 !important;\n  --primary-low: #262c36 !important;\n  --primary-very-low: #151b23 !important;\n  --d-hover: #2f3742 !important;\n}\n\nhtml.wecom-doc-theme,\nhtml.wecom-doc-theme body {\n  background: var(--wecom-bg) !important;\n  color: var(--wecom-text) !important;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\",\n    \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif !important;\n}\n\nhtml.wecom-doc-theme body {\n  min-width: 980px;\n  margin: 0 !important;\n}\n\nhtml.wecom-doc-theme a { color: inherit; }\nhtml.wecom-doc-theme .cooked a { color: var(--wecom-link) !important; }\n\nhtml.wecom-doc-theme .global-notice,\nhtml.wecom-doc-theme .category-breadcrumb,\nhtml.wecom-doc-theme .top-lists,\nhtml.wecom-doc-theme .navigation-controls,\nhtml.wecom-doc-theme .topic-map.--bottom {\n  display: none !important;\n}\n\nhtml.wecom-doc-theme .d-header-wrap,\nhtml.wecom-doc-theme body .d-header {\n  position: fixed !important;\n  z-index: 1101 !important;\n  top: 0 !important;\n  left: 0 !important;\n  right: 0 !important;\n  height: var(--wecom-header-h) !important;\n  background: var(--wecom-bg) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet-wrapper {\n  width: 100% !important;\n  max-width: none !important;\n  display: grid !important;\n  grid-template-columns: var(--wecom-nav-w) minmax(0, 1fr) !important;\n  min-height: calc(100vh - var(--wecom-header-h)) !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.wecom-doc-theme .sidebar-wrapper {\n  width: var(--wecom-nav-w) !important;\n  min-width: var(--wecom-nav-w) !important;\n  background: var(--wecom-sidebar) !important;\n  border-right: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet {\n  background: var(--wecom-bg) !important;\n  padding-top: calc(var(--wecom-header-h) + 12px) !important;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link-wrapper.is-active,\nhtml.wecom-doc-theme .sidebar-section-link.active {\n  background: var(--wecom-active) !important;\n  color: var(--wecom-link) !important;\n}\n\nhtml.wecom-doc-theme .d-header .title img,\nhtml.wecom-doc-theme .d-header .title picture,\nhtml.wecom-doc-theme .d-header .title .logo-big,\nhtml.wecom-doc-theme .d-header .title .logo-small {\n  display: none !important;\n}\nhtml.wecom-doc-theme .wecom-brand {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 16px;\n  font-weight: 600;\n}\nhtml.wecom-doc-theme .wecom-app-icon {\n  width: 28px;\n  height: 28px;\n}\n\nhtml.wecom-doc-theme .wecom-home-heading {\n  position: absolute;\n  left: calc(var(--wecom-nav-w) + 16px);\n  top: 0;\n  height: var(--wecom-header-h);\n  display: flex;\n  align-items: center;\n  font-size: 16px;\n  font-weight: 600;\n  pointer-events: none;\n}\nhtml.wecom-doc-theme.wecom-doc-home .topic-list-header th {\n  font-size: 0 !important;\n  color: var(--wecom-text-3) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-column-label {\n  font-size: 13px;\n  color: var(--wecom-text-3);\n}\nhtml.wecom-doc-theme.wecom-doc-home .topic-list-item .main-link {\n  display: flex !important;\n  align-items: center;\n  gap: 10px;\n}\nhtml.wecom-doc-theme .wecom-doc-icon {\n  width: 22px;\n  height: 22px;\n  border-radius: 5px;\n  flex: none;\n  background: #4b8cff;\n  position: relative;\n}\nhtml.wecom-doc-theme .wecom-doc-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  right: 5px;\n  top: 6px;\n  bottom: 6px;\n  background:\n    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 5px / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 10px / 70% 2px no-repeat;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-create-topic {\n  font-size: 0 !important;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-create-topic::after {\n  content: \"新建话题\";\n  font-size: 14px;\n  color: var(--wecom-text-2);\n}\nhtml.wecom-doc-theme .wecom-sidebar-search {\n  display: flex;\n  align-items: center;\n  height: 36px;\n  margin: 0 8px 8px;\n  padding: 0 12px;\n  border-radius: 8px;\n  background: var(--wecom-bg);\n  color: var(--wecom-text-2) !important;\n  text-decoration: none !important;\n}\n";
 const THEME_CLASS = "wecom-doc-theme";
 const HOME_CLASS = "wecom-doc-home";
 const TOPIC_CLASS = "wecom-doc-topic";
@@ -145,14 +145,93 @@ function makeFavicon(document) {
   }
 }
 
+function makeHomeHeading(document) {
+  const headerContents = document.querySelector(".d-header .contents");
+  if (!headerContents) return;
+  let heading = document.querySelector(".wecom-home-heading");
+  if (!heading) {
+    heading = document.createElement("div");
+    heading.className = "wecom-home-heading";
+    heading.textContent = "主页";
+  }
+  if (heading.parentElement !== headerContents) headerContents.appendChild(heading);
+}
+
+function makeSidebarSearch(document) {
+  const container = document.querySelector(".sidebar-container");
+  if (!container || container.querySelector(".wecom-sidebar-search")) return;
+  const search = document.createElement("a");
+  search.className = "wecom-sidebar-search";
+  search.href = "/search";
+  search.textContent = "搜索";
+  const sections = container.querySelector(".sidebar-sections") || container.firstElementChild;
+  if (sections) container.insertBefore(search, sections);
+  else container.prepend(search);
+}
+
+function makeColumnLabels(document) {
+  const labels = [
+    ["th.default, th.main-link", "标题"],
+    ["th.posters", "所有者"],
+    ["th.posts", "回复"],
+    ["th.views", "浏览量"],
+    ["th.activity", "最近访问 ↓"]
+  ];
+  for (const [selector, label] of labels) {
+    for (const cell of document.querySelectorAll(`.topic-list-header ${selector}`)) {
+      let span = cell.querySelector(":scope > .wecom-column-label");
+      if (!span) {
+        span = document.createElement("span");
+        span.className = "wecom-column-label";
+        cell.prepend(span);
+      }
+      if (span.textContent !== label) span.textContent = label;
+    }
+  }
+}
+
+function makeDocIcons(document) {
+  for (const link of document.querySelectorAll(".topic-list-item .main-link")) {
+    if (link.querySelector(":scope > .wecom-doc-icon")) continue;
+    const icon = document.createElement("span");
+    icon.className = "wecom-doc-icon";
+    icon.setAttribute("aria-hidden", "true");
+    link.prepend(icon);
+  }
+}
+
+function makeCreateTopicButton(document) {
+  const button = document.querySelector(
+    ".navigation-container .create-topic, .list-controls .create-topic, .create-topic"
+  );
+  if (!button) return;
+  button.classList.add("wecom-create-topic");
+  const navigationContainer = document.querySelector(".navigation-container");
+  if (!navigationContainer) return;
+  let slot = navigationContainer.querySelector(":scope > .wecom-create-topic-slot");
+  if (!slot) {
+    slot = document.createElement("div");
+    slot.className = "wecom-create-topic-slot";
+    navigationContainer.appendChild(slot);
+  }
+  if (button.parentElement !== slot) slot.appendChild(button);
+}
+
 function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
   syncColor(document);
   if (!document.body) return;
-  applyPageMode(document.documentElement, document.body, location.pathname);
+  const mode = applyPageMode(document.documentElement, document.body, location.pathname);
   runStep(() => makeBrand(document));
   runStep(() => makeFavicon(document));
+  runStep(() => makeSidebarSearch(document));
+  if (mode === "home") {
+    runStep(() => makeHomeHeading(document));
+    runStep(() => makeCreateTopicButton(document));
+    runStep(() => makeColumnLabels(document));
+    runStep(() => makeDocIcons(document));
+  }
 }
 
 function bootstrap(document, css) {

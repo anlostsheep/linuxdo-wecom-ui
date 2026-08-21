@@ -128,3 +128,68 @@ html.wecom-doc-theme .wecom-app-icon {
   width: 28px;
   height: 28px;
 }
+
+html.wecom-doc-theme .wecom-home-heading {
+  position: absolute;
+  left: calc(var(--wecom-nav-w) + 16px);
+  top: 0;
+  height: var(--wecom-header-h);
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  pointer-events: none;
+}
+html.wecom-doc-theme.wecom-doc-home .topic-list-header th {
+  font-size: 0 !important;
+  color: var(--wecom-text-3) !important;
+  border-bottom: 1px solid var(--wecom-line) !important;
+}
+html.wecom-doc-theme.wecom-doc-home .wecom-column-label {
+  font-size: 13px;
+  color: var(--wecom-text-3);
+}
+html.wecom-doc-theme.wecom-doc-home .topic-list-item .main-link {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+html.wecom-doc-theme .wecom-doc-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  flex: none;
+  background: #4b8cff;
+  position: relative;
+}
+html.wecom-doc-theme .wecom-doc-icon::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 6px;
+  bottom: 6px;
+  background:
+    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 5px / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 10px / 70% 2px no-repeat;
+}
+html.wecom-doc-theme.wecom-doc-home .wecom-create-topic {
+  font-size: 0 !important;
+}
+html.wecom-doc-theme.wecom-doc-home .wecom-create-topic::after {
+  content: "新建话题";
+  font-size: 14px;
+  color: var(--wecom-text-2);
+}
+html.wecom-doc-theme .wecom-sidebar-search {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  margin: 0 8px 8px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: var(--wecom-bg);
+  color: var(--wecom-text-2) !important;
+  text-decoration: none !important;
+}
