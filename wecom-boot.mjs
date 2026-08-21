@@ -154,66 +154,10 @@ export function makeDocumentTitle(document, isTopic) {
   }
 }
 
-export function makeToc(document) {
-  const postsContainer = document.querySelector(".container.posts");
-  const opPost = findOpPost(document);
-  const entries = collectTocEntries(opPost);
-
-  for (const orphan of document.querySelectorAll("aside.wecom-toc")) {
-    if (!postsContainer || orphan.parentElement !== postsContainer) {
-      orphan.remove();
-    }
+export function removeLeftoverToc(document) {
+  for (const toc of document.querySelectorAll("aside.wecom-toc")) {
+    toc.remove();
   }
-
-  if (!postsContainer || !entries.length) {
-    for (const toc of document.querySelectorAll("aside.wecom-toc")) {
-      toc.remove();
-    }
-    return;
-  }
-
-  let tocAside = postsContainer.querySelector(":scope > aside.wecom-toc");
-  if (!tocAside) {
-    tocAside = document.createElement("aside");
-    tocAside.className = "wecom-toc";
-    postsContainer.prepend(tocAside);
-  }
-
-  const topicTitleEl = document.querySelector("#topic-title h1, #topic-title .fancy-title");
-  const rootTitle = topicTitleEl?.textContent?.trim().replace(/\s+/g, " ") || "正文目录";
-
-  tocAside.classList.remove("wecom-toc-empty");
-  const itemsHtml = entries
-    .map(
-      (e) =>
-        `<li class="wecom-toc-item wecom-toc-level-${e.level}" data-target="${e.id}">
-          <a href="#${e.id}">${e.text}</a>
-        </li>`
-    )
-    .join("");
-
-  tocAside.innerHTML = `
-    <div class="wecom-toc-header" data-target="topic-title">
-      <span class="wecom-toc-icon">📑</span>
-      <span class="wecom-toc-title">${rootTitle}</span>
-    </div>
-    <ul class="wecom-toc-list">
-      ${itemsHtml}
-    </ul>
-  `;
-
-  tocAside.onclick = (e) => {
-    const link = e.target.closest("a") || e.target.closest(".wecom-toc-header");
-    if (!link) return;
-    e.preventDefault();
-    const item = e.target.closest("[data-target]");
-    const targetId = item?.dataset?.target;
-    if (targetId === "topic-title") {
-      document.querySelector("#topic-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else if (targetId) {
-      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
 }
 
 export function applyTheme(document, css) {
@@ -224,16 +168,15 @@ export function applyTheme(document, css) {
   const mode = applyPageMode(document.documentElement, document.body, location.pathname);
   runStep(() => makeBrand(document));
   runStep(() => makeFavicon(document));
+  runStep(() => removeLeftoverToc(document));
   if (mode === "home") {
     document.querySelector(".wecom-topic-context")?.remove();
-    document.querySelector("aside.wecom-toc")?.remove();
     runStep(() => makeDocumentTitle(document, false));
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
     runStep(() => makeTopicContext(document));
     runStep(() => makeDocumentTitle(document, true));
-    runStep(() => makeToc(document));
   }
 }
 

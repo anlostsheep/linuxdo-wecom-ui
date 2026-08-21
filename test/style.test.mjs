@@ -20,10 +20,11 @@ describe("wecom-style tokens and layout", () => {
     assert.match(css, /var\(--wecom-doc\)|#4b8cff/);
     assert.doesNotMatch(css, /内部使用/);
   });
-  it("styles sidebar, topic document, and TOC layout cleanly", () => {
+  it("styles sidebar, topic document, and native timeline layout cleanly", () => {
     assert.match(css, /\.sidebar-wrapper/);
     assert.match(css, /\.sidebar-section-link/);
     assert.match(css, /#topic-title/);
+    assert.match(css, /\.timeline-container/);
     assert.match(css, /aside\.wecom-toc/);
     assert.doesNotMatch(css, /\.wecom-shell/);
     assert.doesNotMatch(css, /aside\.wecom-comments/);

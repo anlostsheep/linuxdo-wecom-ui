@@ -286,6 +286,12 @@ html.wecom-doc-theme .btn-default {
 /* ==========================================================================
    5. 话题详情页版式 (Topic: Smart Document Canvas & Timeline)
    ========================================================================== */
+html.wecom-doc-topic #main-outlet {
+  background: var(--wecom-bg) !important;
+  max-width: 1380px !important;
+  padding: 20px 28px !important;
+}
+
 html.wecom-doc-topic #main-container {
   width: 100% !important;
   max-width: 100% !important;
@@ -297,7 +303,6 @@ html.wecom-doc-topic #topic-title {
   margin-bottom: 24px !important;
   padding-bottom: 16px !important;
   border-bottom: 1px solid var(--wecom-line) !important;
-  max-width: 1180px !important;
   width: 100% !important;
 }
 
@@ -328,100 +333,39 @@ html.wecom-doc-topic #topic-title .badge-category-bg {
   font-weight: 500 !important;
 }
 
-/* 话题正文与侧栏三栏协同容器 */
+/* 彻底隐藏任何残留的 aside.wecom-toc，绝不占用左侧空间 */
+aside.wecom-toc,
+.wecom-toc {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* 话题正文流与右侧时间线自然布局（正文在左中，时间线在右侧） */
 html.wecom-doc-topic .container.posts {
   display: flex !important;
   flex-direction: row !important;
-  gap: 24px !important;
+  gap: 32px !important;
   align-items: flex-start !important;
   width: 100% !important;
   position: relative !important;
 }
 
-/* 左栏 TOC 目录 (aside.wecom-toc) */
-html.wecom-doc-topic aside.wecom-toc {
-  order: 1 !important;
-  width: 220px !important;
-  flex: none !important;
-  position: sticky !important;
-  top: 72px !important;
-  align-self: flex-start !important;
-  max-height: calc(100vh - 100px) !important;
-  overflow-y: auto !important;
-  background: var(--wecom-sidebar) !important;
-  border: 1px solid var(--wecom-line) !important;
-  border-radius: 8px !important;
-  padding: 12px !important;
-  font-size: 13px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  z-index: 10 !important;
-}
-
-html.wecom-doc-topic .wecom-toc-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--wecom-text);
-  margin-bottom: 12px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-html.wecom-doc-topic .wecom-toc-header:hover {
-  background: var(--wecom-hover);
-}
-
-html.wecom-doc-topic .wecom-toc-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-html.wecom-doc-topic .wecom-toc-item {
-  margin: 4px 0;
-}
-
-html.wecom-doc-topic .wecom-toc-item a {
-  display: block;
-  padding: 5px 8px;
-  border-radius: 6px;
-  color: var(--wecom-text-2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: all 120ms ease;
-}
-
-html.wecom-doc-topic .wecom-toc-item a:hover {
-  background: var(--wecom-hover);
-  color: var(--wecom-link);
-}
-
-html.wecom-doc-topic .wecom-toc-level-2 a {
-  padding-left: 14px;
-}
-
-html.wecom-doc-topic .wecom-toc-level-3 a {
-  padding-left: 24px;
-  font-size: 12.5px;
-}
-
-/* 中栏正文流 (Main Post Stream) */
+/* 正文画布 (Main Post Stream) */
 html.wecom-doc-topic .container.posts > .row,
 html.wecom-doc-topic .container.posts .post-stream {
-  order: 2 !important;
+  order: 1 !important;
   flex: 1 1 0% !important;
   min-width: 0 !important;
-  max-width: 960px !important;
   width: 100% !important;
 }
 
-/* 右栏时间线与阅读进度导航 (Topic Timeline) */
+/* 右栏时间线与阅读进度/大纲切换导航 (Discourse Timeline & Native TOC) */
 html.wecom-doc-topic .container.posts .topic-navigation {
-  order: 3 !important;
+  order: 2 !important;
   width: 170px !important;
   flex: none !important;
   position: sticky !important;

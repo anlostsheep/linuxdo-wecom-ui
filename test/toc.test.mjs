@@ -3,8 +3,8 @@ import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import { applyTheme } from "../wecom-boot.mjs";
 
-describe("topic cooked content and TOC", () => {
-  it("preserves headings, blockquotes, and links in cooked post", () => {
+describe("topic cooked content and spacious layout", () => {
+  it("preserves headings, blockquotes, and links in cooked post without artificial TOC squeezing", () => {
     const { window } = new JSDOM(`<!doctype html><html><body>
       <div id="main-outlet">
         <div id="topic-title"><h1>前端知识库</h1></div>
@@ -29,10 +29,7 @@ describe("topic cooked content and TOC", () => {
     assert.equal(cooked.querySelector("aside.quote")?.textContent, "引用内容");
 
     const toc = document.querySelector("aside.wecom-toc");
-    assert.ok(toc, "should generate aside.wecom-toc");
-    assert.match(toc.textContent, /前端知识库/);
-    assert.match(toc.textContent, /概述/);
-    assert.ok(toc.querySelector("li.wecom-toc-level-2 a"));
+    assert.equal(toc, null, "should not inject duplicate aside.wecom-toc");
   });
 });
 
