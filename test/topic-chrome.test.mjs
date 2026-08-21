@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import { TOPIC_CLASS } from "../wecom-core.mjs";
-import { ensureTopicShell, makeTopicContext } from "../wecom-boot.mjs";
+import { bindNavDrawer, ensureTopicShell, makeTopicContext } from "../wecom-boot.mjs";
 
 describe("topic chrome", () => {
   it("builds crumbs without fake 内部使用 status and shells once", () => {
@@ -30,5 +30,34 @@ describe("topic chrome", () => {
     ensureTopicShell(document);
     assert.equal(document.querySelectorAll("aside.wecom-toc").length, 1);
     assert.equal(document.querySelectorAll("aside.wecom-comments").length, 1);
+
+    const toc = document.querySelector("aside.wecom-toc");
+    const posts = document.querySelector(".container.posts");
+    const comments = document.querySelector("aside.wecom-comments");
+    const outlet = document.getElementById("main-outlet");
+    assert.equal(toc.parentElement, posts.parentElement);
+    assert.equal(posts.parentElement, comments.parentElement);
+    assert.equal(toc.parentElement, outlet);
+    assert.equal(toc.nextElementSibling, posts);
+    assert.equal(posts.nextElementSibling, comments);
+  });
+
+  it("binds nav drawer via delegation before hamburger exists", () => {
+    const { window } = new JSDOM(`<!doctype html><html class="${TOPIC_CLASS}"><body>
+      <header class="d-header"><div class="contents">
+        <div class="header-sidebar-toggle"></div>
+      </div></header>
+    </body></html>`, { url: "https://linux.do/t/x/1" });
+    const document = window.document;
+    const html = document.documentElement;
+    bindNavDrawer(document);
+    bindNavDrawer(document);
+    assert.equal(html.dataset.wecomNavBound, "1");
+    const button = document.createElement("button");
+    document.querySelector(".header-sidebar-toggle").appendChild(button);
+    button.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+    assert.equal(html.classList.contains("wecom-nav-open"), true);
+    button.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+    assert.equal(html.classList.contains("wecom-nav-open"), false);
   });
 });

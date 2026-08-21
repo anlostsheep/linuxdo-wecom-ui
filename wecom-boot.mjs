@@ -190,17 +190,17 @@ export function ensureTopicShell(document) {
   }
 }
 
-function bindNavDrawer(document) {
+export function bindNavDrawer(document) {
   const html = document.documentElement;
   if (html.dataset.wecomNavBound) return;
   html.dataset.wecomNavBound = "1";
-  for (const button of document.querySelectorAll(
-    ".header-sidebar-toggle button, .hamburger-dropdown button"
-  )) {
-    button.addEventListener("click", () => {
-      html.classList.toggle("wecom-nav-open");
-    });
-  }
+  html.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || typeof target.closest !== "function") return;
+    const button = target.closest("button");
+    if (!button?.closest(".header-sidebar-toggle, .hamburger-dropdown")) return;
+    html.classList.toggle("wecom-nav-open");
+  });
 }
 
 export function applyTheme(document, css) {
