@@ -309,6 +309,44 @@ export function bootstrap(document, css) {
   applyTheme(document, css);
 }
 
+export function bindNavigation(window, document, css) {
+  if (window.__wecomNavBound) return;
+  window.__wecomNavBound = true;
+  let scheduled = false;
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    const raf = window.requestAnimationFrame || ((cb) => setTimeout(cb, 0));
+    raf(() => {
+      scheduled = false;
+      applyTheme(document, css);
+    });
+  };
+  new MutationObserver(schedule).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+  for (const method of ["pushState", "replaceState"]) {
+    const original = window.history[method];
+    window.history[method] = function (...args) {
+      const result = original.apply(this, args);
+      schedule();
+      return result;
+    };
+  }
+  window.addEventListener("popstate", schedule);
+  window.addEventListener("hashchange", schedule);
+  document.addEventListener("turbo:load", schedule);
+  document.addEventListener("page:changed", schedule);
+  try {
+    const colorMedia = window.matchMedia("(prefers-color-scheme: dark)");
+    const onColor = () => syncColor(document);
+    if (colorMedia.addEventListener) colorMedia.addEventListener("change", onColor);
+    else if (colorMedia.addListener) colorMedia.addListener(onColor);
+  } catch {}
+}
+
 export function start(document, css) {
   bootstrap(document, css);
+  bindNavigation(window, document, css);
 }

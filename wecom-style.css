@@ -286,3 +286,22 @@ html.wecom-doc-theme .wecom-toc-root { color: var(--wecom-text); font-size: 14px
 html.wecom-doc-theme .wecom-toc-l2 { padding-left: 22px; }
 html.wecom-doc-theme .wecom-toc-l3 { padding-left: 36px; }
 html.wecom-doc-theme .wecom-toc-item.active { color: var(--wecom-link); background: var(--wecom-active); }
+html.wecom-doc-theme.wecom-doc-topic #reply-control {
+  position: sticky !important;
+  bottom: 0 !important;
+  border-color: var(--wecom-line) !important;
+  background: var(--wecom-bg) !important;
+}
+html.wecom-doc-theme .wecom-comments-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--wecom-text-3);
+}
+html.wecom-doc-theme aside.wecom-comments aside.quote {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--wecom-search);
+  color: var(--wecom-text-2);
+  font-size: 12px;
+}
