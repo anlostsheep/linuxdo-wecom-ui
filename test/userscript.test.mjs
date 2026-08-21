@@ -10,8 +10,8 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v1.2.2 with WeCom brand and theme bootstrap", () => {
-    assert.match(userscript, /@version\s+1\.2\.2/);
+  it("ships v1.3.0 with WeCom brand and theme bootstrap", () => {
+    assert.match(userscript, /@version\s+1\.3\.0/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);

@@ -11,10 +11,10 @@ function stripModule(src) {
 }
 
 const header = `// ==UserScript==
-// @name         Linux DO · 企业微信文档外观
+// @name         Linux DO · 企业微信智能文档外观
 // @namespace    https://linux.do/
-// @version      1.2.2
-// @description  将 Linux DO 的主页与话题页换成企业微信文档风格。浅色跟企微，深色跟 GitHub Soft dark。只换皮。
+// @version      1.3.0
+// @description  将 Linux DO 深度伪装为企业微信智能文档/团队知识库风格。支持浅色/深色模式，Callout 提示卡片与文档排版。
 // @author       lostsheep
 // @match        https://linux.do/*
 // @icon         https://linux.do/favicon.ico

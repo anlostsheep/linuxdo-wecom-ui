@@ -1,47 +1,54 @@
 html.wecom-doc-theme {
   color-scheme: light !important;
   --wecom-bg: #ffffff;
-  --wecom-sidebar: #f6f7f9;
-  --wecom-line: #ebebeb;
-  --wecom-text: #1f1f1f;
-  --wecom-text-2: #6e6e6e;
-  --wecom-text-3: #8c8c8c;
-  --wecom-search: #f3f3f3;
-  --wecom-hover: #f0f0f0;
-  --wecom-active: rgba(18, 179, 168, 0.12);
-  --wecom-link: #12b3a8;
+  --wecom-sidebar: #f7f8fa;
+  --wecom-line: #e4e7ed;
+  --wecom-text: #1f2329;
+  --wecom-text-2: #646a73;
+  --wecom-text-3: #8f959e;
+  --wecom-search: #f2f3f5;
+  --wecom-hover: #ebeef5;
+  --wecom-active: #e8f3ff;
+  --wecom-link: #1f7eff;
+  --wecom-link-hover: #006fe6;
   --wecom-doc: #4b8cff;
+  --wecom-callout-bg: #f0f6ff;
+  --wecom-callout-border: rgba(31, 126, 255, 0.2);
   --wecom-header-h: 56px;
-  --primary: #1f1f1f !important;
+  --primary: #1f2329 !important;
   --secondary: #ffffff !important;
   --header_background: #ffffff !important;
-  --header_primary: #1f1f1f !important;
-  --primary-low: #f6f7f9 !important;
+  --header_primary: #1f2329 !important;
+  --primary-low: #f7f8fa !important;
   --primary-very-low: #ffffff !important;
-  --d-hover: #f0f0f0 !important;
-  --tertiary: #12b3a8 !important;
+  --d-hover: #ebeef5 !important;
+  --tertiary: #1f7eff !important;
 }
 
 html.wecom-doc-theme.wecom-dark {
   color-scheme: dark !important;
-  --wecom-bg: #212830;
-  --wecom-sidebar: #262c36;
-  --wecom-line: #3d444d;
-  --wecom-text: #d1d7e0;
-  --wecom-text-2: #9198a1;
-  --wecom-text-3: #9198a1;
-  --wecom-search: #2a313c;
-  --wecom-hover: #2f3742;
-  --wecom-active: rgba(61, 205, 196, 0.14);
-  --wecom-link: #3dcdc4;
-  --primary: #d1d7e0 !important;
-  --secondary: #212830 !important;
-  --header_background: #212830 !important;
-  --header_primary: #d1d7e0 !important;
-  --primary-low: #262c36 !important;
-  --primary-very-low: #151b23 !important;
-  --d-hover: #2f3742 !important;
-  --tertiary: #3dcdc4 !important;
+  --wecom-bg: #191b1f;
+  --wecom-sidebar: #1e2025;
+  --wecom-line: #2d3038;
+  --wecom-text: #e6e8eb;
+  --wecom-text-2: #9a9ea6;
+  --wecom-text-3: #737882;
+  --wecom-search: #252830;
+  --wecom-hover: #292d36;
+  --wecom-active: #1a2b45;
+  --wecom-link: #388bff;
+  --wecom-link-hover: #549dff;
+  --wecom-doc: #4b8cff;
+  --wecom-callout-bg: #1c2538;
+  --wecom-callout-border: rgba(56, 139, 255, 0.25);
+  --primary: #e6e8eb !important;
+  --secondary: #191b1f !important;
+  --header_background: #191b1f !important;
+  --header_primary: #e6e8eb !important;
+  --primary-low: #1e2025 !important;
+  --primary-very-low: #141518 !important;
+  --d-hover: #292d36 !important;
+  --tertiary: #388bff !important;
 }
 
 html.wecom-doc-theme,
@@ -50,17 +57,24 @@ html.wecom-doc-theme body {
   color: var(--wecom-text) !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
 }
 
 html.wecom-doc-theme a {
   color: inherit;
+  text-decoration: none;
 }
 
 html.wecom-doc-theme .cooked a {
   color: var(--wecom-link) !important;
+  text-decoration: none;
 }
 
-/* 顶栏 (Header) */
+html.wecom-doc-theme .cooked a:hover {
+  text-decoration: underline;
+}
+
+/* 顶栏 (Header) - 智能文档质感 */
 html.wecom-doc-theme .d-header-wrap,
 html.wecom-doc-theme body .d-header {
   height: var(--wecom-header-h) !important;
@@ -80,20 +94,22 @@ html.wecom-doc-theme .wecom-brand {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--wecom-text);
   text-decoration: none;
+  letter-spacing: -0.2px;
 }
 
 html.wecom-doc-theme .wecom-app-icon {
   width: 28px;
   height: 28px;
   flex: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
 }
 
 html.wecom-doc-theme .wecom-topic-context {
-  margin-left: 16px;
+  margin-left: 14px;
   display: inline-flex;
   align-items: center;
   overflow: hidden;
@@ -104,16 +120,26 @@ html.wecom-doc-theme .wecom-topic-context {
   max-width: 50vw;
 }
 
-/* 侧边栏 (Sidebar) 优雅换皮，不破坏原生流与展开折叠 */
+/* 侧边栏 (Sidebar) - 智能文档树形目录风格 */
 html.wecom-doc-theme .sidebar-wrapper {
   background: var(--wecom-sidebar) !important;
   border-right: 1px solid var(--wecom-line) !important;
   box-shadow: none !important;
 }
 
+html.wecom-doc-theme .sidebar-section-header-text {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--wecom-text-3) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 html.wecom-doc-theme .sidebar-section-link,
 html.wecom-doc-theme .sidebar-section-link-content-text {
   color: var(--wecom-text) !important;
+  font-size: 13.5px !important;
+  font-weight: 400;
 }
 
 html.wecom-doc-theme .sidebar-section-link-wrapper.is-active,
@@ -121,6 +147,7 @@ html.wecom-doc-theme .sidebar-section-link.active {
   background: var(--wecom-active) !important;
   color: var(--wecom-link) !important;
   border-radius: 6px;
+  font-weight: 500 !important;
 }
 
 html.wecom-doc-theme .sidebar-section-link:hover {
@@ -137,6 +164,8 @@ html.wecom-doc-theme .topic-list-header th {
   color: var(--wecom-text-3) !important;
   border-bottom: 1px solid var(--wecom-line) !important;
   font-weight: 500;
+  font-size: 13px;
+  padding: 10px 8px;
 }
 
 html.wecom-doc-theme .topic-list-item {
@@ -173,29 +202,61 @@ html.wecom-doc-theme .wecom-doc-icon::before {
     linear-gradient(#fff, #fff) 0 7px / 65% 2px no-repeat;
 }
 
-/* 按钮样式 */
+/* 按钮样式 - 智能文档标准按钮 */
 html.wecom-doc-theme .btn-primary,
-html.wecom-doc-theme .btn-default {
-  border-radius: 6px !important;
-}
-
 html.wecom-doc-theme .wecom-create-topic {
   background: var(--wecom-link) !important;
   color: #fff !important;
+  border: none !important;
   border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: background 120ms ease;
 }
 
-/* 话题详情页 (Topic Detail) - 现代化文档排版 */
+html.wecom-doc-theme .btn-primary:hover,
+html.wecom-doc-theme .wecom-create-topic:hover {
+  background: var(--wecom-link-hover) !important;
+}
+
+html.wecom-doc-theme .btn-default {
+  border-radius: 6px !important;
+  border: 1px solid var(--wecom-line) !important;
+  background: var(--wecom-bg) !important;
+  color: var(--wecom-text) !important;
+}
+
+/* 话题详情页 (Topic Detail) - 智能文档排版 */
 html.wecom-doc-theme #topic-title {
   margin-bottom: 24px !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid var(--wecom-line) !important;
 }
 
 html.wecom-doc-theme #topic-title h1,
 html.wecom-doc-theme #topic-title .fancy-title {
-  font-size: 28px !important;
+  font-size: 26px !important;
   font-weight: 700 !important;
   line-height: 1.35 !important;
   color: var(--wecom-text) !important;
+  letter-spacing: -0.3px;
+  margin-bottom: 10px !important;
+}
+
+html.wecom-doc-theme #topic-title .badge-wrapper.bullet,
+html.wecom-doc-theme #topic-title .badge-wrapper.bar {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  background: var(--wecom-search) !important;
+  font-size: 12px !important;
+  margin-right: 6px !important;
+}
+
+html.wecom-doc-theme #topic-title .badge-category__name,
+html.wecom-doc-theme #topic-title .badge-category-bg {
+  color: var(--wecom-text-2) !important;
+  font-weight: 500 !important;
 }
 
 html.wecom-doc-theme .topic-body {
@@ -206,25 +267,121 @@ html.wecom-doc-theme .topic-post:first-child .topic-body {
   border-top: none !important;
 }
 
+/* 楼层头部元信息轻量化 (Document Collaborator Header) */
+html.wecom-doc-theme .topic-meta-data {
+  padding-bottom: 6px !important;
+}
+
+html.wecom-doc-theme .names span.first.username {
+  font-weight: 600 !important;
+  color: var(--wecom-text) !important;
+  font-size: 13.5px !important;
+}
+
+html.wecom-doc-theme .post-info.post-date {
+  color: var(--wecom-text-3) !important;
+  font-size: 12px !important;
+}
+
+/* 正文排版 (Smart Doc Cooked Content) */
 html.wecom-doc-theme .cooked {
   font-size: 15px !important;
   line-height: 1.75 !important;
   color: var(--wecom-text) !important;
 }
 
+html.wecom-doc-theme .cooked h1 {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  margin: 26px 0 14px !important;
+  color: var(--wecom-text) !important;
+}
+
+html.wecom-doc-theme .cooked h2 {
+  font-size: 18.5px !important;
+  font-weight: 600 !important;
+  margin: 22px 0 12px !important;
+  color: var(--wecom-text) !important;
+}
+
+html.wecom-doc-theme .cooked h3 {
+  font-size: 16.5px !important;
+  font-weight: 600 !important;
+  margin: 18px 0 10px !important;
+  color: var(--wecom-text) !important;
+}
+
+html.wecom-doc-theme .cooked ul,
+html.wecom-doc-theme .cooked ol {
+  padding-left: 24px !important;
+  margin: 12px 0 !important;
+}
+
+html.wecom-doc-theme .cooked li {
+  margin-bottom: 6px !important;
+  line-height: 1.7 !important;
+}
+
+/* 智能文档 Callout 提示卡片样式 */
 html.wecom-doc-theme .cooked blockquote,
 html.wecom-doc-theme aside.quote {
-  margin: 12px 0 !important;
-  padding: 10px 14px !important;
-  border-left: 3px solid var(--wecom-link) !important;
+  margin: 16px 0 !important;
+  padding: 14px 18px !important;
+  border: 1px solid var(--wecom-callout-border) !important;
+  background: var(--wecom-callout-bg) !important;
+  border-radius: 8px !important;
+  color: var(--wecom-text) !important;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+html.wecom-doc-theme .cooked blockquote p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 代码块与行内代码 */
+html.wecom-doc-theme .cooked code {
   background: var(--wecom-search) !important;
-  border-radius: 0 6px 6px 0 !important;
-  color: var(--wecom-text-2) !important;
+  color: var(--wecom-text) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-size: 0.9em !important;
 }
 
 html.wecom-doc-theme .cooked pre code {
-  border-radius: 6px !important;
+  padding: 14px 16px !important;
+  border-radius: 8px !important;
   border: 1px solid var(--wecom-line) !important;
+  display: block;
+  line-height: 1.55 !important;
+}
+
+/* 表格组件 */
+html.wecom-doc-theme .cooked table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 16px 0 !important;
+  border: 1px solid var(--wecom-line) !important;
+  border-radius: 6px !important;
+}
+
+html.wecom-doc-theme .cooked table th,
+html.wecom-doc-theme .cooked table td {
+  border: 1px solid var(--wecom-line) !important;
+  padding: 10px 14px !important;
+}
+
+html.wecom-doc-theme .cooked table th {
+  background: var(--wecom-sidebar) !important;
+  font-weight: 600 !important;
+}
+
+/* 顶栏图标与搜索 */
+html.wecom-doc-theme .d-header .search-input {
+  border-radius: 6px !important;
+  background: var(--wecom-search) !important;
+  border: 1px solid var(--wecom-line) !important;
+  color: var(--wecom-text) !important;
 }
 
 /* 时间线与底部控制 */
