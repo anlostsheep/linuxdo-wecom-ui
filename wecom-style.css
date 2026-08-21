@@ -195,18 +195,50 @@ html.wecom-doc-theme .wecom-sidebar-search {
 }
 
 html.wecom-doc-theme.wecom-doc-topic #main-outlet-wrapper {
-  grid-template-columns: minmax(0, 1fr) !important;
+  display: block !important;
+  grid-template-columns: none !important;
   grid-template-areas: none !important;
 }
+html.wecom-doc-theme.wecom-doc-topic #main-outlet,
+html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
+  grid-area: auto !important;
+}
 html.wecom-doc-theme.wecom-doc-topic #main-outlet {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell {
   display: grid !important;
   grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;
+  grid-template-rows: auto 1fr !important;
+  width: 100% !important;
+  max-width: none !important;
   align-items: start !important;
 }
-html.wecom-doc-theme.wecom-doc-topic aside.wecom-toc { grid-column: 1; grid-row: 1 / -1; }
-html.wecom-doc-theme.wecom-doc-topic #topic-title,
-html.wecom-doc-theme.wecom-doc-topic .container.posts { grid-column: 2; }
-html.wecom-doc-theme.wecom-doc-topic aside.wecom-comments { grid-column: 3; grid-row: 1 / -1; }
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > * {
+  grid-column: 2;
+  min-width: 0;
+}
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-toc {
+  grid-column: 1;
+  grid-row: 1 / -1;
+}
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > #topic-title {
+  grid-column: 2;
+  grid-row: 1;
+}
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > .container.posts {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 120px;
+  width: auto !important;
+  max-width: none !important;
+}
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-comments {
+  grid-column: 3;
+  grid-row: 1 / -1;
+}
 html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
   position: fixed !important;
   z-index: 1200 !important;
@@ -219,9 +251,14 @@ html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
 html.wecom-doc-theme.wecom-doc-topic.wecom-nav-open .sidebar-wrapper {
   transform: translateX(0);
 }
+html.wecom-doc-theme .d-header .title {
+  width: auto !important;
+  min-width: 148px !important;
+  margin-right: 12px !important;
+}
 html.wecom-doc-theme .wecom-topic-context {
   position: absolute;
-  left: 72px;
+  left: 220px;
   right: 280px;
   top: 0;
   height: var(--wecom-header-h);

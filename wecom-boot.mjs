@@ -191,6 +191,10 @@ export function ensureTopicShell(document) {
   if (!posts) return;
   const parent = posts.parentElement;
   if (!parent) return;
+  for (const extra of document.querySelectorAll(".wecom-shell")) {
+    if (extra !== parent) extra.classList.remove("wecom-shell");
+  }
+  parent.classList.add("wecom-shell");
   let toc = document.querySelector("aside.wecom-toc");
   if (!toc) {
     toc = document.createElement("aside");
@@ -318,6 +322,7 @@ export function applyTheme(document, css) {
       document.querySelector("aside.wecom-comments")?.remove();
     }
     document.querySelector(".wecom-topic-context")?.remove();
+    document.querySelector(".wecom-shell")?.classList.remove("wecom-shell");
     runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeColumnLabels(document));
@@ -338,6 +343,10 @@ export function applyTheme(document, css) {
     document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
     runStep(() => ensureTopicShell(document));
+    const opNow = findOpPost(document);
+    if (opNow && opNow.closest("aside.wecom-comments")) {
+      runStep(() => restoreComments(document));
+    }
     runStep(() => dockComments(document));
     runStep(() => makeToc(document));
     runStep(() => markCoverImage(document));

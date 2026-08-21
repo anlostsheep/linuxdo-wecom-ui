@@ -66,7 +66,9 @@ export const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 48 48" 
 </svg>`;
 
 export function findOpPost(document) {
-  return document.querySelector("#post_1") || document.querySelector(".post-stream .topic-post");
+  const byId = document.querySelector("#post_1");
+  if (byId) return byId.closest(".topic-post") || byId;
+  return document.querySelector(".post-stream .topic-post");
 }
 
 export function collectTocEntries(cooked) {

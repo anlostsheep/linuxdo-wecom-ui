@@ -30,4 +30,16 @@ describe("toc and cover", () => {
     markCoverImage(document);
     assert.ok(document.querySelector("#post_1 .cooked img").classList.contains("wecom-cover"));
   });
+
+  it("treats Discourse article#post_1 inside .topic-post as the OP", () => {
+    const { window } = new JSDOM(`<!doctype html><html><body>
+      <div class="post-stream">
+        <div class="topic-post"><article id="post_1" class="boxed"><div class="cooked"><h2>概述</h2></div></article></div>
+        <div class="topic-post"><article id="post_2" class="boxed"><div class="cooked">reply</div></article></div>
+      </div>
+    </body></html>`);
+    const op = findOpPost(window.document);
+    assert.equal(op.classList.contains("topic-post"), true);
+    assert.ok(op.querySelector("#post_1"));
+  });
 });
