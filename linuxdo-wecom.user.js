@@ -100,6 +100,13 @@ function collectTocEntries(cooked) {
   return out;
 }
 
+function postsToDock(document) {
+  const op = findOpPost(document);
+  const stream = document.querySelector(".post-stream");
+  if (!stream) return [];
+  return [...stream.querySelectorAll(".topic-post")].filter((post) => post !== op);
+}
+
 
 function prefersDark() {
   try {
@@ -331,6 +338,37 @@ function bindNavDrawer(document) {
   });
 }
 
+function syncCommentsEmptyState(document) {
+  const empty = document.querySelector(".wecom-comments-empty");
+  const list = document.querySelector(".wecom-comments-list");
+  if (!empty || !list) return;
+  empty.hidden = list.querySelector(".topic-post") != null;
+}
+
+function dockComments(document) {
+  const list = document.querySelector(".wecom-comments-list");
+  if (!list) return;
+  for (const post of postsToDock(document)) {
+    if (post.parentElement === list) continue;
+    list.appendChild(post);
+  }
+  syncCommentsEmptyState(document);
+}
+
+function restoreComments(document) {
+  const list = document.querySelector(".wecom-comments-list");
+  const stream = document.querySelector(".post-stream");
+  if (!list || !stream) return;
+  const op = findOpPost(document);
+  for (const post of [...list.querySelectorAll(".topic-post")]) {
+    if (op && op.nextSibling) stream.insertBefore(post, op.nextSibling);
+    else stream.appendChild(post);
+  }
+  /* keep chronological order: append in current list order after OP */
+  const moved = [...stream.querySelectorAll(".topic-post")].filter((p) => p !== op);
+  for (const post of moved) stream.appendChild(post);
+}
+
 function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -341,11 +379,10 @@ function applyTheme(document, css) {
   runStep(() => makeFavicon(document));
   runStep(() => makeSidebarSearch(document));
   if (mode === "home") {
+    runStep(() => restoreComments(document));
+    document.querySelector("aside.wecom-toc")?.remove();
+    document.querySelector("aside.wecom-comments")?.remove();
     document.querySelector(".wecom-topic-context")?.remove();
-    if (!document.querySelector("aside.wecom-comments .topic-post")) {
-      document.querySelector("aside.wecom-toc")?.remove();
-      document.querySelector("aside.wecom-comments")?.remove();
-    }
     runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeColumnLabels(document));
@@ -354,6 +391,7 @@ function applyTheme(document, css) {
     document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
     runStep(() => ensureTopicShell(document));
+    runStep(() => dockComments(document));
     runStep(() => makeToc(document));
     runStep(() => markCoverImage(document));
     runStep(() => bindNavDrawer(document));

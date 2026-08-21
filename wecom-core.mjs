@@ -84,3 +84,10 @@ export function collectTocEntries(cooked) {
   });
   return out;
 }
+
+export function postsToDock(document) {
+  const op = findOpPost(document);
+  const stream = document.querySelector(".post-stream");
+  if (!stream) return [];
+  return [...stream.querySelectorAll(".topic-post")].filter((post) => post !== op);
+}
