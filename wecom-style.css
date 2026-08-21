@@ -1,1 +1,112 @@
-/* tokens and layout added in later tasks */
+html.wecom-doc-theme {
+  color-scheme: light !important;
+  --wecom-bg: #ffffff;
+  --wecom-sidebar: #f6f7f9;
+  --wecom-line: #ebebeb;
+  --wecom-text: #1f1f1f;
+  --wecom-text-2: #6e6e6e;
+  --wecom-text-3: #8c8c8c;
+  --wecom-search: #f3f3f3;
+  --wecom-hover: #f0f0f0;
+  --wecom-active: rgba(18, 179, 168, 0.12);
+  --wecom-link: #12b3a8;
+  --wecom-doc: #4b8cff;
+  --wecom-header-h: 56px;
+  --wecom-nav-w: 248px;
+  --wecom-toc-w: 240px;
+  --wecom-comments-w: 320px;
+  --primary: #1f1f1f !important;
+  --secondary: #ffffff !important;
+  --header_background: #ffffff !important;
+  --header_primary: #1f1f1f !important;
+  --primary-low: #f6f7f9 !important;
+  --primary-very-low: #ffffff !important;
+  --d-hover: #f0f0f0 !important;
+}
+
+html.wecom-doc-theme.wecom-dark {
+  color-scheme: dark !important;
+  --wecom-bg: #212830;
+  --wecom-sidebar: #262c36;
+  --wecom-line: #3d444d;
+  --wecom-text: #d1d7e0;
+  --wecom-text-2: #9198a1;
+  --wecom-text-3: #9198a1;
+  --wecom-search: #2a313c;
+  --wecom-hover: #2f3742;
+  --wecom-active: rgba(61, 205, 196, 0.14);
+  --wecom-link: #3dcdc4;
+  --primary: #d1d7e0 !important;
+  --secondary: #212830 !important;
+  --header_background: #212830 !important;
+  --header_primary: #d1d7e0 !important;
+  --primary-low: #262c36 !important;
+  --primary-very-low: #151b23 !important;
+  --d-hover: #2f3742 !important;
+}
+
+html.wecom-doc-theme,
+html.wecom-doc-theme body {
+  background: var(--wecom-bg) !important;
+  color: var(--wecom-text) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif !important;
+}
+
+html.wecom-doc-theme body {
+  min-width: 980px;
+  margin: 0 !important;
+}
+
+html.wecom-doc-theme a { color: inherit; }
+html.wecom-doc-theme .cooked a { color: var(--wecom-link) !important; }
+
+html.wecom-doc-theme .global-notice,
+html.wecom-doc-theme .category-breadcrumb,
+html.wecom-doc-theme .top-lists,
+html.wecom-doc-theme .navigation-controls,
+html.wecom-doc-theme .topic-map.--bottom {
+  display: none !important;
+}
+
+html.wecom-doc-theme .d-header-wrap,
+html.wecom-doc-theme body .d-header {
+  position: fixed !important;
+  z-index: 1101 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: var(--wecom-header-h) !important;
+  background: var(--wecom-bg) !important;
+  border-bottom: 1px solid var(--wecom-line) !important;
+  box-shadow: none !important;
+}
+
+html.wecom-doc-theme #main-outlet-wrapper {
+  width: 100% !important;
+  max-width: none !important;
+  display: grid !important;
+  grid-template-columns: var(--wecom-nav-w) minmax(0, 1fr) !important;
+  min-height: calc(100vh - var(--wecom-header-h)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.wecom-doc-theme .sidebar-wrapper {
+  width: var(--wecom-nav-w) !important;
+  min-width: var(--wecom-nav-w) !important;
+  background: var(--wecom-sidebar) !important;
+  border-right: 1px solid var(--wecom-line) !important;
+  box-shadow: none !important;
+}
+
+html.wecom-doc-theme #main-outlet {
+  background: var(--wecom-bg) !important;
+  padding-top: calc(var(--wecom-header-h) + 12px) !important;
+}
+
+html.wecom-doc-theme .sidebar-section-link-wrapper.is-active,
+html.wecom-doc-theme .sidebar-section-link.active {
+  background: var(--wecom-active) !important;
+  color: var(--wecom-link) !important;
+}
