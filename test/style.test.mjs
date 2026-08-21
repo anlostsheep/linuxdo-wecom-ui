@@ -30,7 +30,13 @@ describe("wecom-style tokens and layout", () => {
     assert.doesNotMatch(css, /aside\.wecom-comments/);
     assert.doesNotMatch(css, /\.wecom-toc-level-3/);
   });
+  it("keeps homepage poster avatars on one row instead of wrapping the fifth", () => {
+    assert.match(css, /\.topic-list\s+\.posters\s+\{[^}]*white-space:\s*nowrap/);
+    assert.match(css, /\.topic-list\s+\.posters\s+a\s+\{[^}]*float:\s*none/);
+    assert.doesNotMatch(css, /\.topic-list\s+\.posters\s+\{[^}]*max-width:\s*90px/);
+  });
 });
+
 
 
 

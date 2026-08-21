@@ -242,9 +242,18 @@ html.wecom-doc-theme .wecom-doc-icon::before {
     linear-gradient(#fff, #fff) 0 7px / 65% 2px no-repeat;
 }
 
-/* 压缩头像列，减少论坛广场感 */
+/* 压缩头像列，单行叠放，避免第 5 个 float 折到下一行 */
 html.wecom-doc-theme .topic-list .posters {
-  max-width: 90px;
+  max-width: 118px;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+html.wecom-doc-theme .topic-list .posters a {
+  float: none !important;
+  display: inline-block !important;
+  vertical-align: middle;
 }
 
 html.wecom-doc-theme .topic-list .posters a:not(:first-child) {
