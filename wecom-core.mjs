@@ -38,9 +38,11 @@ export function applyPageMode(html, body, pathname) {
 }
 
 export function topicTitleFromDocumentTitle(title) {
-  return String(title || "")
-    .replace(/\s*[-–]\s*Linux DO\s*$/, "")
-    .trim();
+  let res = String(title || "");
+  while (/\s*[-–]\s*(Linux DO|LINUX DO|企业微信)\s*$/i.test(res)) {
+    res = res.replace(/\s*[-–]\s*(Linux DO|LINUX DO|企业微信)\s*$/i, "").trim();
+  }
+  return res.trim();
 }
 
 export function topicContextText(category, title) {

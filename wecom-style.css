@@ -287,15 +287,17 @@ html.wecom-doc-theme .btn-default {
    5. 话题详情页版式 (Topic: Smart Document Canvas & Timeline)
    ========================================================================== */
 html.wecom-doc-topic #main-container {
-  max-width: 1400px !important;
-  margin: 0 auto !important;
   width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 html.wecom-doc-topic #topic-title {
   margin-bottom: 24px !important;
   padding-bottom: 16px !important;
   border-bottom: 1px solid var(--wecom-line) !important;
+  max-width: 1180px !important;
   width: 100% !important;
 }
 
@@ -413,13 +415,14 @@ html.wecom-doc-topic .container.posts .post-stream {
   order: 2 !important;
   flex: 1 1 0% !important;
   min-width: 0 !important;
+  max-width: 960px !important;
   width: 100% !important;
 }
 
 /* 右栏时间线与阅读进度导航 (Topic Timeline) */
 html.wecom-doc-topic .container.posts .topic-navigation {
   order: 3 !important;
-  width: 180px !important;
+  width: 170px !important;
   flex: none !important;
   position: sticky !important;
   top: 72px !important;

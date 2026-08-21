@@ -117,8 +117,8 @@ export function makeTopicContext(document) {
   const headerContents = document.querySelector(".d-header .contents");
   if (!headerContents) return;
   const topicTitle = document.querySelector("#topic-title h1, #topic-title .fancy-title");
-  let title = topicTitle?.textContent?.trim().replace(/\s+/g, " ");
-  if (!title) title = topicTitleFromDocumentTitle(document.title);
+  let rawTitle = topicTitle?.textContent?.trim().replace(/\s+/g, " ") || "";
+  let title = topicTitleFromDocumentTitle(rawTitle || document.title);
   if (!title) return;
   let context = headerContents.querySelector(".wecom-topic-context");
   if (!context) {
@@ -139,13 +139,18 @@ export function makeTopicContext(document) {
 export function makeDocumentTitle(document, isTopic) {
   if (isTopic) {
     const topicTitle = document.querySelector("#topic-title h1, #topic-title .fancy-title");
-    let title = topicTitle?.textContent?.trim().replace(/\s+/g, " ");
-    if (!title) title = topicTitleFromDocumentTitle(document.title);
+    let rawTitle = topicTitle?.textContent?.trim().replace(/\s+/g, " ") || "";
+    let title = topicTitleFromDocumentTitle(rawTitle || document.title);
     if (title) {
-      document.title = `${title} - 企业微信`;
+      const expected = `${title} - 企业微信`;
+      if (document.title !== expected) {
+        document.title = expected;
+      }
     }
   } else {
-    document.title = "企业微信";
+    if (document.title !== "企业微信") {
+      document.title = "企业微信";
+    }
   }
 }
 
