@@ -150,30 +150,32 @@ export function makeDocumentTitle(document, isTopic) {
 }
 
 export function makeToc(document) {
-  const container = document.querySelector("#main-container") || document.querySelector("#main-outlet");
-  if (!container) return;
+  const postsContainer = document.querySelector(".container.posts");
   const opPost = findOpPost(document);
   const entries = collectTocEntries(opPost);
-  const topicTitleEl = document.querySelector("#topic-title h1, #topic-title .fancy-title");
-  const rootTitle = topicTitleEl?.textContent?.trim().replace(/\s+/g, " ") || "正文目录";
 
-  let tocAside = container.querySelector(":scope > aside.wecom-toc") || document.querySelector("aside.wecom-toc");
+  for (const orphan of document.querySelectorAll("aside.wecom-toc")) {
+    if (!postsContainer || orphan.parentElement !== postsContainer) {
+      orphan.remove();
+    }
+  }
+
+  if (!postsContainer || !entries.length) {
+    for (const toc of document.querySelectorAll("aside.wecom-toc")) {
+      toc.remove();
+    }
+    return;
+  }
+
+  let tocAside = postsContainer.querySelector(":scope > aside.wecom-toc");
   if (!tocAside) {
     tocAside = document.createElement("aside");
     tocAside.className = "wecom-toc";
-    container.prepend(tocAside);
+    postsContainer.prepend(tocAside);
   }
 
-  if (!entries.length) {
-    tocAside.classList.add("wecom-toc-empty");
-    tocAside.innerHTML = `
-      <div class="wecom-toc-header">
-        <span class="wecom-toc-icon">📑</span>
-        <span class="wecom-toc-title">${rootTitle}</span>
-      </div>
-    `;
-    return;
-  }
+  const topicTitleEl = document.querySelector("#topic-title h1, #topic-title .fancy-title");
+  const rootTitle = topicTitleEl?.textContent?.trim().replace(/\s+/g, " ") || "正文目录";
 
   tocAside.classList.remove("wecom-toc-empty");
   const itemsHtml = entries

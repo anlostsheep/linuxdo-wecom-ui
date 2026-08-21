@@ -284,43 +284,75 @@ html.wecom-doc-theme .btn-default {
 }
 
 /* ==========================================================================
-   5. 话题详情页版式 (Topic: Smart Document Canvas)
+   5. 话题详情页版式 (Topic: Smart Document Canvas & Timeline)
    ========================================================================== */
 html.wecom-doc-topic #main-container {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 32px !important;
-  align-items: flex-start !important;
   max-width: 1400px !important;
   margin: 0 auto !important;
   width: 100% !important;
 }
 
-/* 隐藏原生突兀的时间线与繁杂导航 */
-html.wecom-doc-topic .timeline-container,
-html.wecom-doc-topic #topic-navigation .topic-timeline,
-html.wecom-doc-topic .topic-timeline {
-  display: none !important;
+html.wecom-doc-topic #topic-title {
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid var(--wecom-line) !important;
+  width: 100% !important;
+}
+
+html.wecom-doc-topic #topic-title h1,
+html.wecom-doc-topic #topic-title .fancy-title {
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  color: var(--wecom-text) !important;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px !important;
+}
+
+html.wecom-doc-topic #topic-title .badge-wrapper.bullet,
+html.wecom-doc-topic #topic-title .badge-wrapper.bar {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  background: var(--wecom-search) !important;
+  font-size: 12px !important;
+  margin-right: 6px !important;
+}
+
+html.wecom-doc-topic #topic-title .badge-category__name,
+html.wecom-doc-topic #topic-title .badge-category-bg {
+  color: var(--wecom-text-2) !important;
+  font-weight: 500 !important;
+}
+
+/* 话题正文与侧栏三栏协同容器 */
+html.wecom-doc-topic .container.posts {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 24px !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  position: relative !important;
 }
 
 /* 左栏 TOC 目录 (aside.wecom-toc) */
 html.wecom-doc-topic aside.wecom-toc {
-  width: 240px;
-  flex: none;
-  position: sticky;
-  top: 72px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  background: var(--wecom-sidebar);
-  border: 1px solid var(--wecom-line);
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 13px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-html.wecom-doc-topic aside.wecom-toc.wecom-toc-empty {
-  display: none !important;
+  order: 1 !important;
+  width: 220px !important;
+  flex: none !important;
+  position: sticky !important;
+  top: 72px !important;
+  align-self: flex-start !important;
+  max-height: calc(100vh - 100px) !important;
+  overflow-y: auto !important;
+  background: var(--wecom-sidebar) !important;
+  border: 1px solid var(--wecom-line) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  font-size: 13px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  z-index: 10 !important;
 }
 
 html.wecom-doc-topic .wecom-toc-header {
@@ -368,6 +400,59 @@ html.wecom-doc-topic .wecom-toc-item a:hover {
 
 html.wecom-doc-topic .wecom-toc-level-2 a {
   padding-left: 14px;
+}
+
+html.wecom-doc-topic .wecom-toc-level-3 a {
+  padding-left: 24px;
+  font-size: 12.5px;
+}
+
+/* 中栏正文流 (Main Post Stream) */
+html.wecom-doc-topic .container.posts > .row,
+html.wecom-doc-topic .container.posts .post-stream {
+  order: 2 !important;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+/* 右栏时间线与阅读进度导航 (Topic Timeline) */
+html.wecom-doc-topic .container.posts .topic-navigation {
+  order: 3 !important;
+  width: 180px !important;
+  flex: none !important;
+  position: sticky !important;
+  top: 72px !important;
+  align-self: flex-start !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+html.wecom-doc-topic .timeline-container {
+  background: transparent !important;
+  display: block !important;
+  position: static !important;
+}
+
+html.wecom-doc-topic .timeline-container .topic-timeline .timeline-handle {
+  background-color: var(--wecom-link) !important;
+  border-radius: 4px !important;
+}
+
+html.wecom-doc-topic .timeline-container .topic-timeline .timeline-scrollarea {
+  border-left: 2px solid var(--wecom-line) !important;
+}
+
+html.wecom-doc-topic .timeline-container .topic-timeline .timeline-docked {
+  border-left-color: var(--wecom-line) !important;
+}
+
+html.wecom-doc-topic .timeline-container .timeline-controls button {
+  border-radius: 6px !important;
+  border: 1px solid var(--wecom-line) !important;
+  background: var(--wecom-sidebar) !important;
+  color: var(--wecom-text) !important;
+  font-size: 12px !important;
 }
 
 html.wecom-doc-topic .wecom-toc-level-3 a {
