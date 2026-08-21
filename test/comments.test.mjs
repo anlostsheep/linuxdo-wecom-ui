@@ -28,7 +28,6 @@ describe("topic posts stream", () => {
     const posts = [...stream.querySelectorAll(".topic-post")].map((p) => p.id);
     assert.deepEqual(posts, ["post_1", "post_2", "post_3"]);
     assert.equal(document.querySelectorAll("aside.wecom-comments").length, 0);
-    assert.equal(document.querySelectorAll("aside.wecom-toc").length, 0);
   });
 });
 

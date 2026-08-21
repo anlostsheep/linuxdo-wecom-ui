@@ -9,26 +9,23 @@ const css = readFileSync(
   "utf8"
 );
 
-describe("wecom-style tokens", () => {
-  it("uses WeCom smart doc dark canvas", () => {
+describe("wecom-style tokens and layout", () => {
+  it("uses Primer soft dark canvas (#212830) with WeCom blue accent", () => {
     assert.match(css, /html\.wecom-doc-theme\.wecom-dark/);
-    assert.match(css, /#191b1f/);
-    assert.match(css, /#e6e8eb/);
-    assert.match(css, /#9a9ea6/);
+    assert.match(css, /#212830/);
+    assert.match(css, /#d1d7e0/);
+    assert.match(css, /#9198a1/);
+    assert.match(css, /#1f7eff/);
+    assert.match(css, /#388bff/);
+    assert.match(css, /var\(--wecom-doc\)|#4b8cff/);
     assert.doesNotMatch(css, /内部使用/);
   });
-  it("keeps WeCom smart doc blue accent, callout card, and doc icon", () => {
-    assert.match(css, /#1f7eff/);
-    assert.match(css, /var\(--wecom-doc\)|#4b8cff/);
-    assert.match(css, /#388bff/);
-    assert.match(css, /--wecom-callout-bg/);
-  });
-  it("styles sidebar and topic header without brittle shell hacks", () => {
+  it("styles sidebar, topic document, and TOC layout cleanly", () => {
     assert.match(css, /\.sidebar-wrapper/);
     assert.match(css, /\.sidebar-section-link/);
     assert.match(css, /#topic-title/);
+    assert.match(css, /aside\.wecom-toc/);
     assert.doesNotMatch(css, /\.wecom-shell/);
-    assert.doesNotMatch(css, /aside\.wecom-toc/);
     assert.doesNotMatch(css, /aside\.wecom-comments/);
   });
 });

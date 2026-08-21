@@ -1,34 +1,21 @@
-# Linux DO · 企业微信文档外观
+# Linux DO · 企业微信智能文档 / 团队知识库外观
 
-油猴脚本：把 [linux.do](https://linux.do/) 换成企业微信文档风。**只换皮，不碰数据**：帖子、链接、按钮、分类、标签和原交互都保留。
+油猴脚本：把 [linux.do](https://linux.do/) 深度改版为**企业微信智能文档 / 团队知识库**版式。**只换皮，不碰数据**：帖子、链接、按钮、分类、标签和原交互都完整保留。
 
-浅色跟企微网页；深色跟 GitHub Primer `dark_dimmed`（Soft dark）。
+- **主页**：知识库文件列表（行首 `#4b8cff` 蓝普通文档图标、压缩所有者头像、隐藏论坛大横幅与准则条、侧栏类别/标签清晰可用）。
+- **话题页**：智能文档画布（中栏主帖大标题 + 协作者元信息 + 1.75 行高正文 + Callout 提示卡片，左栏正文 TOC 大纲，隐藏突兀时间线，回复流紧凑协作化）。
+- **色彩与模式**：浅色跟企微；深色跟 GitHub Primer `dark_dimmed`（Soft dark `#212830`）+ 企微智能文档蓝。
+- **架构保障**：零 DOM 挪动，绝不破坏 Discourse 原生 `post-stream` 虚拟滚动与无限加载。
 
 ## 效果图
 
-主页浅色：
+### 知识库文件表（主页）
 
-<img src="docs/screenshots/home-light.jpg" alt="主页浅色" width="1880" />
+<img src="docs/screenshots/home-dark.png" alt="知识库文件表" width="1880" />
 
-主页深色：
+### 智能文档画布与大纲（话题页）
 
-<img src="docs/screenshots/home-dark.jpg" alt="主页深色" width="1880" />
-
-话题页深色：
-
-<img src="docs/screenshots/topic-dark.jpg" alt="话题页深色" width="1880" />
-
-话题页浅色：
-
-<img src="docs/screenshots/topic-light.jpg" alt="话题页浅色" width="1880" />
-
-发帖深色：
-
-<img src="docs/screenshots/compose-dark.jpg" alt="发帖深色" width="1880" />
-
-发帖浅色：
-
-<img src="docs/screenshots/compose-light.jpg" alt="发帖浅色" width="1880" />
+<img src="docs/screenshots/topic-dark.png" alt="智能文档画布" width="1880" />
 
 ## 安装
 

@@ -48,6 +48,37 @@ export function topicContextText(category, title) {
   return `知识库 › ${cat} › ${title}`;
 }
 
+export function findOpPost(document) {
+  const post1 = document.querySelector("#post_1");
+  if (post1) {
+    const postContainer = post1.closest(".topic-post");
+    if (postContainer) return postContainer;
+  }
+  return document.querySelector(".topic-post");
+}
+
+export function collectTocEntries(opPostElement) {
+  if (!opPostElement) return [];
+  const cooked = opPostElement.querySelector(".cooked");
+  if (!cooked) return [];
+  const headings = cooked.querySelectorAll("h1, h2, h3");
+  const entries = [];
+  let counter = 0;
+  for (const h of headings) {
+    const text = h.textContent?.trim();
+    if (!text) continue;
+    counter++;
+    let id = h.id;
+    if (!id) {
+      id = `wecom-h-${counter}`;
+      h.id = id;
+    }
+    const level = Number(h.tagName.slice(1)) || 2;
+    entries.push({ id, level, text });
+  }
+  return entries;
+}
+
 export function runStep(fn) {
   try {
     fn();

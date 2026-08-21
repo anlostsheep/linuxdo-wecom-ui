@@ -66,3 +66,36 @@ describe("topic copy", () => {
     assert.equal(topicContextText(null, "前端知识库"), "知识库 › 知识库 › 前端知识库");
   });
 });
+
+describe("OP and TOC extraction", () => {
+  it("finds OP post and extracts TOC headings with level and id", async () => {
+    const { findOpPost, collectTocEntries } = await import("../wecom-core.mjs");
+    const { window } = new JSDOM(`<!doctype html><html><body>
+      <div class="post-stream">
+        <div id="post_1" class="topic-post">
+          <div class="cooked">
+            <h1>章节 1</h1>
+            <h2>子节 1.1</h2>
+            <h3>要点 1.1.1</h3>
+          </div>
+        </div>
+        <div id="post_2" class="topic-post">
+          <div class="cooked">
+            <h2>评论里的二级标题（不应被提取）</h2>
+          </div>
+        </div>
+      </div>
+    </body></html>`);
+    const op = findOpPost(window.document);
+    assert.ok(op);
+    assert.equal(op.id, "post_1");
+    const entries = collectTocEntries(op);
+    assert.equal(entries.length, 3);
+    assert.equal(entries[0].text, "章节 1");
+    assert.equal(entries[0].level, 1);
+    assert.equal(entries[1].text, "子节 1.1");
+    assert.equal(entries[1].level, 2);
+    assert.equal(entries[2].text, "要点 1.1.1");
+    assert.equal(entries[2].level, 3);
+  });
+});

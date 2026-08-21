@@ -5,6 +5,8 @@ import {
   WECOM_BRAND_SVG,
   applyColorMode,
   applyPageMode,
+  collectTocEntries,
+  findOpPost,
   isDarkFromScheme,
   readDarkSchemeMedia,
   runStep,
@@ -134,6 +136,79 @@ export function makeTopicContext(document) {
   context.textContent = topicContextText(categoryText || null, title);
 }
 
+export function makeDocumentTitle(document, isTopic) {
+  if (isTopic) {
+    const topicTitle = document.querySelector("#topic-title h1, #topic-title .fancy-title");
+    let title = topicTitle?.textContent?.trim().replace(/\s+/g, " ");
+    if (!title) title = topicTitleFromDocumentTitle(document.title);
+    if (title) {
+      document.title = `${title} - 企业微信`;
+    }
+  } else {
+    document.title = "企业微信";
+  }
+}
+
+export function makeToc(document) {
+  const container = document.querySelector("#main-container") || document.querySelector("#main-outlet");
+  if (!container) return;
+  const opPost = findOpPost(document);
+  const entries = collectTocEntries(opPost);
+  const topicTitleEl = document.querySelector("#topic-title h1, #topic-title .fancy-title");
+  const rootTitle = topicTitleEl?.textContent?.trim().replace(/\s+/g, " ") || "正文目录";
+
+  let tocAside = container.querySelector(":scope > aside.wecom-toc") || document.querySelector("aside.wecom-toc");
+  if (!tocAside) {
+    tocAside = document.createElement("aside");
+    tocAside.className = "wecom-toc";
+    container.prepend(tocAside);
+  }
+
+  if (!entries.length) {
+    tocAside.classList.add("wecom-toc-empty");
+    tocAside.innerHTML = `
+      <div class="wecom-toc-header">
+        <span class="wecom-toc-icon">📑</span>
+        <span class="wecom-toc-title">${rootTitle}</span>
+      </div>
+    `;
+    return;
+  }
+
+  tocAside.classList.remove("wecom-toc-empty");
+  const itemsHtml = entries
+    .map(
+      (e) =>
+        `<li class="wecom-toc-item wecom-toc-level-${e.level}" data-target="${e.id}">
+          <a href="#${e.id}">${e.text}</a>
+        </li>`
+    )
+    .join("");
+
+  tocAside.innerHTML = `
+    <div class="wecom-toc-header" data-target="topic-title">
+      <span class="wecom-toc-icon">📑</span>
+      <span class="wecom-toc-title">${rootTitle}</span>
+    </div>
+    <ul class="wecom-toc-list">
+      ${itemsHtml}
+    </ul>
+  `;
+
+  tocAside.onclick = (e) => {
+    const link = e.target.closest("a") || e.target.closest(".wecom-toc-header");
+    if (!link) return;
+    e.preventDefault();
+    const item = e.target.closest("[data-target]");
+    const targetId = item?.dataset?.target;
+    if (targetId === "topic-title") {
+      document.querySelector("#topic-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (targetId) {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+}
+
 export function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -144,10 +219,14 @@ export function applyTheme(document, css) {
   runStep(() => makeFavicon(document));
   if (mode === "home") {
     document.querySelector(".wecom-topic-context")?.remove();
+    document.querySelector("aside.wecom-toc")?.remove();
+    runStep(() => makeDocumentTitle(document, false));
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
     runStep(() => makeTopicContext(document));
+    runStep(() => makeDocumentTitle(document, true));
+    runStep(() => makeToc(document));
   }
 }
 

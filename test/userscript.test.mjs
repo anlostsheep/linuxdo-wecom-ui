@@ -10,11 +10,12 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v1.3.0 with WeCom brand and theme bootstrap", () => {
-    assert.match(userscript, /@version\s+1\.3\.0/);
+  it("ships v2.0.0 with WeCom brand and theme bootstrap", () => {
+    assert.match(userscript, /@version\s+2\.0\.0/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);
+    assert.match(userscript, /makeToc/);
     assert.doesNotMatch(userscript, /disableDiscourseCloaking/);
     assert.doesNotMatch(userscript, /dockComments/);
   });
