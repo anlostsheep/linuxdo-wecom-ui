@@ -333,9 +333,12 @@ html.wecom-doc-topic #topic-title .badge-category-bg {
   font-weight: 500 !important;
 }
 
-/* 彻底隐藏任何残留的 aside.wecom-toc，绝不占用左侧空间 */
+/* 彻底隐藏任何残留的 aside.wecom-toc 及论坛式阅读统计大地图 (topic-map)，绝不占用左侧空间 */
 aside.wecom-toc,
-.wecom-toc {
+.wecom-toc,
+html.wecom-doc-topic .container.posts > .topic-map,
+html.wecom-doc-topic .topic-map,
+html.wecom-doc-topic .post__topic-map {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
