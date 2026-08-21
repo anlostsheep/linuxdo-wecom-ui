@@ -5,10 +5,7 @@ import {
   WECOM_BRAND_SVG,
   applyColorMode,
   applyPageMode,
-  collectTocEntries,
-  findOpPost,
   isDarkFromScheme,
-  postsToDock,
   readDarkSchemeMedia,
   runStep,
   topicContextText,
@@ -91,58 +88,18 @@ export function makeFavicon(document) {
   if (faviconObserver) faviconObserver.observe(head, FAVICON_OBSERVE);
 }
 
-export function makeHomeHeading(document) {
-  const headerContents = document.querySelector(".d-header .contents");
-  if (!headerContents) return;
-  let heading = document.querySelector(".wecom-home-heading");
-  if (!heading) {
-    heading = document.createElement("div");
-    heading.className = "wecom-home-heading";
-    heading.textContent = "主页";
-  }
-  if (heading.parentElement !== headerContents) headerContents.appendChild(heading);
-}
-
-export function makeSidebarSearch(document) {
-  const container = document.querySelector(".sidebar-container");
-  if (!container || container.querySelector(".wecom-sidebar-search")) return;
-  const search = document.createElement("a");
-  search.className = "wecom-sidebar-search";
-  search.href = "/search";
-  search.textContent = "搜索";
-  const sections = container.querySelector(".sidebar-sections") || container.firstElementChild;
-  if (sections) container.insertBefore(search, sections);
-  else container.prepend(search);
-}
-
-export function makeColumnLabels(document) {
-  const labels = [
-    ["th.default, th.main-link", "标题"],
-    ["th.posters", "所有者"],
-    ["th.posts", "回复"],
-    ["th.views", "浏览量"],
-    ["th.activity", "最近访问 ↓"]
-  ];
-  for (const [selector, label] of labels) {
-    for (const cell of document.querySelectorAll(`.topic-list-header ${selector}`)) {
-      let span = cell.querySelector(":scope > .wecom-column-label");
-      if (!span) {
-        span = document.createElement("span");
-        span.className = "wecom-column-label";
-        cell.prepend(span);
-      }
-      if (span.textContent !== label) span.textContent = label;
-    }
-  }
-}
-
 export function makeDocIcons(document) {
-  for (const link of document.querySelectorAll(".topic-list-item .main-link")) {
-    if (link.querySelector(":scope > .wecom-doc-icon")) continue;
+  for (const mainLink of document.querySelectorAll(".topic-list-item .main-link")) {
+    const titleLink = mainLink.querySelector("a.title") || mainLink.querySelector(".title");
+    if (!titleLink) continue;
+    if (titleLink.querySelector(".wecom-doc-icon")) continue;
+    for (const orphan of mainLink.querySelectorAll(":scope > .wecom-doc-icon")) {
+      orphan.remove();
+    }
     const icon = document.createElement("span");
     icon.className = "wecom-doc-icon";
     icon.setAttribute("aria-hidden", "true");
-    link.prepend(icon);
+    titleLink.prepend(icon);
   }
 }
 
@@ -152,15 +109,6 @@ export function makeCreateTopicButton(document) {
   );
   if (!button) return;
   button.classList.add("wecom-create-topic");
-  const navigationContainer = document.querySelector(".navigation-container");
-  if (!navigationContainer) return;
-  let slot = navigationContainer.querySelector(":scope > .wecom-create-topic-slot");
-  if (!slot) {
-    slot = document.createElement("div");
-    slot.className = "wecom-create-topic-slot";
-    navigationContainer.appendChild(slot);
-  }
-  if (button.parentElement !== slot) slot.appendChild(button);
 }
 
 export function makeTopicContext(document) {
@@ -186,173 +134,6 @@ export function makeTopicContext(document) {
   context.textContent = topicContextText(categoryText || null, title);
 }
 
-export function unwrapDocMain(document) {
-  const main = document.querySelector(".wecom-doc-main");
-  if (!main) return;
-  const parent = main.parentElement;
-  if (!parent) {
-    main.remove();
-    return;
-  }
-  while (main.firstChild) parent.insertBefore(main.firstChild, main);
-  main.remove();
-}
-
-function ensureCommentsAside(document) {
-  let comments = document.querySelector("aside.wecom-comments");
-  if (!comments) {
-    comments = document.createElement("aside");
-    comments.className = "wecom-comments";
-    comments.innerHTML =
-      '<div class="wecom-comments-head">评论</div><div class="wecom-comments-list"></div><div class="wecom-comments-empty">暂无评论</div>';
-  }
-  return comments;
-}
-
-function ensureTocAside(document) {
-  let toc = document.querySelector("aside.wecom-toc");
-  if (!toc) {
-    toc = document.createElement("aside");
-    toc.className = "wecom-toc";
-  }
-  return toc;
-}
-
-export function ensureTopicShell(document) {
-  const posts = document.querySelector(".container.posts");
-  const outlet = document.querySelector("#main-outlet");
-  const toc = ensureTocAside(document);
-  const comments = ensureCommentsAside(document);
-
-  if (!posts) {
-    const parent = outlet?.parentElement || outlet;
-    if (!parent) return;
-    if (toc.parentElement !== parent) parent.insertBefore(toc, outlet || null);
-    if (comments.parentElement !== parent) parent.appendChild(comments);
-    return;
-  }
-
-  let parent = posts.parentElement;
-  if (!parent) return;
-  if (parent.classList.contains("wecom-doc-main")) parent = parent.parentElement;
-  if (!parent) return;
-
-  let main = parent.querySelector(":scope > .wecom-doc-main");
-  if (!main) {
-    main = document.createElement("div");
-    main.className = "wecom-doc-main";
-  }
-  const title = document.querySelector("#topic-title");
-  if (title && title.parentElement !== main) main.insertBefore(title, main.firstChild);
-  if (posts.parentElement !== main) main.appendChild(posts);
-  const footer = parent.querySelector(":scope > .topic-footer-buttons");
-  if (footer && footer.parentElement !== main) main.appendChild(footer);
-  if (main.parentElement !== parent) parent.appendChild(main);
-
-  for (const extra of document.querySelectorAll(".wecom-shell")) {
-    if (extra !== parent) extra.classList.remove("wecom-shell");
-  }
-  parent.classList.add("wecom-shell");
-
-  if (toc.parentElement !== parent || toc.nextElementSibling !== main) {
-    parent.insertBefore(toc, main);
-  }
-  if (comments.parentElement !== parent || main.nextElementSibling !== comments) {
-    parent.insertBefore(comments, main.nextSibling);
-  }
-}
-
-export function makeToc(document) {
-  const toc = document.querySelector("aside.wecom-toc");
-  if (!toc) return;
-  const title =
-    document.querySelector("#topic-title h1, #topic-title .fancy-title")?.textContent
-      ?.trim()
-      .replace(/\s+/g, " ") || topicTitleFromDocumentTitle(document.title) || "文档";
-  const op = findOpPost(document);
-  const entries = collectTocEntries(op?.querySelector(".cooked"));
-  const key = `${title}|${entries.map((e) => e.id).join(",")}`;
-  if (toc.dataset.routeKey === key) return;
-  toc.dataset.routeKey = key;
-  toc.replaceChildren();
-  const root = document.createElement("button");
-  root.type = "button";
-  root.className = "wecom-toc-item wecom-toc-root";
-  root.textContent = title;
-  root.addEventListener("click", () => op?.scrollIntoView({ block: "start" }));
-  toc.appendChild(root);
-  for (const entry of entries) {
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = `wecom-toc-item wecom-toc-l${entry.level}`;
-    item.textContent = entry.text;
-    item.addEventListener("click", () => {
-      document.getElementById(entry.id)?.scrollIntoView({ block: "start" });
-    });
-    toc.appendChild(item);
-  }
-}
-
-export function markCoverImage(document) {
-  const cooked = findOpPost(document)?.querySelector(".cooked");
-  if (!cooked) return;
-  cooked.querySelectorAll("img.wecom-cover").forEach((img) => img.classList.remove("wecom-cover"));
-  const img = cooked.querySelector("img");
-  if (img) img.classList.add("wecom-cover");
-}
-
-export function bindNavDrawer(document) {
-  const html = document.documentElement;
-  if (html.dataset.wecomNavBound) return;
-  html.dataset.wecomNavBound = "1";
-  html.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!target || typeof target.closest !== "function") return;
-    const button = target.closest("button");
-    if (!button?.closest(".header-sidebar-toggle, .hamburger-dropdown")) return;
-    html.classList.toggle("wecom-nav-open");
-  });
-}
-
-export function syncCommentsEmptyState(document) {
-  const empty = document.querySelector(".wecom-comments-empty");
-  const list = document.querySelector(".wecom-comments-list");
-  if (!empty || !list) return;
-  empty.hidden = list.querySelector(".topic-post") != null;
-}
-
-const dockedOpByDocument = new WeakMap();
-
-export function dockComments(document) {
-  const list = document.querySelector(".wecom-comments-list");
-  if (!list) return;
-  const op = findOpPost(document);
-  if (op) dockedOpByDocument.set(document, op);
-  for (const post of postsToDock(document)) {
-    if (post.parentElement === list) continue;
-    list.appendChild(post);
-  }
-  syncCommentsEmptyState(document);
-}
-
-export function restoreComments(document) {
-  const list = document.querySelector(".wecom-comments-list");
-  if (!list) return;
-  const moved = [...list.querySelectorAll(".topic-post")];
-  if (!moved.length) return;
-  const stream = document.querySelector(".post-stream");
-  const recordedOp = dockedOpByDocument.get(document);
-  const belongsToCurrent = stream && (!recordedOp || stream.contains(recordedOp));
-  const previous = recordedOp?.closest(".post-stream");
-  const target = belongsToCurrent
-    ? stream
-    : previous?.isConnected && previous !== stream
-      ? previous
-      : null;
-  if (!target) return;
-  for (const post of moved) target.appendChild(post);
-}
-
 export function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -361,44 +142,12 @@ export function applyTheme(document, css) {
   const mode = applyPageMode(document.documentElement, document.body, location.pathname);
   runStep(() => makeBrand(document));
   runStep(() => makeFavicon(document));
-  runStep(() => makeSidebarSearch(document));
   if (mode === "home") {
-    runStep(() => restoreComments(document));
-    document.querySelector("aside.wecom-toc")?.remove();
-    if (!document.querySelector("aside.wecom-comments .topic-post")) {
-      document.querySelector("aside.wecom-comments")?.remove();
-    }
     document.querySelector(".wecom-topic-context")?.remove();
-    unwrapDocMain(document);
-    document.querySelector(".wecom-shell")?.classList.remove("wecom-shell");
-    runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
-    runStep(() => makeColumnLabels(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
-    const html = document.documentElement;
-    const path = location.pathname;
-    if (html.dataset.wecomTopicPath !== path) {
-      runStep(() => restoreComments(document));
-      const list = document.querySelector(".wecom-comments-list");
-      const recordedOp = dockedOpByDocument.get(document);
-      const op = findOpPost(document);
-      if (list && recordedOp && op && recordedOp !== op) {
-        for (const post of [...list.querySelectorAll(".topic-post")]) post.remove();
-      }
-    }
-    html.dataset.wecomTopicPath = path;
-    document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
-    runStep(() => ensureTopicShell(document));
-    const opNow = findOpPost(document);
-    if (opNow && opNow.closest("aside.wecom-comments")) {
-      runStep(() => restoreComments(document));
-    }
-    runStep(() => dockComments(document));
-    runStep(() => makeToc(document));
-    runStep(() => markCoverImage(document));
-    runStep(() => bindNavDrawer(document));
   }
 }
 
@@ -438,10 +187,6 @@ export function bindNavigation(window, document, css) {
       }
     });
   };
-  const restoreAndSchedule = () => {
-    restoreComments(document);
-    schedule();
-  };
   observer?.observe(document.documentElement, {
     childList: true,
     subtree: true
@@ -450,11 +195,11 @@ export function bindNavigation(window, document, css) {
     const original = window.history[method];
     window.history[method] = function (...args) {
       const result = original.apply(this, args);
-      restoreAndSchedule();
+      schedule();
       return result;
     };
   }
-  window.addEventListener("popstate", restoreAndSchedule);
+  window.addEventListener("popstate", schedule);
   window.addEventListener("hashchange", schedule);
   document.addEventListener("turbo:load", schedule);
   document.addEventListener("page:changed", schedule);
@@ -470,3 +215,4 @@ export function start(document, css) {
   bootstrap(document, css);
   bindNavigation(window, document, css);
 }
+

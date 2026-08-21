@@ -6,9 +6,10 @@ import { makeBrand, makeFavicon } from "../wecom-boot.mjs";
 
 describe("brand", () => {
   it("uses the official colorful WeCom mark, not green dual bubbles only", () => {
-    assert.match(WECOM_BRAND_SVG, /viewBox="0 0 48 48"/);
-    assert.match(WECOM_BRAND_SVG, /#3D9BFF|#3d9bff/);
-    assert.match(WECOM_BRAND_SVG, /#FF8A3A|#ff8a3a/i);
+    assert.match(WECOM_BRAND_SVG, /viewBox="0 0 36 36"/);
+    assert.match(WECOM_BRAND_SVG, /#0082EF|#0082ef/i);
+    assert.match(WECOM_BRAND_SVG, /#2DBC00|#2dbc00/i);
+    assert.match(WECOM_BRAND_SVG, /#FB6500|#fb6500/i);
     assert.doesNotMatch(WECOM_BRAND_SVG, /飞书/);
   });
   it("inserts brand once and writes a svg favicon", () => {

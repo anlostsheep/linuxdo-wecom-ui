@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Linux DO · 企业微信文档外观
 // @namespace    https://linux.do/
-// @version      1.0.0
+// @version      1.2.2
 // @description  将 Linux DO 的主页与话题页换成企业微信文档风格。浅色跟企微，深色跟 GitHub Soft dark。只换皮。
 // @author       lostsheep
 // @match        https://linux.do/*
@@ -12,7 +12,7 @@
 
 (function () {
   "use strict";
-  const CSS = "html.wecom-doc-theme {\n  color-scheme: light !important;\n  --wecom-bg: #ffffff;\n  --wecom-sidebar: #f6f7f9;\n  --wecom-line: #ebebeb;\n  --wecom-text: #1f1f1f;\n  --wecom-text-2: #6e6e6e;\n  --wecom-text-3: #8c8c8c;\n  --wecom-search: #f3f3f3;\n  --wecom-hover: #f0f0f0;\n  --wecom-active: rgba(18, 179, 168, 0.12);\n  --wecom-link: #12b3a8;\n  --wecom-doc: #4b8cff;\n  --wecom-header-h: 56px;\n  --wecom-nav-w: 248px;\n  --wecom-toc-w: 240px;\n  --wecom-comments-w: 320px;\n  --primary: #1f1f1f !important;\n  --secondary: #ffffff !important;\n  --header_background: #ffffff !important;\n  --header_primary: #1f1f1f !important;\n  --primary-low: #f6f7f9 !important;\n  --primary-very-low: #ffffff !important;\n  --d-hover: #f0f0f0 !important;\n}\n\nhtml.wecom-doc-theme.wecom-dark {\n  color-scheme: dark !important;\n  --wecom-bg: #212830;\n  --wecom-sidebar: #262c36;\n  --wecom-line: #3d444d;\n  --wecom-text: #d1d7e0;\n  --wecom-text-2: #9198a1;\n  --wecom-text-3: #9198a1;\n  --wecom-search: #2a313c;\n  --wecom-hover: #2f3742;\n  --wecom-active: rgba(61, 205, 196, 0.14);\n  --wecom-link: #3dcdc4;\n  --primary: #d1d7e0 !important;\n  --secondary: #212830 !important;\n  --header_background: #212830 !important;\n  --header_primary: #d1d7e0 !important;\n  --primary-low: #262c36 !important;\n  --primary-very-low: #151b23 !important;\n  --d-hover: #2f3742 !important;\n}\n\nhtml.wecom-doc-theme,\nhtml.wecom-doc-theme body {\n  background: var(--wecom-bg) !important;\n  color: var(--wecom-text) !important;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\",\n    \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif !important;\n}\n\nhtml.wecom-doc-theme body {\n  min-width: 980px;\n  margin: 0 !important;\n}\n\nhtml.wecom-doc-theme a { color: inherit; }\nhtml.wecom-doc-theme .cooked a { color: var(--wecom-link) !important; }\n\nhtml.wecom-doc-theme .global-notice,\nhtml.wecom-doc-theme .category-breadcrumb,\nhtml.wecom-doc-theme .top-lists,\nhtml.wecom-doc-theme .navigation-controls,\nhtml.wecom-doc-theme .topic-map.--bottom {\n  display: none !important;\n}\n\nhtml.wecom-doc-theme .d-header-wrap,\nhtml.wecom-doc-theme body .d-header {\n  position: fixed !important;\n  z-index: 1101 !important;\n  top: 0 !important;\n  left: 0 !important;\n  right: 0 !important;\n  height: var(--wecom-header-h) !important;\n  background: var(--wecom-bg) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet-wrapper {\n  width: 100% !important;\n  max-width: none !important;\n  display: grid !important;\n  grid-template-columns: var(--wecom-nav-w) minmax(0, 1fr) !important;\n  min-height: calc(100vh - var(--wecom-header-h)) !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.wecom-doc-theme body:not(.has-sidebar-page) #main-outlet-wrapper,\nhtml.wecom-doc-theme #main-outlet-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {\n  grid-template-columns: minmax(0, 1fr) !important;\n}\nhtml.wecom-doc-theme body:not(.has-sidebar-page) .sidebar-wrapper,\nhtml.wecom-doc-theme .sidebar-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {\n  display: none !important;\n  width: 0 !important;\n  min-width: 0 !important;\n}\n\nhtml.wecom-doc-theme .sidebar-wrapper {\n  width: var(--wecom-nav-w) !important;\n  min-width: var(--wecom-nav-w) !important;\n  background: var(--wecom-sidebar) !important;\n  border-right: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme #main-outlet {\n  background: var(--wecom-bg) !important;\n  padding-top: calc(var(--wecom-header-h) + 12px) !important;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link,\nhtml.wecom-doc-theme .sidebar-section-link-content-text {\n  color: var(--wecom-text) !important;\n}\nhtml.wecom-doc-theme .sidebar-section-link-wrapper.is-active,\nhtml.wecom-doc-theme .sidebar-section-link.active {\n  background: var(--wecom-active) !important;\n  color: var(--wecom-link) !important;\n}\n\nhtml.wecom-doc-theme .d-header .title img,\nhtml.wecom-doc-theme .d-header .title picture,\nhtml.wecom-doc-theme .d-header .title .logo-big,\nhtml.wecom-doc-theme .d-header .title .logo-small {\n  display: none !important;\n}\nhtml.wecom-doc-theme .wecom-brand {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 16px;\n  font-weight: 600;\n}\nhtml.wecom-doc-theme .wecom-app-icon {\n  width: 28px;\n  height: 28px;\n}\n\nhtml.wecom-doc-theme .wecom-home-heading {\n  position: absolute;\n  left: calc(var(--wecom-nav-w) + 16px);\n  top: 0;\n  height: var(--wecom-header-h);\n  display: flex;\n  align-items: center;\n  font-size: 16px;\n  font-weight: 600;\n  pointer-events: none;\n}\nhtml.wecom-doc-theme.wecom-doc-home .topic-list-header th {\n  font-size: 0 !important;\n  color: var(--wecom-text-3) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-column-label {\n  font-size: 13px;\n  color: var(--wecom-text-3);\n}\nhtml.wecom-doc-theme.wecom-doc-home .topic-list-item .main-link {\n  display: flex !important;\n  align-items: center;\n  gap: 10px;\n}\nhtml.wecom-doc-theme .wecom-doc-icon {\n  width: 22px;\n  height: 22px;\n  border-radius: 5px;\n  flex: none;\n  background: #4b8cff;\n  position: relative;\n}\nhtml.wecom-doc-theme .wecom-doc-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  right: 5px;\n  top: 6px;\n  bottom: 6px;\n  background:\n    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 5px / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 10px / 70% 2px no-repeat;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-create-topic {\n  font-size: 0 !important;\n}\nhtml.wecom-doc-theme.wecom-doc-home .wecom-create-topic::after {\n  content: \"新建话题\";\n  font-size: 14px;\n  color: var(--wecom-text-2);\n}\nhtml.wecom-doc-theme .wecom-sidebar-search {\n  display: flex;\n  align-items: center;\n  height: 36px;\n  margin: 0 8px 8px;\n  padding: 0 12px;\n  border-radius: 8px;\n  background: var(--wecom-bg);\n  color: var(--wecom-text-2) !important;\n  text-decoration: none !important;\n}\n\nhtml.wecom-doc-theme.wecom-doc-topic #main-outlet-wrapper {\n  display: block !important;\n  grid-template-columns: none !important;\n  grid-template-areas: none !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic #main-outlet,\nhtml.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {\n  grid-area: auto !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic #main-outlet {\n  display: block !important;\n  width: 100% !important;\n  max-width: none !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .wecom-shell {\n  display: grid !important;\n  grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;\n  grid-template-rows: minmax(0, 1fr) !important;\n  width: 100% !important;\n  max-width: none !important;\n  min-height: calc(100vh - var(--wecom-header-h) - 12px);\n  align-items: stretch !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .wecom-shell > * {\n  min-width: 0;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-toc {\n  grid-column: 1;\n  grid-row: 1;\n  min-height: 0;\n  max-height: calc(100vh - var(--wecom-header-h));\n  overflow: auto;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .wecom-shell > .wecom-doc-main {\n  grid-column: 2;\n  grid-row: 1;\n  min-width: 0;\n  max-height: calc(100vh - var(--wecom-header-h));\n  overflow: auto;\n  padding: 8px 32px 48px;\n}\nhtml.wecom-doc-theme.wecom-doc-topic {\n  --topic-body-width: 100% !important;\n  --topic-body-width-padding: 0px !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .container.posts,\nhtml.wecom-doc-theme.wecom-doc-topic .post-stream,\nhtml.wecom-doc-theme.wecom-doc-topic .topic-area,\nhtml.wecom-doc-theme.wecom-doc-topic .topic-post,\nhtml.wecom-doc-theme.wecom-doc-topic article.boxed,\nhtml.wecom-doc-theme.wecom-doc-topic .onscreen-post,\nhtml.wecom-doc-theme.wecom-doc-topic .topic-body,\nhtml.wecom-doc-theme.wecom-doc-topic .cooked {\n  width: 100% !important;\n  max-width: none !important;\n  float: none !important;\n  box-sizing: border-box !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .container.posts {\n  display: block !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-comments {\n  grid-column: 3;\n  grid-row: 1;\n  min-height: 0;\n  max-height: calc(100vh - var(--wecom-header-h));\n  overflow: auto;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .more-topics__container,\nhtml.wecom-doc-theme.wecom-doc-topic .topic-above-post-stream-outlet {\n  display: none !important;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {\n  position: fixed !important;\n  z-index: 1200 !important;\n  top: var(--wecom-header-h) !important;\n  left: 0 !important;\n  height: calc(100vh - var(--wecom-header-h)) !important;\n  transform: translateX(-110%);\n  transition: transform 160ms ease;\n}\nhtml.wecom-doc-theme.wecom-doc-topic.wecom-nav-open .sidebar-wrapper {\n  transform: translateX(0);\n}\nhtml.wecom-doc-theme .d-header .title {\n  width: auto !important;\n  min-width: 148px !important;\n  margin-right: 12px !important;\n}\nhtml.wecom-doc-theme .wecom-topic-context {\n  position: absolute;\n  left: 220px;\n  right: 280px;\n  top: 0;\n  height: var(--wecom-header-h);\n  display: flex;\n  align-items: center;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--wecom-text-2);\n  font-size: 14px;\n  pointer-events: none;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .topic-navigation,\nhtml.wecom-doc-theme.wecom-doc-topic .timeline-container {\n  display: none !important;\n}\nhtml.wecom-doc-theme aside.wecom-toc {\n  background: var(--wecom-sidebar);\n  border-right: 1px solid var(--wecom-line);\n  padding: 16px 8px;\n}\nhtml.wecom-doc-theme aside.wecom-comments {\n  background: var(--wecom-bg);\n  border-left: 1px solid var(--wecom-line);\n}\nhtml.wecom-doc-theme .wecom-comments-head {\n  height: 48px;\n  display: flex;\n  align-items: center;\n  padding: 0 16px;\n  font-weight: 600;\n  border-bottom: 1px solid var(--wecom-line);\n}\nhtml.wecom-doc-theme.wecom-doc-topic #topic-title h1,\nhtml.wecom-doc-theme.wecom-doc-topic .fancy-title {\n  font-size: 34px !important;\n  font-weight: 700 !important;\n  letter-spacing: -0.6px;\n}\nhtml.wecom-doc-theme.wecom-doc-topic .cooked img.wecom-cover {\n  display: block;\n  width: 100%;\n  max-height: 220px;\n  object-fit: cover;\n  border-radius: 8px;\n  margin: 0 0 24px;\n}\nhtml.wecom-doc-theme .wecom-toc-item {\n  display: block;\n  width: 100%;\n  text-align: left;\n  border: 0;\n  background: transparent;\n  color: var(--wecom-text-2);\n  padding: 6px 8px;\n  border-radius: 6px;\n  cursor: pointer;\n}\nhtml.wecom-doc-theme .wecom-toc-root { color: var(--wecom-text); font-size: 14px; }\nhtml.wecom-doc-theme .wecom-toc-l2 { padding-left: 22px; }\nhtml.wecom-doc-theme .wecom-toc-l3 { padding-left: 36px; }\nhtml.wecom-doc-theme .wecom-toc-item.active { color: var(--wecom-link); background: var(--wecom-active); }\nhtml.wecom-doc-theme.wecom-doc-topic #reply-control {\n  position: sticky !important;\n  bottom: 0 !important;\n  border-color: var(--wecom-line) !important;\n  background: var(--wecom-bg) !important;\n}\nhtml.wecom-doc-theme .wecom-comments-empty {\n  padding: 48px 16px;\n  text-align: center;\n  color: var(--wecom-text-3);\n}\nhtml.wecom-doc-theme aside.wecom-comments aside.quote {\n  margin: 8px 0;\n  padding: 8px 10px;\n  border-radius: 6px;\n  background: var(--wecom-search);\n  color: var(--wecom-text-2);\n  font-size: 12px;\n}\n";
+  const CSS = "html.wecom-doc-theme {\n  color-scheme: light !important;\n  --wecom-bg: #ffffff;\n  --wecom-sidebar: #f6f7f9;\n  --wecom-line: #ebebeb;\n  --wecom-text: #1f1f1f;\n  --wecom-text-2: #6e6e6e;\n  --wecom-text-3: #8c8c8c;\n  --wecom-search: #f3f3f3;\n  --wecom-hover: #f0f0f0;\n  --wecom-active: rgba(18, 179, 168, 0.12);\n  --wecom-link: #12b3a8;\n  --wecom-doc: #4b8cff;\n  --wecom-header-h: 56px;\n  --primary: #1f1f1f !important;\n  --secondary: #ffffff !important;\n  --header_background: #ffffff !important;\n  --header_primary: #1f1f1f !important;\n  --primary-low: #f6f7f9 !important;\n  --primary-very-low: #ffffff !important;\n  --d-hover: #f0f0f0 !important;\n  --tertiary: #12b3a8 !important;\n}\n\nhtml.wecom-doc-theme.wecom-dark {\n  color-scheme: dark !important;\n  --wecom-bg: #212830;\n  --wecom-sidebar: #262c36;\n  --wecom-line: #3d444d;\n  --wecom-text: #d1d7e0;\n  --wecom-text-2: #9198a1;\n  --wecom-text-3: #9198a1;\n  --wecom-search: #2a313c;\n  --wecom-hover: #2f3742;\n  --wecom-active: rgba(61, 205, 196, 0.14);\n  --wecom-link: #3dcdc4;\n  --primary: #d1d7e0 !important;\n  --secondary: #212830 !important;\n  --header_background: #212830 !important;\n  --header_primary: #d1d7e0 !important;\n  --primary-low: #262c36 !important;\n  --primary-very-low: #151b23 !important;\n  --d-hover: #2f3742 !important;\n  --tertiary: #3dcdc4 !important;\n}\n\nhtml.wecom-doc-theme,\nhtml.wecom-doc-theme body {\n  background: var(--wecom-bg) !important;\n  color: var(--wecom-text) !important;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\",\n    \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif !important;\n}\n\nhtml.wecom-doc-theme a {\n  color: inherit;\n}\n\nhtml.wecom-doc-theme .cooked a {\n  color: var(--wecom-link) !important;\n}\n\n/* 顶栏 (Header) */\nhtml.wecom-doc-theme .d-header-wrap,\nhtml.wecom-doc-theme body .d-header {\n  height: var(--wecom-header-h) !important;\n  background: var(--wecom-bg) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme .d-header .title img,\nhtml.wecom-doc-theme .d-header .title picture,\nhtml.wecom-doc-theme .d-header .title .logo-big,\nhtml.wecom-doc-theme .d-header .title .logo-small {\n  display: none !important;\n}\n\nhtml.wecom-doc-theme .wecom-brand {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--wecom-text);\n  text-decoration: none;\n}\n\nhtml.wecom-doc-theme .wecom-app-icon {\n  width: 28px;\n  height: 28px;\n  flex: none;\n}\n\nhtml.wecom-doc-theme .wecom-topic-context {\n  margin-left: 16px;\n  display: inline-flex;\n  align-items: center;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--wecom-text-2);\n  font-size: 13px;\n  max-width: 50vw;\n}\n\n/* 侧边栏 (Sidebar) 优雅换皮，不破坏原生流与展开折叠 */\nhtml.wecom-doc-theme .sidebar-wrapper {\n  background: var(--wecom-sidebar) !important;\n  border-right: 1px solid var(--wecom-line) !important;\n  box-shadow: none !important;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link,\nhtml.wecom-doc-theme .sidebar-section-link-content-text {\n  color: var(--wecom-text) !important;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link-wrapper.is-active,\nhtml.wecom-doc-theme .sidebar-section-link.active {\n  background: var(--wecom-active) !important;\n  color: var(--wecom-link) !important;\n  border-radius: 6px;\n}\n\nhtml.wecom-doc-theme .sidebar-section-link:hover {\n  background: var(--wecom-hover);\n  border-radius: 6px;\n}\n\n/* 主内容区与列表 (Topic List) */\nhtml.wecom-doc-theme #main-outlet {\n  background: var(--wecom-bg) !important;\n}\n\nhtml.wecom-doc-theme .topic-list-header th {\n  color: var(--wecom-text-3) !important;\n  border-bottom: 1px solid var(--wecom-line) !important;\n  font-weight: 500;\n}\n\nhtml.wecom-doc-theme .topic-list-item {\n  border-bottom: 1px solid var(--wecom-line) !important;\n  transition: background 120ms ease;\n}\n\nhtml.wecom-doc-theme .topic-list-item:hover {\n  background: var(--wecom-hover) !important;\n}\n\nhtml.wecom-doc-theme .wecom-doc-icon {\n  width: 18px;\n  height: 18px;\n  border-radius: 4px;\n  flex: none;\n  background: var(--wecom-doc);\n  position: relative;\n  display: inline-block;\n  vertical-align: -3px;\n  margin-right: 6px;\n}\n\nhtml.wecom-doc-theme .wecom-doc-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 3.5px;\n  right: 3.5px;\n  top: 4px;\n  bottom: 4px;\n  background:\n    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 3.5px / 100% 2px no-repeat,\n    linear-gradient(#fff, #fff) 0 7px / 65% 2px no-repeat;\n}\n\n/* 按钮样式 */\nhtml.wecom-doc-theme .btn-primary,\nhtml.wecom-doc-theme .btn-default {\n  border-radius: 6px !important;\n}\n\nhtml.wecom-doc-theme .wecom-create-topic {\n  background: var(--wecom-link) !important;\n  color: #fff !important;\n  border-radius: 6px !important;\n}\n\n/* 话题详情页 (Topic Detail) - 现代化文档排版 */\nhtml.wecom-doc-theme #topic-title {\n  margin-bottom: 24px !important;\n}\n\nhtml.wecom-doc-theme #topic-title h1,\nhtml.wecom-doc-theme #topic-title .fancy-title {\n  font-size: 28px !important;\n  font-weight: 700 !important;\n  line-height: 1.35 !important;\n  color: var(--wecom-text) !important;\n}\n\nhtml.wecom-doc-theme .topic-body {\n  border-top: 1px solid var(--wecom-line) !important;\n}\n\nhtml.wecom-doc-theme .topic-post:first-child .topic-body {\n  border-top: none !important;\n}\n\nhtml.wecom-doc-theme .cooked {\n  font-size: 15px !important;\n  line-height: 1.75 !important;\n  color: var(--wecom-text) !important;\n}\n\nhtml.wecom-doc-theme .cooked blockquote,\nhtml.wecom-doc-theme aside.quote {\n  margin: 12px 0 !important;\n  padding: 10px 14px !important;\n  border-left: 3px solid var(--wecom-link) !important;\n  background: var(--wecom-search) !important;\n  border-radius: 0 6px 6px 0 !important;\n  color: var(--wecom-text-2) !important;\n}\n\nhtml.wecom-doc-theme .cooked pre code {\n  border-radius: 6px !important;\n  border: 1px solid var(--wecom-line) !important;\n}\n\n/* 时间线与底部控制 */\nhtml.wecom-doc-theme .timeline-container .topic-timeline .timeline-handle {\n  background-color: var(--wecom-link) !important;\n}\n\nhtml.wecom-doc-theme #topic-footer-buttons {\n  border-top: 1px solid var(--wecom-line) !important;\n  padding-top: 16px !important;\n}\n\n";
 const THEME_CLASS = "wecom-doc-theme";
 const HOME_CLASS = "wecom-doc-home";
 const TOPIC_CLASS = "wecom-doc-topic";
@@ -71,43 +71,16 @@ function runStep(fn) {
   }
 }
 
-const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 48 48" aria-hidden="true">
-  <rect x="1" y="1" width="46" height="46" rx="12" fill="#fff"/>
-  <path fill="#3D9BFF" d="M11.8 20.8c0-6.35 6.55-11 13.4-11 6.85 0 13.4 4.65 13.4 11s-6.55 11-13.4 11c-1.55 0-3.05-.2-4.4-.6L13.2 35.2l2.55-4.55c-2.55-2.25-3.95-5.7-3.95-9.85z"/>
-  <path stroke="#AEB6BF" stroke-width="1.35" stroke-linecap="round" fill="none" d="M31.6 27.2l3.5-3.6M31.6 27.2l-2.5 4.3M31.6 27.2l5.2 3.3"/>
-  <circle cx="35.4" cy="23.2" r="2.55" fill="#62C05B"/>
-  <circle cx="28.8" cy="31.8" r="2.7" fill="#FF8A3A"/>
-  <circle cx="37.6" cy="31.1" r="2.35" fill="#F5C400"/>
+const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 36 36" aria-hidden="true" width="28" height="28">
+  <rect x="0.5" y="0.5" width="35" height="35" rx="8" fill="#ffffff"/>
+  <g transform="translate(5.0, 4.8) scale(0.90)">
+    <path d="M13.053 2.7c7.033 0 12.754 4.954 12.754 11.084 0 .224-.01.445-.021.667l-.01.136-.102-.09a2.554 2.554 0 0 0-2.532-.504l-.091.03v-.451c-.16-4.558-4.573-8.24-10-8.24-1.13 0-2.217.16-3.232.454l-.43.133C5.673 7.164 3.05 10.241 3.05 13.821c0 2.52 1.3 4.788 3.365 6.348l.094.081a.9.9 0 0 1 .263.667l-.012.124-.351 1.996a.172.172 0 0 0 .254.178l2.293-1.323.085-.042c.2-.088.424-.1.633-.037l.4.115a11.53 11.53 0 0 0 2.98.385 11.59 11.59 0 0 0 3.437-.518l.073-.021.012.076a2.57 2.57 0 0 0 1.63 1.956l.166.064-.167.063a14.35 14.35 0 0 1-5.151.942 14.48 14.48 0 0 1-3.792-.5l-3.79 1.848a.96.96 0 0 1-1.374-.963l.345-3.292C1.9 19.938.3 17.025.3 13.788.3 7.653 6.018 2.7 13.054 2.7z" fill="#0082EF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M25.29 15.105c.315.315.493.714.533 1.13h.003a4.591 4.591 0 0 0 1.42 2.798l.024.024a.467.467 0 0 1-.009.648.459.459 0 0 1-.648.01l-.024-.025c-.03-.036-.064-.07-.094-.103a4.629 4.629 0 0 0-2.686-1.32 1.877 1.877 0 0 1-1.148-.533 1.853 1.853 0 0 1 0-2.626 1.853 1.853 0 0 1 2.626 0l.003-.003z" fill="#2DBC00"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M30.275 22.61a1.836 1.836 0 0 1-1.13.533h-.003a4.624 4.624 0 0 0-2.701 1.326 1.291 1.291 0 0 0-.091.097l-.025.024a.467.467 0 0 1-.648-.009.459.459 0 0 1-.009-.648l.024-.024c.037-.03.07-.063.103-.094a4.63 4.63 0 0 0 1.32-2.686 1.877 1.877 0 0 1 .533-1.148 1.854 1.854 0 0 1 2.627 0 1.854 1.854 0 0 1 0 2.626v.003z" fill="#0082EF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.773 27.595a1.836 1.836 0 0 1-.533-1.13h-.003a4.592 4.592 0 0 0-1.324-2.707.994.994 0 0 0-.097-.091l-.024-.024a.467.467 0 0 1 .01-.649.459.459 0 0 1 .647-.009l.025.025c.03.036.063.07.093.102a4.628 4.628 0 0 0 2.687 1.321 1.877 1.877 0 0 1 1.148.533 1.853 1.853 0 0 1 0 2.626 1.854 1.854 0 0 1-2.626 0l-.003.003z" fill="#FB6500"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.785 20.093a1.836 1.836 0 0 1 1.13-.533h.002a4.625 4.625 0 0 0 2.702-1.327c.033-.033.067-.066.09-.097l.025-.024a.467.467 0 0 1 .648.01c.182.181.185.46.01.647l-.025.025c-.036.03-.07.063-.103.093a4.63 4.63 0 0 0-1.32 2.687 1.877 1.877 0 0 1-.533 1.148 1.854 1.854 0 0 1-2.626 0 1.853 1.853 0 0 1 0-2.626v-.003z" fill="#FFCC00"/>
+  </g>
 </svg>`;
-
-function findOpPost(document) {
-  const byId = document.querySelector("#post_1");
-  if (byId) return byId.closest(".topic-post") || byId;
-  return document.querySelector(".post-stream .topic-post");
-}
-
-function collectTocEntries(cooked) {
-  if (!cooked) return [];
-  const out = [];
-  cooked.querySelectorAll("h1, h2, h3").forEach((heading, index) => {
-    const text = heading.textContent.trim().replace(/\s+/g, " ");
-    if (!text) return;
-    if (!heading.id) heading.id = `wecom-h-${index}`;
-    out.push({
-      id: heading.id,
-      level: Number(heading.tagName.slice(1)),
-      text
-    });
-  });
-  return out;
-}
-
-function postsToDock(document) {
-  const op = findOpPost(document);
-  const stream = document.querySelector(".post-stream");
-  if (!stream) return [];
-  return [...stream.querySelectorAll(".topic-post")].filter((post) => post !== op);
-}
 
 
 function prefersDark() {
@@ -186,58 +159,18 @@ function makeFavicon(document) {
   if (faviconObserver) faviconObserver.observe(head, FAVICON_OBSERVE);
 }
 
-function makeHomeHeading(document) {
-  const headerContents = document.querySelector(".d-header .contents");
-  if (!headerContents) return;
-  let heading = document.querySelector(".wecom-home-heading");
-  if (!heading) {
-    heading = document.createElement("div");
-    heading.className = "wecom-home-heading";
-    heading.textContent = "主页";
-  }
-  if (heading.parentElement !== headerContents) headerContents.appendChild(heading);
-}
-
-function makeSidebarSearch(document) {
-  const container = document.querySelector(".sidebar-container");
-  if (!container || container.querySelector(".wecom-sidebar-search")) return;
-  const search = document.createElement("a");
-  search.className = "wecom-sidebar-search";
-  search.href = "/search";
-  search.textContent = "搜索";
-  const sections = container.querySelector(".sidebar-sections") || container.firstElementChild;
-  if (sections) container.insertBefore(search, sections);
-  else container.prepend(search);
-}
-
-function makeColumnLabels(document) {
-  const labels = [
-    ["th.default, th.main-link", "标题"],
-    ["th.posters", "所有者"],
-    ["th.posts", "回复"],
-    ["th.views", "浏览量"],
-    ["th.activity", "最近访问 ↓"]
-  ];
-  for (const [selector, label] of labels) {
-    for (const cell of document.querySelectorAll(`.topic-list-header ${selector}`)) {
-      let span = cell.querySelector(":scope > .wecom-column-label");
-      if (!span) {
-        span = document.createElement("span");
-        span.className = "wecom-column-label";
-        cell.prepend(span);
-      }
-      if (span.textContent !== label) span.textContent = label;
-    }
-  }
-}
-
 function makeDocIcons(document) {
-  for (const link of document.querySelectorAll(".topic-list-item .main-link")) {
-    if (link.querySelector(":scope > .wecom-doc-icon")) continue;
+  for (const mainLink of document.querySelectorAll(".topic-list-item .main-link")) {
+    const titleLink = mainLink.querySelector("a.title") || mainLink.querySelector(".title");
+    if (!titleLink) continue;
+    if (titleLink.querySelector(".wecom-doc-icon")) continue;
+    for (const orphan of mainLink.querySelectorAll(":scope > .wecom-doc-icon")) {
+      orphan.remove();
+    }
     const icon = document.createElement("span");
     icon.className = "wecom-doc-icon";
     icon.setAttribute("aria-hidden", "true");
-    link.prepend(icon);
+    titleLink.prepend(icon);
   }
 }
 
@@ -247,15 +180,6 @@ function makeCreateTopicButton(document) {
   );
   if (!button) return;
   button.classList.add("wecom-create-topic");
-  const navigationContainer = document.querySelector(".navigation-container");
-  if (!navigationContainer) return;
-  let slot = navigationContainer.querySelector(":scope > .wecom-create-topic-slot");
-  if (!slot) {
-    slot = document.createElement("div");
-    slot.className = "wecom-create-topic-slot";
-    navigationContainer.appendChild(slot);
-  }
-  if (button.parentElement !== slot) slot.appendChild(button);
 }
 
 function makeTopicContext(document) {
@@ -281,173 +205,6 @@ function makeTopicContext(document) {
   context.textContent = topicContextText(categoryText || null, title);
 }
 
-function unwrapDocMain(document) {
-  const main = document.querySelector(".wecom-doc-main");
-  if (!main) return;
-  const parent = main.parentElement;
-  if (!parent) {
-    main.remove();
-    return;
-  }
-  while (main.firstChild) parent.insertBefore(main.firstChild, main);
-  main.remove();
-}
-
-function ensureCommentsAside(document) {
-  let comments = document.querySelector("aside.wecom-comments");
-  if (!comments) {
-    comments = document.createElement("aside");
-    comments.className = "wecom-comments";
-    comments.innerHTML =
-      '<div class="wecom-comments-head">评论</div><div class="wecom-comments-list"></div><div class="wecom-comments-empty">暂无评论</div>';
-  }
-  return comments;
-}
-
-function ensureTocAside(document) {
-  let toc = document.querySelector("aside.wecom-toc");
-  if (!toc) {
-    toc = document.createElement("aside");
-    toc.className = "wecom-toc";
-  }
-  return toc;
-}
-
-function ensureTopicShell(document) {
-  const posts = document.querySelector(".container.posts");
-  const outlet = document.querySelector("#main-outlet");
-  const toc = ensureTocAside(document);
-  const comments = ensureCommentsAside(document);
-
-  if (!posts) {
-    const parent = outlet?.parentElement || outlet;
-    if (!parent) return;
-    if (toc.parentElement !== parent) parent.insertBefore(toc, outlet || null);
-    if (comments.parentElement !== parent) parent.appendChild(comments);
-    return;
-  }
-
-  let parent = posts.parentElement;
-  if (!parent) return;
-  if (parent.classList.contains("wecom-doc-main")) parent = parent.parentElement;
-  if (!parent) return;
-
-  let main = parent.querySelector(":scope > .wecom-doc-main");
-  if (!main) {
-    main = document.createElement("div");
-    main.className = "wecom-doc-main";
-  }
-  const title = document.querySelector("#topic-title");
-  if (title && title.parentElement !== main) main.insertBefore(title, main.firstChild);
-  if (posts.parentElement !== main) main.appendChild(posts);
-  const footer = parent.querySelector(":scope > .topic-footer-buttons");
-  if (footer && footer.parentElement !== main) main.appendChild(footer);
-  if (main.parentElement !== parent) parent.appendChild(main);
-
-  for (const extra of document.querySelectorAll(".wecom-shell")) {
-    if (extra !== parent) extra.classList.remove("wecom-shell");
-  }
-  parent.classList.add("wecom-shell");
-
-  if (toc.parentElement !== parent || toc.nextElementSibling !== main) {
-    parent.insertBefore(toc, main);
-  }
-  if (comments.parentElement !== parent || main.nextElementSibling !== comments) {
-    parent.insertBefore(comments, main.nextSibling);
-  }
-}
-
-function makeToc(document) {
-  const toc = document.querySelector("aside.wecom-toc");
-  if (!toc) return;
-  const title =
-    document.querySelector("#topic-title h1, #topic-title .fancy-title")?.textContent
-      ?.trim()
-      .replace(/\s+/g, " ") || topicTitleFromDocumentTitle(document.title) || "文档";
-  const op = findOpPost(document);
-  const entries = collectTocEntries(op?.querySelector(".cooked"));
-  const key = `${title}|${entries.map((e) => e.id).join(",")}`;
-  if (toc.dataset.routeKey === key) return;
-  toc.dataset.routeKey = key;
-  toc.replaceChildren();
-  const root = document.createElement("button");
-  root.type = "button";
-  root.className = "wecom-toc-item wecom-toc-root";
-  root.textContent = title;
-  root.addEventListener("click", () => op?.scrollIntoView({ block: "start" }));
-  toc.appendChild(root);
-  for (const entry of entries) {
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = `wecom-toc-item wecom-toc-l${entry.level}`;
-    item.textContent = entry.text;
-    item.addEventListener("click", () => {
-      document.getElementById(entry.id)?.scrollIntoView({ block: "start" });
-    });
-    toc.appendChild(item);
-  }
-}
-
-function markCoverImage(document) {
-  const cooked = findOpPost(document)?.querySelector(".cooked");
-  if (!cooked) return;
-  cooked.querySelectorAll("img.wecom-cover").forEach((img) => img.classList.remove("wecom-cover"));
-  const img = cooked.querySelector("img");
-  if (img) img.classList.add("wecom-cover");
-}
-
-function bindNavDrawer(document) {
-  const html = document.documentElement;
-  if (html.dataset.wecomNavBound) return;
-  html.dataset.wecomNavBound = "1";
-  html.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!target || typeof target.closest !== "function") return;
-    const button = target.closest("button");
-    if (!button?.closest(".header-sidebar-toggle, .hamburger-dropdown")) return;
-    html.classList.toggle("wecom-nav-open");
-  });
-}
-
-function syncCommentsEmptyState(document) {
-  const empty = document.querySelector(".wecom-comments-empty");
-  const list = document.querySelector(".wecom-comments-list");
-  if (!empty || !list) return;
-  empty.hidden = list.querySelector(".topic-post") != null;
-}
-
-const dockedOpByDocument = new WeakMap();
-
-function dockComments(document) {
-  const list = document.querySelector(".wecom-comments-list");
-  if (!list) return;
-  const op = findOpPost(document);
-  if (op) dockedOpByDocument.set(document, op);
-  for (const post of postsToDock(document)) {
-    if (post.parentElement === list) continue;
-    list.appendChild(post);
-  }
-  syncCommentsEmptyState(document);
-}
-
-function restoreComments(document) {
-  const list = document.querySelector(".wecom-comments-list");
-  if (!list) return;
-  const moved = [...list.querySelectorAll(".topic-post")];
-  if (!moved.length) return;
-  const stream = document.querySelector(".post-stream");
-  const recordedOp = dockedOpByDocument.get(document);
-  const belongsToCurrent = stream && (!recordedOp || stream.contains(recordedOp));
-  const previous = recordedOp?.closest(".post-stream");
-  const target = belongsToCurrent
-    ? stream
-    : previous?.isConnected && previous !== stream
-      ? previous
-      : null;
-  if (!target) return;
-  for (const post of moved) target.appendChild(post);
-}
-
 function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -456,44 +213,12 @@ function applyTheme(document, css) {
   const mode = applyPageMode(document.documentElement, document.body, location.pathname);
   runStep(() => makeBrand(document));
   runStep(() => makeFavicon(document));
-  runStep(() => makeSidebarSearch(document));
   if (mode === "home") {
-    runStep(() => restoreComments(document));
-    document.querySelector("aside.wecom-toc")?.remove();
-    if (!document.querySelector("aside.wecom-comments .topic-post")) {
-      document.querySelector("aside.wecom-comments")?.remove();
-    }
     document.querySelector(".wecom-topic-context")?.remove();
-    unwrapDocMain(document);
-    document.querySelector(".wecom-shell")?.classList.remove("wecom-shell");
-    runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
-    runStep(() => makeColumnLabels(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
-    const html = document.documentElement;
-    const path = location.pathname;
-    if (html.dataset.wecomTopicPath !== path) {
-      runStep(() => restoreComments(document));
-      const list = document.querySelector(".wecom-comments-list");
-      const recordedOp = dockedOpByDocument.get(document);
-      const op = findOpPost(document);
-      if (list && recordedOp && op && recordedOp !== op) {
-        for (const post of [...list.querySelectorAll(".topic-post")]) post.remove();
-      }
-    }
-    html.dataset.wecomTopicPath = path;
-    document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
-    runStep(() => ensureTopicShell(document));
-    const opNow = findOpPost(document);
-    if (opNow && opNow.closest("aside.wecom-comments")) {
-      runStep(() => restoreComments(document));
-    }
-    runStep(() => dockComments(document));
-    runStep(() => makeToc(document));
-    runStep(() => markCoverImage(document));
-    runStep(() => bindNavDrawer(document));
   }
 }
 
@@ -533,10 +258,6 @@ function bindNavigation(window, document, css) {
       }
     });
   };
-  const restoreAndSchedule = () => {
-    restoreComments(document);
-    schedule();
-  };
   observer?.observe(document.documentElement, {
     childList: true,
     subtree: true
@@ -545,11 +266,11 @@ function bindNavigation(window, document, css) {
     const original = window.history[method];
     window.history[method] = function (...args) {
       const result = original.apply(this, args);
-      restoreAndSchedule();
+      schedule();
       return result;
     };
   }
-  window.addEventListener("popstate", restoreAndSchedule);
+  window.addEventListener("popstate", schedule);
   window.addEventListener("hashchange", schedule);
   document.addEventListener("turbo:load", schedule);
   document.addEventListener("page:changed", schedule);
@@ -565,6 +286,7 @@ function start(document, css) {
   bootstrap(document, css);
   bindNavigation(window, document, css);
 }
+
 
   start(document, CSS);
 })();

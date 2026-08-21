@@ -20,18 +20,17 @@ describe("wecom-style tokens", () => {
   });
   it("keeps WeCom teal accent and blue doc icon", () => {
     assert.match(css, /#12b3a8/);
-    assert.match(css, /#4b8cff/);
+    assert.match(css, /var\(--wecom-doc\)|#4b8cff/);
     assert.match(css, /#3dcdc4/);
   });
-  it("uses a single-row three-column shell with a doc-main cell", () => {
-    assert.match(css, /\.wecom-shell\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)/);
-    assert.match(css, /\.wecom-shell\s*>\s*\.wecom-doc-main/);
-    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-toc\s*\{[^}]*grid-column:\s*1/);
-    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-comments\s*\{[^}]*grid-column:\s*3/);
-  });
-  it("hides an empty Discourse sidebar and uncaps topic-body width", () => {
-    assert.match(css, /body:not\(\.has-sidebar-page\) #main-outlet-wrapper/);
-    assert.match(css, /--topic-body-width:\s*100%/);
-    assert.match(css, /\.topic-body[\s\S]*max-width:\s*none/);
+  it("styles sidebar and topic header without brittle shell hacks", () => {
+    assert.match(css, /\.sidebar-wrapper/);
+    assert.match(css, /\.sidebar-section-link/);
+    assert.match(css, /#topic-title/);
+    assert.doesNotMatch(css, /\.wecom-shell/);
+    assert.doesNotMatch(css, /aside\.wecom-toc/);
+    assert.doesNotMatch(css, /aside\.wecom-comments/);
   });
 });
+
+

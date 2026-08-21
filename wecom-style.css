@@ -12,9 +12,6 @@ html.wecom-doc-theme {
   --wecom-link: #12b3a8;
   --wecom-doc: #4b8cff;
   --wecom-header-h: 56px;
-  --wecom-nav-w: 248px;
-  --wecom-toc-w: 240px;
-  --wecom-comments-w: 320px;
   --primary: #1f1f1f !important;
   --secondary: #ffffff !important;
   --header_background: #ffffff !important;
@@ -22,6 +19,7 @@ html.wecom-doc-theme {
   --primary-low: #f6f7f9 !important;
   --primary-very-low: #ffffff !important;
   --d-hover: #f0f0f0 !important;
+  --tertiary: #12b3a8 !important;
 }
 
 html.wecom-doc-theme.wecom-dark {
@@ -43,6 +41,7 @@ html.wecom-doc-theme.wecom-dark {
   --primary-low: #262c36 !important;
   --primary-very-low: #151b23 !important;
   --d-hover: #2f3742 !important;
+  --tertiary: #3dcdc4 !important;
 }
 
 html.wecom-doc-theme,
@@ -53,77 +52,21 @@ html.wecom-doc-theme body {
     "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif !important;
 }
 
-html.wecom-doc-theme body {
-  min-width: 980px;
-  margin: 0 !important;
+html.wecom-doc-theme a {
+  color: inherit;
 }
 
-html.wecom-doc-theme a { color: inherit; }
-html.wecom-doc-theme .cooked a { color: var(--wecom-link) !important; }
-
-html.wecom-doc-theme .global-notice,
-html.wecom-doc-theme .category-breadcrumb,
-html.wecom-doc-theme .top-lists,
-html.wecom-doc-theme .navigation-controls,
-html.wecom-doc-theme .topic-map.--bottom {
-  display: none !important;
+html.wecom-doc-theme .cooked a {
+  color: var(--wecom-link) !important;
 }
 
+/* 顶栏 (Header) */
 html.wecom-doc-theme .d-header-wrap,
 html.wecom-doc-theme body .d-header {
-  position: fixed !important;
-  z-index: 1101 !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
   height: var(--wecom-header-h) !important;
   background: var(--wecom-bg) !important;
   border-bottom: 1px solid var(--wecom-line) !important;
   box-shadow: none !important;
-}
-
-html.wecom-doc-theme #main-outlet-wrapper {
-  width: 100% !important;
-  max-width: none !important;
-  display: grid !important;
-  grid-template-columns: var(--wecom-nav-w) minmax(0, 1fr) !important;
-  min-height: calc(100vh - var(--wecom-header-h)) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-html.wecom-doc-theme body:not(.has-sidebar-page) #main-outlet-wrapper,
-html.wecom-doc-theme #main-outlet-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {
-  grid-template-columns: minmax(0, 1fr) !important;
-}
-html.wecom-doc-theme body:not(.has-sidebar-page) .sidebar-wrapper,
-html.wecom-doc-theme .sidebar-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {
-  display: none !important;
-  width: 0 !important;
-  min-width: 0 !important;
-}
-
-html.wecom-doc-theme .sidebar-wrapper {
-  width: var(--wecom-nav-w) !important;
-  min-width: var(--wecom-nav-w) !important;
-  background: var(--wecom-sidebar) !important;
-  border-right: 1px solid var(--wecom-line) !important;
-  box-shadow: none !important;
-}
-
-html.wecom-doc-theme #main-outlet {
-  background: var(--wecom-bg) !important;
-  padding-top: calc(var(--wecom-header-h) + 12px) !important;
-}
-
-html.wecom-doc-theme .sidebar-section-link,
-html.wecom-doc-theme .sidebar-section-link-content-text {
-  color: var(--wecom-text) !important;
-}
-html.wecom-doc-theme .sidebar-section-link-wrapper.is-active,
-html.wecom-doc-theme .sidebar-section-link.active {
-  background: var(--wecom-active) !important;
-  color: var(--wecom-link) !important;
 }
 
 html.wecom-doc-theme .d-header .title img,
@@ -132,253 +75,165 @@ html.wecom-doc-theme .d-header .title .logo-big,
 html.wecom-doc-theme .d-header .title .logo-small {
   display: none !important;
 }
+
 html.wecom-doc-theme .wecom-brand {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 16px;
   font-weight: 600;
+  color: var(--wecom-text);
+  text-decoration: none;
 }
+
 html.wecom-doc-theme .wecom-app-icon {
   width: 28px;
   height: 28px;
-}
-
-html.wecom-doc-theme .wecom-home-heading {
-  position: absolute;
-  left: calc(var(--wecom-nav-w) + 16px);
-  top: 0;
-  height: var(--wecom-header-h);
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 600;
-  pointer-events: none;
-}
-html.wecom-doc-theme.wecom-doc-home .topic-list-header th {
-  font-size: 0 !important;
-  color: var(--wecom-text-3) !important;
-  border-bottom: 1px solid var(--wecom-line) !important;
-}
-html.wecom-doc-theme.wecom-doc-home .wecom-column-label {
-  font-size: 13px;
-  color: var(--wecom-text-3);
-}
-html.wecom-doc-theme.wecom-doc-home .topic-list-item .main-link {
-  display: flex !important;
-  align-items: center;
-  gap: 10px;
-}
-html.wecom-doc-theme .wecom-doc-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 5px;
   flex: none;
-  background: #4b8cff;
-  position: relative;
-}
-html.wecom-doc-theme .wecom-doc-icon::before {
-  content: "";
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  top: 6px;
-  bottom: 6px;
-  background:
-    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,
-    linear-gradient(#fff, #fff) 0 5px / 100% 2px no-repeat,
-    linear-gradient(#fff, #fff) 0 10px / 70% 2px no-repeat;
-}
-html.wecom-doc-theme.wecom-doc-home .wecom-create-topic {
-  font-size: 0 !important;
-}
-html.wecom-doc-theme.wecom-doc-home .wecom-create-topic::after {
-  content: "新建话题";
-  font-size: 14px;
-  color: var(--wecom-text-2);
-}
-html.wecom-doc-theme .wecom-sidebar-search {
-  display: flex;
-  align-items: center;
-  height: 36px;
-  margin: 0 8px 8px;
-  padding: 0 12px;
-  border-radius: 8px;
-  background: var(--wecom-bg);
-  color: var(--wecom-text-2) !important;
-  text-decoration: none !important;
 }
 
-html.wecom-doc-theme.wecom-doc-topic #main-outlet-wrapper {
-  display: block !important;
-  grid-template-columns: none !important;
-  grid-template-areas: none !important;
-}
-html.wecom-doc-theme.wecom-doc-topic #main-outlet,
-html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
-  grid-area: auto !important;
-}
-html.wecom-doc-theme.wecom-doc-topic #main-outlet {
-  display: block !important;
-  width: 100% !important;
-  max-width: none !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell {
-  display: grid !important;
-  grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;
-  grid-template-rows: minmax(0, 1fr) !important;
-  width: 100% !important;
-  max-width: none !important;
-  min-height: calc(100vh - var(--wecom-header-h) - 12px);
-  align-items: stretch !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > * {
-  min-width: 0;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-toc {
-  grid-column: 1;
-  grid-row: 1;
-  min-height: 0;
-  max-height: calc(100vh - var(--wecom-header-h));
-  overflow: auto;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > .wecom-doc-main {
-  grid-column: 2;
-  grid-row: 1;
-  min-width: 0;
-  max-height: calc(100vh - var(--wecom-header-h));
-  overflow: auto;
-  padding: 8px 32px 48px;
-}
-html.wecom-doc-theme.wecom-doc-topic {
-  --topic-body-width: 100% !important;
-  --topic-body-width-padding: 0px !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .container.posts,
-html.wecom-doc-theme.wecom-doc-topic .post-stream,
-html.wecom-doc-theme.wecom-doc-topic .topic-area,
-html.wecom-doc-theme.wecom-doc-topic .topic-post,
-html.wecom-doc-theme.wecom-doc-topic article.boxed,
-html.wecom-doc-theme.wecom-doc-topic .onscreen-post,
-html.wecom-doc-theme.wecom-doc-topic .topic-body,
-html.wecom-doc-theme.wecom-doc-topic .cooked {
-  width: 100% !important;
-  max-width: none !important;
-  float: none !important;
-  box-sizing: border-box !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .container.posts {
-  display: block !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-comments {
-  grid-column: 3;
-  grid-row: 1;
-  min-height: 0;
-  max-height: calc(100vh - var(--wecom-header-h));
-  overflow: auto;
-}
-html.wecom-doc-theme.wecom-doc-topic .more-topics__container,
-html.wecom-doc-theme.wecom-doc-topic .topic-above-post-stream-outlet {
-  display: none !important;
-}
-html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
-  position: fixed !important;
-  z-index: 1200 !important;
-  top: var(--wecom-header-h) !important;
-  left: 0 !important;
-  height: calc(100vh - var(--wecom-header-h)) !important;
-  transform: translateX(-110%);
-  transition: transform 160ms ease;
-}
-html.wecom-doc-theme.wecom-doc-topic.wecom-nav-open .sidebar-wrapper {
-  transform: translateX(0);
-}
-html.wecom-doc-theme .d-header .title {
-  width: auto !important;
-  min-width: 148px !important;
-  margin-right: 12px !important;
-}
 html.wecom-doc-theme .wecom-topic-context {
-  position: absolute;
-  left: 220px;
-  right: 280px;
-  top: 0;
-  height: var(--wecom-header-h);
-  display: flex;
+  margin-left: 16px;
+  display: inline-flex;
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--wecom-text-2);
-  font-size: 14px;
-  pointer-events: none;
+  font-size: 13px;
+  max-width: 50vw;
 }
-html.wecom-doc-theme.wecom-doc-topic .topic-navigation,
-html.wecom-doc-theme.wecom-doc-topic .timeline-container {
-  display: none !important;
+
+/* 侧边栏 (Sidebar) 优雅换皮，不破坏原生流与展开折叠 */
+html.wecom-doc-theme .sidebar-wrapper {
+  background: var(--wecom-sidebar) !important;
+  border-right: 1px solid var(--wecom-line) !important;
+  box-shadow: none !important;
 }
-html.wecom-doc-theme aside.wecom-toc {
-  background: var(--wecom-sidebar);
-  border-right: 1px solid var(--wecom-line);
-  padding: 16px 8px;
+
+html.wecom-doc-theme .sidebar-section-link,
+html.wecom-doc-theme .sidebar-section-link-content-text {
+  color: var(--wecom-text) !important;
 }
-html.wecom-doc-theme aside.wecom-comments {
-  background: var(--wecom-bg);
-  border-left: 1px solid var(--wecom-line);
-}
-html.wecom-doc-theme .wecom-comments-head {
-  height: 48px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--wecom-line);
-}
-html.wecom-doc-theme.wecom-doc-topic #topic-title h1,
-html.wecom-doc-theme.wecom-doc-topic .fancy-title {
-  font-size: 34px !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.6px;
-}
-html.wecom-doc-theme.wecom-doc-topic .cooked img.wecom-cover {
-  display: block;
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 0 0 24px;
-}
-html.wecom-doc-theme .wecom-toc-item {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  background: transparent;
-  color: var(--wecom-text-2);
-  padding: 6px 8px;
+
+html.wecom-doc-theme .sidebar-section-link-wrapper.is-active,
+html.wecom-doc-theme .sidebar-section-link.active {
+  background: var(--wecom-active) !important;
+  color: var(--wecom-link) !important;
   border-radius: 6px;
-  cursor: pointer;
 }
-html.wecom-doc-theme .wecom-toc-root { color: var(--wecom-text); font-size: 14px; }
-html.wecom-doc-theme .wecom-toc-l2 { padding-left: 22px; }
-html.wecom-doc-theme .wecom-toc-l3 { padding-left: 36px; }
-html.wecom-doc-theme .wecom-toc-item.active { color: var(--wecom-link); background: var(--wecom-active); }
-html.wecom-doc-theme.wecom-doc-topic #reply-control {
-  position: sticky !important;
-  bottom: 0 !important;
-  border-color: var(--wecom-line) !important;
+
+html.wecom-doc-theme .sidebar-section-link:hover {
+  background: var(--wecom-hover);
+  border-radius: 6px;
+}
+
+/* 主内容区与列表 (Topic List) */
+html.wecom-doc-theme #main-outlet {
   background: var(--wecom-bg) !important;
 }
-html.wecom-doc-theme .wecom-comments-empty {
-  padding: 48px 16px;
-  text-align: center;
-  color: var(--wecom-text-3);
+
+html.wecom-doc-theme .topic-list-header th {
+  color: var(--wecom-text-3) !important;
+  border-bottom: 1px solid var(--wecom-line) !important;
+  font-weight: 500;
 }
-html.wecom-doc-theme aside.wecom-comments aside.quote {
-  margin: 8px 0;
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: var(--wecom-search);
-  color: var(--wecom-text-2);
-  font-size: 12px;
+
+html.wecom-doc-theme .topic-list-item {
+  border-bottom: 1px solid var(--wecom-line) !important;
+  transition: background 120ms ease;
 }
+
+html.wecom-doc-theme .topic-list-item:hover {
+  background: var(--wecom-hover) !important;
+}
+
+html.wecom-doc-theme .wecom-doc-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  flex: none;
+  background: var(--wecom-doc);
+  position: relative;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 6px;
+}
+
+html.wecom-doc-theme .wecom-doc-icon::before {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  right: 3.5px;
+  top: 4px;
+  bottom: 4px;
+  background:
+    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 3.5px / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 7px / 65% 2px no-repeat;
+}
+
+/* 按钮样式 */
+html.wecom-doc-theme .btn-primary,
+html.wecom-doc-theme .btn-default {
+  border-radius: 6px !important;
+}
+
+html.wecom-doc-theme .wecom-create-topic {
+  background: var(--wecom-link) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+}
+
+/* 话题详情页 (Topic Detail) - 现代化文档排版 */
+html.wecom-doc-theme #topic-title {
+  margin-bottom: 24px !important;
+}
+
+html.wecom-doc-theme #topic-title h1,
+html.wecom-doc-theme #topic-title .fancy-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  color: var(--wecom-text) !important;
+}
+
+html.wecom-doc-theme .topic-body {
+  border-top: 1px solid var(--wecom-line) !important;
+}
+
+html.wecom-doc-theme .topic-post:first-child .topic-body {
+  border-top: none !important;
+}
+
+html.wecom-doc-theme .cooked {
+  font-size: 15px !important;
+  line-height: 1.75 !important;
+  color: var(--wecom-text) !important;
+}
+
+html.wecom-doc-theme .cooked blockquote,
+html.wecom-doc-theme aside.quote {
+  margin: 12px 0 !important;
+  padding: 10px 14px !important;
+  border-left: 3px solid var(--wecom-link) !important;
+  background: var(--wecom-search) !important;
+  border-radius: 0 6px 6px 0 !important;
+  color: var(--wecom-text-2) !important;
+}
+
+html.wecom-doc-theme .cooked pre code {
+  border-radius: 6px !important;
+  border: 1px solid var(--wecom-line) !important;
+}
+
+/* 时间线与底部控制 */
+html.wecom-doc-theme .timeline-container .topic-timeline .timeline-handle {
+  background-color: var(--wecom-link) !important;
+}
+
+html.wecom-doc-theme #topic-footer-buttons {
+  border-top: 1px solid var(--wecom-line) !important;
+  padding-top: 16px !important;
+}
+

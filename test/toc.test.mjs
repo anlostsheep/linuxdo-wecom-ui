@@ -1,45 +1,30 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
-import { collectTocEntries, findOpPost } from "../wecom-core.mjs";
-import { ensureTopicShell, makeToc, markCoverImage } from "../wecom-boot.mjs";
+import { applyTheme } from "../wecom-boot.mjs";
 
-describe("toc and cover", () => {
-  it("reads h1-h3 only from OP cooked and keeps a root when empty", () => {
+describe("topic cooked content", () => {
+  it("preserves headings, blockquotes, and links in cooked post", () => {
     const { window } = new JSDOM(`<!doctype html><html><body>
       <div id="topic-title"><h1>前端知识库</h1></div>
       <div class="container posts">
         <div class="post-stream">
           <div id="post_1" class="topic-post"><div class="cooked">
-            <h2>概述</h2><h3>规范</h3><img src="https://example.com/c.png" alt="">
+            <h2>概述</h2>
+            <aside class="quote">引用内容</aside>
+            <p><a href="/test">链接</a></p>
           </div></div>
-          <div id="post_2" class="topic-post"><div class="cooked"><h2>回复里的标题</h2></div></div>
         </div>
       </div>
-    </body></html>`);
+    </body></html>`, { url: "https://linux.do/t/test/1" });
     const document = window.document;
-    const op = findOpPost(document);
-    const entries = collectTocEntries(op.querySelector(".cooked"));
-    assert.deepEqual(entries.map((e) => e.text), ["概述", "规范"]);
-    ensureTopicShell(document);
-    makeToc(document);
-    const labels = [...document.querySelectorAll(".wecom-toc-item")].map((n) => n.textContent);
-    assert.equal(labels[0], "前端知识库");
-    assert.ok(labels.includes("概述"));
-    assert.ok(!labels.includes("回复里的标题"));
-    markCoverImage(document);
-    assert.ok(document.querySelector("#post_1 .cooked img").classList.contains("wecom-cover"));
-  });
-
-  it("treats Discourse article#post_1 inside .topic-post as the OP", () => {
-    const { window } = new JSDOM(`<!doctype html><html><body>
-      <div class="post-stream">
-        <div class="topic-post"><article id="post_1" class="boxed"><div class="cooked"><h2>概述</h2></div></article></div>
-        <div class="topic-post"><article id="post_2" class="boxed"><div class="cooked">reply</div></article></div>
-      </div>
-    </body></html>`);
-    const op = findOpPost(window.document);
-    assert.equal(op.classList.contains("topic-post"), true);
-    assert.ok(op.querySelector("#post_1"));
+    globalThis.window = window;
+    globalThis.location = window.location;
+    applyTheme(document, "/* css */");
+    const cooked = document.querySelector("#post_1 .cooked");
+    assert.ok(cooked);
+    assert.equal(cooked.querySelector("h2")?.textContent, "概述");
+    assert.equal(cooked.querySelector("aside.quote")?.textContent, "引用内容");
   });
 });
+

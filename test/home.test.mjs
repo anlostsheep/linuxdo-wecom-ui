@@ -2,10 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import {
-  makeColumnLabels,
   makeDocIcons,
-  makeHomeHeading,
-  makeSidebarSearch,
   makeCreateTopicButton
 } from "../wecom-boot.mjs";
 
@@ -27,31 +24,24 @@ function homeDom() {
         </tr>
       </thead>
       <tbody>
-        <tr class="topic-list-item"><td class="main-link"><span class="link-top-line"></span></td></tr>
-        <tr class="topic-list-item"><td class="main-link"><span class="link-top-line"></span></td></tr>
+        <tr class="topic-list-item"><td class="main-link"><span class="link-top-line"><a href="/t/1" class="title">帖子一</a></span></td></tr>
+        <tr class="topic-list-item"><td class="main-link"><span class="link-top-line"><a href="/t/2" class="title">帖子二</a></span></td></tr>
       </tbody>
     </table>
   </body></html>`);
 }
 
 describe("homepage mounts", () => {
-  it("labels columns, adds one blue doc icon per row, and is idempotent", () => {
+  it("adds one blue doc icon inside title link and styles create button", () => {
     const { window } = homeDom();
     const document = window.document;
-    makeColumnLabels(document);
-    makeColumnLabels(document);
-    assert.equal(document.querySelector("th.main-link .wecom-column-label").textContent, "标题");
-    assert.equal(document.querySelectorAll(".wecom-column-label").length, 5);
     makeDocIcons(document);
     makeDocIcons(document);
     assert.equal(document.querySelectorAll(".wecom-doc-icon").length, 2);
-    makeHomeHeading(document);
-    makeHomeHeading(document);
-    assert.equal(document.querySelectorAll(".wecom-home-heading").length, 1);
-    makeSidebarSearch(document);
-    makeSidebarSearch(document);
-    assert.equal(document.querySelectorAll(".wecom-sidebar-search").length, 1);
+    assert.ok(document.querySelector("a.title .wecom-doc-icon"));
     makeCreateTopicButton(document);
     assert.ok(document.querySelector(".wecom-create-topic"));
   });
 });
+
+

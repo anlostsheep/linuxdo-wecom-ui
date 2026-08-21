@@ -56,40 +56,13 @@ export function runStep(fn) {
   }
 }
 
-export const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 48 48" aria-hidden="true">
-  <rect x="1" y="1" width="46" height="46" rx="12" fill="#fff"/>
-  <path fill="#3D9BFF" d="M11.8 20.8c0-6.35 6.55-11 13.4-11 6.85 0 13.4 4.65 13.4 11s-6.55 11-13.4 11c-1.55 0-3.05-.2-4.4-.6L13.2 35.2l2.55-4.55c-2.55-2.25-3.95-5.7-3.95-9.85z"/>
-  <path stroke="#AEB6BF" stroke-width="1.35" stroke-linecap="round" fill="none" d="M31.6 27.2l3.5-3.6M31.6 27.2l-2.5 4.3M31.6 27.2l5.2 3.3"/>
-  <circle cx="35.4" cy="23.2" r="2.55" fill="#62C05B"/>
-  <circle cx="28.8" cy="31.8" r="2.7" fill="#FF8A3A"/>
-  <circle cx="37.6" cy="31.1" r="2.35" fill="#F5C400"/>
+export const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 36 36" aria-hidden="true" width="28" height="28">
+  <rect x="0.5" y="0.5" width="35" height="35" rx="8" fill="#ffffff"/>
+  <g transform="translate(5.0, 4.8) scale(0.90)">
+    <path d="M13.053 2.7c7.033 0 12.754 4.954 12.754 11.084 0 .224-.01.445-.021.667l-.01.136-.102-.09a2.554 2.554 0 0 0-2.532-.504l-.091.03v-.451c-.16-4.558-4.573-8.24-10-8.24-1.13 0-2.217.16-3.232.454l-.43.133C5.673 7.164 3.05 10.241 3.05 13.821c0 2.52 1.3 4.788 3.365 6.348l.094.081a.9.9 0 0 1 .263.667l-.012.124-.351 1.996a.172.172 0 0 0 .254.178l2.293-1.323.085-.042c.2-.088.424-.1.633-.037l.4.115a11.53 11.53 0 0 0 2.98.385 11.59 11.59 0 0 0 3.437-.518l.073-.021.012.076a2.57 2.57 0 0 0 1.63 1.956l.166.064-.167.063a14.35 14.35 0 0 1-5.151.942 14.48 14.48 0 0 1-3.792-.5l-3.79 1.848a.96.96 0 0 1-1.374-.963l.345-3.292C1.9 19.938.3 17.025.3 13.788.3 7.653 6.018 2.7 13.054 2.7z" fill="#0082EF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M25.29 15.105c.315.315.493.714.533 1.13h.003a4.591 4.591 0 0 0 1.42 2.798l.024.024a.467.467 0 0 1-.009.648.459.459 0 0 1-.648.01l-.024-.025c-.03-.036-.064-.07-.094-.103a4.629 4.629 0 0 0-2.686-1.32 1.877 1.877 0 0 1-1.148-.533 1.853 1.853 0 0 1 0-2.626 1.853 1.853 0 0 1 2.626 0l.003-.003z" fill="#2DBC00"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M30.275 22.61a1.836 1.836 0 0 1-1.13.533h-.003a4.624 4.624 0 0 0-2.701 1.326 1.291 1.291 0 0 0-.091.097l-.025.024a.467.467 0 0 1-.648-.009.459.459 0 0 1-.009-.648l.024-.024c.037-.03.07-.063.103-.094a4.63 4.63 0 0 0 1.32-2.686 1.877 1.877 0 0 1 .533-1.148 1.854 1.854 0 0 1 2.627 0 1.854 1.854 0 0 1 0 2.626v.003z" fill="#0082EF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.773 27.595a1.836 1.836 0 0 1-.533-1.13h-.003a4.592 4.592 0 0 0-1.324-2.707.994.994 0 0 0-.097-.091l-.024-.024a.467.467 0 0 1 .01-.649.459.459 0 0 1 .647-.009l.025.025c.03.036.063.07.093.102a4.628 4.628 0 0 0 2.687 1.321 1.877 1.877 0 0 1 1.148.533 1.853 1.853 0 0 1 0 2.626 1.854 1.854 0 0 1-2.626 0l-.003.003z" fill="#FB6500"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.785 20.093a1.836 1.836 0 0 1 1.13-.533h.002a4.625 4.625 0 0 0 2.702-1.327c.033-.033.067-.066.09-.097l.025-.024a.467.467 0 0 1 .648.01c.182.181.185.46.01.647l-.025.025c-.036.03-.07.063-.103.093a4.63 4.63 0 0 0-1.32 2.687 1.877 1.877 0 0 1-.533 1.148 1.854 1.854 0 0 1-2.626 0 1.853 1.853 0 0 1 0-2.626v-.003z" fill="#FFCC00"/>
+  </g>
 </svg>`;
-
-export function findOpPost(document) {
-  const byId = document.querySelector("#post_1");
-  if (byId) return byId.closest(".topic-post") || byId;
-  return document.querySelector(".post-stream .topic-post");
-}
-
-export function collectTocEntries(cooked) {
-  if (!cooked) return [];
-  const out = [];
-  cooked.querySelectorAll("h1, h2, h3").forEach((heading, index) => {
-    const text = heading.textContent.trim().replace(/\s+/g, " ");
-    if (!text) return;
-    if (!heading.id) heading.id = `wecom-h-${index}`;
-    out.push({
-      id: heading.id,
-      level: Number(heading.tagName.slice(1)),
-      text
-    });
-  });
-  return out;
-}
-
-export function postsToDock(document) {
-  const op = findOpPost(document);
-  const stream = document.querySelector(".post-stream");
-  if (!stream) return [];
-  return [...stream.querySelectorAll(".topic-post")].filter((post) => post !== op);
-}
