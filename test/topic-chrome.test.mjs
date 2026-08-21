@@ -42,6 +42,41 @@ describe("topic chrome", () => {
     assert.equal(posts.nextElementSibling, comments);
   });
 
+  it("re-parents asides onto #main-outlet after .container.posts appears", () => {
+    const { window } = new JSDOM(`<!doctype html><html><body>
+      <div id="main-outlet-wrapper">
+        <div id="main-outlet"></div>
+      </div>
+    </body></html>`);
+    const document = window.document;
+    const wrapper = document.getElementById("main-outlet-wrapper");
+    const outlet = document.getElementById("main-outlet");
+    ensureTopicShell(document);
+    const toc = document.querySelector("aside.wecom-toc");
+    const comments = document.querySelector("aside.wecom-comments");
+    assert.equal(toc.parentElement, wrapper);
+    assert.equal(comments.parentElement, wrapper);
+
+    const extra = document.createElement("div");
+    extra.className = "extra-outlet-child";
+    outlet.appendChild(extra);
+    const posts = document.createElement("div");
+    posts.className = "container posts";
+    outlet.appendChild(posts);
+    const after = document.createElement("div");
+    after.className = "after-posts";
+    outlet.appendChild(after);
+
+    ensureTopicShell(document);
+    assert.equal(toc.parentElement, outlet);
+    assert.equal(posts.parentElement, outlet);
+    assert.equal(comments.parentElement, outlet);
+    assert.equal(toc.nextElementSibling, posts);
+    assert.equal(posts.nextElementSibling, comments);
+    assert.equal(document.querySelectorAll("aside.wecom-toc").length, 1);
+    assert.equal(document.querySelectorAll("aside.wecom-comments").length, 1);
+  });
+
   it("binds nav drawer via delegation before hamburger exists", () => {
     const { window } = new JSDOM(`<!doctype html><html class="${TOPIC_CLASS}"><body>
       <header class="d-header"><div class="contents">

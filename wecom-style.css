@@ -203,10 +203,10 @@ html.wecom-doc-theme.wecom-doc-topic #main-outlet {
   grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;
   align-items: start !important;
 }
-html.wecom-doc-theme.wecom-doc-topic aside.wecom-toc { grid-column: 1; }
+html.wecom-doc-theme.wecom-doc-topic aside.wecom-toc { grid-column: 1; grid-row: 1 / -1; }
 html.wecom-doc-theme.wecom-doc-topic #topic-title,
 html.wecom-doc-theme.wecom-doc-topic .container.posts { grid-column: 2; }
-html.wecom-doc-theme.wecom-doc-topic aside.wecom-comments { grid-column: 3; }
+html.wecom-doc-theme.wecom-doc-topic aside.wecom-comments { grid-column: 3; grid-row: 1 / -1; }
 html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
   position: fixed !important;
   z-index: 1200 !important;

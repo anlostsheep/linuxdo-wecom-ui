@@ -177,11 +177,15 @@ export function makeTopicContext(document) {
 export function ensureTopicShell(document) {
   const posts = document.querySelector(".container.posts") || document.querySelector("#main-outlet");
   if (!posts) return;
+  const parent = posts.parentElement;
+  if (!parent) return;
   let toc = document.querySelector("aside.wecom-toc");
   if (!toc) {
     toc = document.createElement("aside");
     toc.className = "wecom-toc";
-    posts.parentElement.insertBefore(toc, posts);
+  }
+  if (toc.parentElement !== parent || toc.nextElementSibling !== posts) {
+    parent.insertBefore(toc, posts);
   }
   let comments = document.querySelector("aside.wecom-comments");
   if (!comments) {
@@ -189,7 +193,9 @@ export function ensureTopicShell(document) {
     comments.className = "wecom-comments";
     comments.innerHTML =
       '<div class="wecom-comments-head">评论</div><div class="wecom-comments-list"></div><div class="wecom-comments-empty">暂无评论</div>';
-    posts.parentElement.appendChild(comments);
+  }
+  if (comments.parentElement !== parent || posts.nextElementSibling !== comments) {
+    parent.insertBefore(comments, posts.nextSibling);
   }
 }
 
@@ -252,9 +258,13 @@ export function syncCommentsEmptyState(document) {
   empty.hidden = list.querySelector(".topic-post") != null;
 }
 
+const dockedOpByDocument = new WeakMap();
+
 export function dockComments(document) {
   const list = document.querySelector(".wecom-comments-list");
   if (!list) return;
+  const op = findOpPost(document);
+  if (op) dockedOpByDocument.set(document, op);
   for (const post of postsToDock(document)) {
     if (post.parentElement === list) continue;
     list.appendChild(post);
@@ -264,10 +274,20 @@ export function dockComments(document) {
 
 export function restoreComments(document) {
   const list = document.querySelector(".wecom-comments-list");
-  const stream = document.querySelector(".post-stream");
-  if (!list || !stream) return;
+  if (!list) return;
   const moved = [...list.querySelectorAll(".topic-post")];
-  for (const post of moved) stream.appendChild(post);
+  if (!moved.length) return;
+  const stream = document.querySelector(".post-stream");
+  const recordedOp = dockedOpByDocument.get(document);
+  const belongsToCurrent = stream && (!recordedOp || stream.contains(recordedOp));
+  const previous = recordedOp?.closest(".post-stream");
+  const target = belongsToCurrent
+    ? stream
+    : previous?.isConnected && previous !== stream
+      ? previous
+      : null;
+  if (!target) return;
+  for (const post of moved) target.appendChild(post);
 }
 
 export function applyTheme(document, css) {
@@ -291,6 +311,18 @@ export function applyTheme(document, css) {
     runStep(() => makeColumnLabels(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
+    const html = document.documentElement;
+    const path = location.pathname;
+    if (html.dataset.wecomTopicPath !== path) {
+      runStep(() => restoreComments(document));
+      const list = document.querySelector(".wecom-comments-list");
+      const recordedOp = dockedOpByDocument.get(document);
+      const op = findOpPost(document);
+      if (list && recordedOp && op && recordedOp !== op) {
+        for (const post of [...list.querySelectorAll(".topic-post")]) post.remove();
+      }
+    }
+    html.dataset.wecomTopicPath = path;
     document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
     runStep(() => ensureTopicShell(document));
@@ -322,6 +354,10 @@ export function bindNavigation(window, document, css) {
       applyTheme(document, css);
     });
   };
+  const restoreAndSchedule = () => {
+    restoreComments(document);
+    schedule();
+  };
   new MutationObserver(schedule).observe(document.documentElement, {
     childList: true,
     subtree: true
@@ -330,11 +366,11 @@ export function bindNavigation(window, document, css) {
     const original = window.history[method];
     window.history[method] = function (...args) {
       const result = original.apply(this, args);
-      schedule();
+      restoreAndSchedule();
       return result;
     };
   }
-  window.addEventListener("popstate", schedule);
+  window.addEventListener("popstate", restoreAndSchedule);
   window.addEventListener("hashchange", schedule);
   document.addEventListener("turbo:load", schedule);
   document.addEventListener("page:changed", schedule);

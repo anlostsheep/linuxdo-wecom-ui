@@ -23,4 +23,8 @@ describe("wecom-style tokens", () => {
     assert.match(css, /#4b8cff/);
     assert.match(css, /#3dcdc4/);
   });
+  it("spans topic asides across all grid rows", () => {
+    assert.match(css, /aside\.wecom-toc\s*\{[^}]*grid-row:\s*1\s*\/\s*-1/);
+    assert.match(css, /aside\.wecom-comments\s*\{[^}]*grid-row:\s*1\s*\/\s*-1/);
+  });
 });
