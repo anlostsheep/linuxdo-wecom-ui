@@ -186,23 +186,19 @@ export function makeTopicContext(document) {
   context.textContent = topicContextText(categoryText || null, title);
 }
 
-export function ensureTopicShell(document) {
-  const posts = document.querySelector(".container.posts") || document.querySelector("#main-outlet");
-  if (!posts) return;
-  const parent = posts.parentElement;
-  if (!parent) return;
-  for (const extra of document.querySelectorAll(".wecom-shell")) {
-    if (extra !== parent) extra.classList.remove("wecom-shell");
+export function unwrapDocMain(document) {
+  const main = document.querySelector(".wecom-doc-main");
+  if (!main) return;
+  const parent = main.parentElement;
+  if (!parent) {
+    main.remove();
+    return;
   }
-  parent.classList.add("wecom-shell");
-  let toc = document.querySelector("aside.wecom-toc");
-  if (!toc) {
-    toc = document.createElement("aside");
-    toc.className = "wecom-toc";
-  }
-  if (toc.parentElement !== parent || toc.nextElementSibling !== posts) {
-    parent.insertBefore(toc, posts);
-  }
+  while (main.firstChild) parent.insertBefore(main.firstChild, main);
+  main.remove();
+}
+
+function ensureCommentsAside(document) {
   let comments = document.querySelector("aside.wecom-comments");
   if (!comments) {
     comments = document.createElement("aside");
@@ -210,8 +206,59 @@ export function ensureTopicShell(document) {
     comments.innerHTML =
       '<div class="wecom-comments-head">评论</div><div class="wecom-comments-list"></div><div class="wecom-comments-empty">暂无评论</div>';
   }
-  if (comments.parentElement !== parent || posts.nextElementSibling !== comments) {
-    parent.insertBefore(comments, posts.nextSibling);
+  return comments;
+}
+
+function ensureTocAside(document) {
+  let toc = document.querySelector("aside.wecom-toc");
+  if (!toc) {
+    toc = document.createElement("aside");
+    toc.className = "wecom-toc";
+  }
+  return toc;
+}
+
+export function ensureTopicShell(document) {
+  const posts = document.querySelector(".container.posts");
+  const outlet = document.querySelector("#main-outlet");
+  const toc = ensureTocAside(document);
+  const comments = ensureCommentsAside(document);
+
+  if (!posts) {
+    const parent = outlet?.parentElement || outlet;
+    if (!parent) return;
+    if (toc.parentElement !== parent) parent.insertBefore(toc, outlet || null);
+    if (comments.parentElement !== parent) parent.appendChild(comments);
+    return;
+  }
+
+  let parent = posts.parentElement;
+  if (!parent) return;
+  if (parent.classList.contains("wecom-doc-main")) parent = parent.parentElement;
+  if (!parent) return;
+
+  let main = parent.querySelector(":scope > .wecom-doc-main");
+  if (!main) {
+    main = document.createElement("div");
+    main.className = "wecom-doc-main";
+  }
+  const title = document.querySelector("#topic-title");
+  if (title && title.parentElement !== main) main.insertBefore(title, main.firstChild);
+  if (posts.parentElement !== main) main.appendChild(posts);
+  const footer = parent.querySelector(":scope > .topic-footer-buttons");
+  if (footer && footer.parentElement !== main) main.appendChild(footer);
+  if (main.parentElement !== parent) parent.appendChild(main);
+
+  for (const extra of document.querySelectorAll(".wecom-shell")) {
+    if (extra !== parent) extra.classList.remove("wecom-shell");
+  }
+  parent.classList.add("wecom-shell");
+
+  if (toc.parentElement !== parent || toc.nextElementSibling !== main) {
+    parent.insertBefore(toc, main);
+  }
+  if (comments.parentElement !== parent || main.nextElementSibling !== comments) {
+    parent.insertBefore(comments, main.nextSibling);
   }
 }
 
@@ -322,6 +369,7 @@ export function applyTheme(document, css) {
       document.querySelector("aside.wecom-comments")?.remove();
     }
     document.querySelector(".wecom-topic-context")?.remove();
+    unwrapDocMain(document);
     document.querySelector(".wecom-shell")?.classList.remove("wecom-shell");
     runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));

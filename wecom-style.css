@@ -211,33 +211,40 @@ html.wecom-doc-theme.wecom-doc-topic #main-outlet {
 html.wecom-doc-theme.wecom-doc-topic .wecom-shell {
   display: grid !important;
   grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;
-  grid-template-rows: auto 1fr !important;
+  grid-template-rows: minmax(0, 1fr) !important;
   width: 100% !important;
   max-width: none !important;
-  align-items: start !important;
+  min-height: calc(100vh - var(--wecom-header-h) - 12px);
+  align-items: stretch !important;
 }
 html.wecom-doc-theme.wecom-doc-topic .wecom-shell > * {
-  grid-column: 2;
   min-width: 0;
 }
 html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-toc {
   grid-column: 1;
-  grid-row: 1 / -1;
+  grid-row: 1;
+  min-height: 0;
+  max-height: calc(100vh - var(--wecom-header-h));
+  overflow: auto;
 }
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > #topic-title {
+html.wecom-doc-theme.wecom-doc-topic .wecom-shell > .wecom-doc-main {
   grid-column: 2;
   grid-row: 1;
-}
-html.wecom-doc-theme.wecom-doc-topic .wecom-shell > .container.posts {
-  grid-column: 2;
-  grid-row: 2;
-  min-height: 120px;
-  width: auto !important;
-  max-width: none !important;
+  min-width: 0;
+  max-height: calc(100vh - var(--wecom-header-h));
+  overflow: auto;
+  padding: 8px 32px 48px;
 }
 html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-comments {
   grid-column: 3;
-  grid-row: 1 / -1;
+  grid-row: 1;
+  min-height: 0;
+  max-height: calc(100vh - var(--wecom-header-h));
+  overflow: auto;
+}
+html.wecom-doc-theme.wecom-doc-topic .more-topics__container,
+html.wecom-doc-theme.wecom-doc-topic .topic-above-post-stream-outlet {
+  display: none !important;
 }
 html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
   position: fixed !important;
@@ -278,13 +285,11 @@ html.wecom-doc-theme.wecom-doc-topic .timeline-container {
 html.wecom-doc-theme aside.wecom-toc {
   background: var(--wecom-sidebar);
   border-right: 1px solid var(--wecom-line);
-  min-height: calc(100vh - var(--wecom-header-h));
   padding: 16px 8px;
 }
 html.wecom-doc-theme aside.wecom-comments {
   background: var(--wecom-bg);
   border-left: 1px solid var(--wecom-line);
-  min-height: calc(100vh - var(--wecom-header-h));
 }
 html.wecom-doc-theme .wecom-comments-head {
   height: 48px;

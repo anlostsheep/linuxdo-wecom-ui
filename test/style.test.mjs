@@ -23,9 +23,10 @@ describe("wecom-style tokens", () => {
     assert.match(css, /#4b8cff/);
     assert.match(css, /#3dcdc4/);
   });
-  it("grids the wecom-shell parent with explicit rows", () => {
-    assert.match(css, /\.wecom-shell\s*\{[^}]*grid-template-rows:\s*auto\s+1fr/);
-    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-toc\s*\{[^}]*grid-row:\s*1\s*\/\s*-1/);
-    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-comments\s*\{[^}]*grid-row:\s*1\s*\/\s*-1/);
+  it("uses a single-row three-column shell with a doc-main cell", () => {
+    assert.match(css, /\.wecom-shell\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)/);
+    assert.match(css, /\.wecom-shell\s*>\s*\.wecom-doc-main/);
+    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-toc\s*\{[^}]*grid-column:\s*1/);
+    assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-comments\s*\{[^}]*grid-column:\s*3/);
   });
 });

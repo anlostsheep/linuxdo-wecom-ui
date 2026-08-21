@@ -35,11 +35,16 @@ describe("topic chrome", () => {
     const posts = document.querySelector(".container.posts");
     const comments = document.querySelector("aside.wecom-comments");
     const outlet = document.getElementById("main-outlet");
-    assert.equal(toc.parentElement, posts.parentElement);
-    assert.equal(posts.parentElement, comments.parentElement);
+    const main = document.querySelector(".wecom-doc-main");
+    const title = document.getElementById("topic-title");
+    assert.ok(main);
+    assert.equal(main.parentElement, outlet);
+    assert.equal(title.parentElement, main);
+    assert.equal(posts.parentElement, main);
     assert.equal(toc.parentElement, outlet);
-    assert.equal(toc.nextElementSibling, posts);
-    assert.equal(posts.nextElementSibling, comments);
+    assert.equal(comments.parentElement, outlet);
+    assert.equal(toc.nextElementSibling, main);
+    assert.equal(main.nextElementSibling, comments);
   });
 
   it("re-parents asides onto #main-outlet after .container.posts appears", () => {
@@ -68,11 +73,14 @@ describe("topic chrome", () => {
     outlet.appendChild(after);
 
     ensureTopicShell(document);
+    const main = document.querySelector(".wecom-doc-main");
+    assert.ok(main);
+    assert.equal(main.parentElement, outlet);
+    assert.equal(posts.parentElement, main);
     assert.equal(toc.parentElement, outlet);
-    assert.equal(posts.parentElement, outlet);
     assert.equal(comments.parentElement, outlet);
-    assert.equal(toc.nextElementSibling, posts);
-    assert.equal(posts.nextElementSibling, comments);
+    assert.equal(toc.nextElementSibling, main);
+    assert.equal(main.nextElementSibling, comments);
     assert.equal(document.querySelectorAll("aside.wecom-toc").length, 1);
     assert.equal(document.querySelectorAll("aside.wecom-comments").length, 1);
   });
