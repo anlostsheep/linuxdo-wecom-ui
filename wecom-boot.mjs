@@ -266,13 +266,7 @@ export function restoreComments(document) {
   const list = document.querySelector(".wecom-comments-list");
   const stream = document.querySelector(".post-stream");
   if (!list || !stream) return;
-  const op = findOpPost(document);
-  for (const post of [...list.querySelectorAll(".topic-post")]) {
-    if (op && op.nextSibling) stream.insertBefore(post, op.nextSibling);
-    else stream.appendChild(post);
-  }
-  /* keep chronological order: append in current list order after OP */
-  const moved = [...stream.querySelectorAll(".topic-post")].filter((p) => p !== op);
+  const moved = [...list.querySelectorAll(".topic-post")];
   for (const post of moved) stream.appendChild(post);
 }
 
@@ -288,7 +282,9 @@ export function applyTheme(document, css) {
   if (mode === "home") {
     runStep(() => restoreComments(document));
     document.querySelector("aside.wecom-toc")?.remove();
-    document.querySelector("aside.wecom-comments")?.remove();
+    if (!document.querySelector("aside.wecom-comments .topic-post")) {
+      document.querySelector("aside.wecom-comments")?.remove();
+    }
     document.querySelector(".wecom-topic-context")?.remove();
     runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
