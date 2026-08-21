@@ -5,6 +5,8 @@ import {
   WECOM_BRAND_SVG,
   applyColorMode,
   applyPageMode,
+  collectTocEntries,
+  findOpPost,
   isDarkFromScheme,
   readDarkSchemeMedia,
   runStep,
@@ -190,6 +192,45 @@ export function ensureTopicShell(document) {
   }
 }
 
+export function makeToc(document) {
+  const toc = document.querySelector("aside.wecom-toc");
+  if (!toc) return;
+  const title =
+    document.querySelector("#topic-title h1, #topic-title .fancy-title")?.textContent
+      ?.trim()
+      .replace(/\s+/g, " ") || topicTitleFromDocumentTitle(document.title) || "文档";
+  const op = findOpPost(document);
+  const entries = collectTocEntries(op?.querySelector(".cooked"));
+  const key = `${title}|${entries.map((e) => e.id).join(",")}`;
+  if (toc.dataset.routeKey === key) return;
+  toc.dataset.routeKey = key;
+  toc.replaceChildren();
+  const root = document.createElement("button");
+  root.type = "button";
+  root.className = "wecom-toc-item wecom-toc-root";
+  root.textContent = title;
+  root.addEventListener("click", () => op?.scrollIntoView({ block: "start" }));
+  toc.appendChild(root);
+  for (const entry of entries) {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = `wecom-toc-item wecom-toc-l${entry.level}`;
+    item.textContent = entry.text;
+    item.addEventListener("click", () => {
+      document.getElementById(entry.id)?.scrollIntoView({ block: "start" });
+    });
+    toc.appendChild(item);
+  }
+}
+
+export function markCoverImage(document) {
+  const cooked = findOpPost(document)?.querySelector(".cooked");
+  if (!cooked) return;
+  cooked.querySelectorAll("img.wecom-cover").forEach((img) => img.classList.remove("wecom-cover"));
+  const img = cooked.querySelector("img");
+  if (img) img.classList.add("wecom-cover");
+}
+
 export function bindNavDrawer(document) {
   const html = document.documentElement;
   if (html.dataset.wecomNavBound) return;
@@ -226,6 +267,8 @@ export function applyTheme(document, css) {
     document.querySelector(".wecom-home-heading")?.remove();
     runStep(() => makeTopicContext(document));
     runStep(() => ensureTopicShell(document));
+    runStep(() => makeToc(document));
+    runStep(() => markCoverImage(document));
     runStep(() => bindNavDrawer(document));
   }
 }

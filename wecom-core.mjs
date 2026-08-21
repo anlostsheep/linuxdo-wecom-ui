@@ -64,3 +64,23 @@ export const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 48 48" 
   <circle cx="28.8" cy="31.8" r="2.7" fill="#FF8A3A"/>
   <circle cx="37.6" cy="31.1" r="2.35" fill="#F5C400"/>
 </svg>`;
+
+export function findOpPost(document) {
+  return document.querySelector("#post_1") || document.querySelector(".post-stream .topic-post");
+}
+
+export function collectTocEntries(cooked) {
+  if (!cooked) return [];
+  const out = [];
+  cooked.querySelectorAll("h1, h2, h3").forEach((heading, index) => {
+    const text = heading.textContent.trim().replace(/\s+/g, " ");
+    if (!text) return;
+    if (!heading.id) heading.id = `wecom-h-${index}`;
+    out.push({
+      id: heading.id,
+      level: Number(heading.tagName.slice(1)),
+      text
+    });
+  });
+  return out;
+}
