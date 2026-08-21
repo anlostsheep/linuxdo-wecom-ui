@@ -110,3 +110,21 @@ html.wecom-doc-theme .sidebar-section-link.active {
   background: var(--wecom-active) !important;
   color: var(--wecom-link) !important;
 }
+
+html.wecom-doc-theme .d-header .title img,
+html.wecom-doc-theme .d-header .title picture,
+html.wecom-doc-theme .d-header .title .logo-big,
+html.wecom-doc-theme .d-header .title .logo-small {
+  display: none !important;
+}
+html.wecom-doc-theme .wecom-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+html.wecom-doc-theme .wecom-app-icon {
+  width: 28px;
+  height: 28px;
+}

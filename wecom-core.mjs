@@ -55,3 +55,12 @@ export function runStep(fn) {
     /* keep later steps running */
   }
 }
+
+export const WECOM_BRAND_SVG = `<svg class="wecom-app-icon" viewBox="0 0 48 48" aria-hidden="true">
+  <rect x="1" y="1" width="46" height="46" rx="12" fill="#fff"/>
+  <path fill="#3D9BFF" d="M11.8 20.8c0-6.35 6.55-11 13.4-11 6.85 0 13.4 4.65 13.4 11s-6.55 11-13.4 11c-1.55 0-3.05-.2-4.4-.6L13.2 35.2l2.55-4.55c-2.55-2.25-3.95-5.7-3.95-9.85z"/>
+  <path stroke="#AEB6BF" stroke-width="1.35" stroke-linecap="round" fill="none" d="M31.6 27.2l3.5-3.6M31.6 27.2l-2.5 4.3M31.6 27.2l5.2 3.3"/>
+  <circle cx="35.4" cy="23.2" r="2.55" fill="#62C05B"/>
+  <circle cx="28.8" cy="31.8" r="2.7" fill="#FF8A3A"/>
+  <circle cx="37.6" cy="31.1" r="2.35" fill="#F5C400"/>
+</svg>`;
