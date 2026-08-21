@@ -7,7 +7,9 @@ import {
   applyPageMode,
   isDarkFromScheme,
   readDarkSchemeMedia,
-  runStep
+  runStep,
+  topicContextText,
+  topicTitleFromDocumentTitle
 } from "./wecom-core.mjs";
 
 export function prefersDark() {
@@ -146,6 +148,61 @@ export function makeCreateTopicButton(document) {
   if (button.parentElement !== slot) slot.appendChild(button);
 }
 
+export function makeTopicContext(document) {
+  const headerContents = document.querySelector(".d-header .contents");
+  if (!headerContents) return;
+  const topicTitle = document.querySelector("#topic-title h1, #topic-title .fancy-title");
+  let title = topicTitle?.textContent?.trim().replace(/\s+/g, " ");
+  if (!title) title = topicTitleFromDocumentTitle(document.title);
+  if (!title) return;
+  let context = headerContents.querySelector(".wecom-topic-context");
+  if (!context) {
+    context = document.createElement("div");
+    context.className = "wecom-topic-context";
+    headerContents.appendChild(context);
+  }
+  const category = document.querySelector(
+    "#topic-title .badge-category__name, #topic-title .badge-wrapper, #topic-title .category-name"
+  );
+  const categoryText = category?.textContent?.trim().replace(/\s+/g, " ") || "";
+  const routeKey = `${location.pathname}|${title}|${categoryText}`;
+  if (context.dataset.routeKey === routeKey) return;
+  context.dataset.routeKey = routeKey;
+  context.textContent = topicContextText(categoryText || null, title);
+}
+
+export function ensureTopicShell(document) {
+  const posts = document.querySelector(".container.posts") || document.querySelector("#main-outlet");
+  if (!posts) return;
+  let toc = document.querySelector("aside.wecom-toc");
+  if (!toc) {
+    toc = document.createElement("aside");
+    toc.className = "wecom-toc";
+    posts.parentElement.insertBefore(toc, posts);
+  }
+  let comments = document.querySelector("aside.wecom-comments");
+  if (!comments) {
+    comments = document.createElement("aside");
+    comments.className = "wecom-comments";
+    comments.innerHTML =
+      '<div class="wecom-comments-head">评论</div><div class="wecom-comments-list"></div><div class="wecom-comments-empty">暂无评论</div>';
+    posts.parentElement.appendChild(comments);
+  }
+}
+
+function bindNavDrawer(document) {
+  const html = document.documentElement;
+  if (html.dataset.wecomNavBound) return;
+  html.dataset.wecomNavBound = "1";
+  for (const button of document.querySelectorAll(
+    ".header-sidebar-toggle button, .hamburger-dropdown button"
+  )) {
+    button.addEventListener("click", () => {
+      html.classList.toggle("wecom-nav-open");
+    });
+  }
+}
+
 export function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -156,10 +213,20 @@ export function applyTheme(document, css) {
   runStep(() => makeFavicon(document));
   runStep(() => makeSidebarSearch(document));
   if (mode === "home") {
+    document.querySelector(".wecom-topic-context")?.remove();
+    if (!document.querySelector("aside.wecom-comments .topic-post")) {
+      document.querySelector("aside.wecom-toc")?.remove();
+      document.querySelector("aside.wecom-comments")?.remove();
+    }
     runStep(() => makeHomeHeading(document));
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeColumnLabels(document));
     runStep(() => makeDocIcons(document));
+  } else if (mode === "topic") {
+    document.querySelector(".wecom-home-heading")?.remove();
+    runStep(() => makeTopicContext(document));
+    runStep(() => ensureTopicShell(document));
+    runStep(() => bindNavDrawer(document));
   }
 }
 

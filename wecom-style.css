@@ -193,3 +193,60 @@ html.wecom-doc-theme .wecom-sidebar-search {
   color: var(--wecom-text-2) !important;
   text-decoration: none !important;
 }
+
+html.wecom-doc-theme.wecom-doc-topic #main-outlet-wrapper,
+html.wecom-doc-theme.wecom-doc-topic .container.posts {
+  display: grid !important;
+  grid-template-columns: var(--wecom-toc-w) minmax(0, 1fr) var(--wecom-comments-w) !important;
+  align-items: start !important;
+}
+html.wecom-doc-theme.wecom-doc-topic .sidebar-wrapper {
+  position: fixed !important;
+  z-index: 1200 !important;
+  top: var(--wecom-header-h) !important;
+  left: 0 !important;
+  height: calc(100vh - var(--wecom-header-h)) !important;
+  transform: translateX(-110%);
+  transition: transform 160ms ease;
+}
+html.wecom-doc-theme.wecom-doc-topic.wecom-nav-open .sidebar-wrapper {
+  transform: translateX(0);
+}
+html.wecom-doc-theme .wecom-topic-context {
+  position: absolute;
+  left: 72px;
+  right: 280px;
+  top: 0;
+  height: var(--wecom-header-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--wecom-text-2);
+  font-size: 14px;
+  pointer-events: none;
+}
+html.wecom-doc-theme.wecom-doc-topic .topic-navigation,
+html.wecom-doc-theme.wecom-doc-topic .timeline-container {
+  display: none !important;
+}
+html.wecom-doc-theme aside.wecom-toc {
+  background: var(--wecom-sidebar);
+  border-right: 1px solid var(--wecom-line);
+  min-height: calc(100vh - var(--wecom-header-h));
+  padding: 16px 8px;
+}
+html.wecom-doc-theme aside.wecom-comments {
+  background: var(--wecom-bg);
+  border-left: 1px solid var(--wecom-line);
+  min-height: calc(100vh - var(--wecom-header-h));
+}
+html.wecom-doc-theme .wecom-comments-head {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--wecom-line);
+}
