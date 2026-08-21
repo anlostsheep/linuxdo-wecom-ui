@@ -92,6 +92,17 @@ html.wecom-doc-theme #main-outlet-wrapper {
   padding: 0 !important;
 }
 
+html.wecom-doc-theme body:not(.has-sidebar-page) #main-outlet-wrapper,
+html.wecom-doc-theme #main-outlet-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+html.wecom-doc-theme body:not(.has-sidebar-page) .sidebar-wrapper,
+html.wecom-doc-theme .sidebar-wrapper:not(:has(.sidebar-container, .sidebar-sections, .sidebar-section-link)) {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+}
+
 html.wecom-doc-theme .sidebar-wrapper {
   width: var(--wecom-nav-w) !important;
   min-width: var(--wecom-nav-w) !important;
@@ -105,6 +116,10 @@ html.wecom-doc-theme #main-outlet {
   padding-top: calc(var(--wecom-header-h) + 12px) !important;
 }
 
+html.wecom-doc-theme .sidebar-section-link,
+html.wecom-doc-theme .sidebar-section-link-content-text {
+  color: var(--wecom-text) !important;
+}
 html.wecom-doc-theme .sidebar-section-link-wrapper.is-active,
 html.wecom-doc-theme .sidebar-section-link.active {
   background: var(--wecom-active) !important;
@@ -234,6 +249,26 @@ html.wecom-doc-theme.wecom-doc-topic .wecom-shell > .wecom-doc-main {
   max-height: calc(100vh - var(--wecom-header-h));
   overflow: auto;
   padding: 8px 32px 48px;
+}
+html.wecom-doc-theme.wecom-doc-topic {
+  --topic-body-width: 100% !important;
+  --topic-body-width-padding: 0px !important;
+}
+html.wecom-doc-theme.wecom-doc-topic .container.posts,
+html.wecom-doc-theme.wecom-doc-topic .post-stream,
+html.wecom-doc-theme.wecom-doc-topic .topic-area,
+html.wecom-doc-theme.wecom-doc-topic .topic-post,
+html.wecom-doc-theme.wecom-doc-topic article.boxed,
+html.wecom-doc-theme.wecom-doc-topic .onscreen-post,
+html.wecom-doc-theme.wecom-doc-topic .topic-body,
+html.wecom-doc-theme.wecom-doc-topic .cooked {
+  width: 100% !important;
+  max-width: none !important;
+  float: none !important;
+  box-sizing: border-box !important;
+}
+html.wecom-doc-theme.wecom-doc-topic .container.posts {
+  display: block !important;
 }
 html.wecom-doc-theme.wecom-doc-topic .wecom-shell > aside.wecom-comments {
   grid-column: 3;

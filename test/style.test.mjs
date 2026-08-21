@@ -29,4 +29,9 @@ describe("wecom-style tokens", () => {
     assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-toc\s*\{[^}]*grid-column:\s*1/);
     assert.match(css, /\.wecom-shell\s*>\s*aside\.wecom-comments\s*\{[^}]*grid-column:\s*3/);
   });
+  it("hides an empty Discourse sidebar and uncaps topic-body width", () => {
+    assert.match(css, /body:not\(\.has-sidebar-page\) #main-outlet-wrapper/);
+    assert.match(css, /--topic-body-width:\s*100%/);
+    assert.match(css, /\.topic-body[\s\S]*max-width:\s*none/);
+  });
 });
