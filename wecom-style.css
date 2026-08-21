@@ -405,50 +405,6 @@ html.wecom-doc-topic .timeline-container .timeline-controls button {
   font-size: 12px !important;
 }
 
-html.wecom-doc-topic .wecom-toc-level-3 a {
-  padding-left: 24px;
-  font-size: 12.5px;
-}
-
-/* 中栏主体 (Document Area) */
-html.wecom-doc-topic .container.posts {
-  flex: 1 1 0% !important;
-  min-width: 0 !important;
-}
-
-html.wecom-doc-topic #topic-title {
-  margin-bottom: 24px !important;
-  padding-bottom: 16px !important;
-  border-bottom: 1px solid var(--wecom-line) !important;
-}
-
-html.wecom-doc-topic #topic-title h1,
-html.wecom-doc-topic #topic-title .fancy-title {
-  font-size: 26px !important;
-  font-weight: 700 !important;
-  line-height: 1.35 !important;
-  color: var(--wecom-text) !important;
-  letter-spacing: -0.3px;
-  margin-bottom: 12px !important;
-}
-
-html.wecom-doc-topic #topic-title .badge-wrapper.bullet,
-html.wecom-doc-topic #topic-title .badge-wrapper.bar {
-  display: inline-flex !important;
-  align-items: center !important;
-  padding: 2px 8px !important;
-  border-radius: 4px !important;
-  background: var(--wecom-search) !important;
-  font-size: 12px !important;
-  margin-right: 6px !important;
-}
-
-html.wecom-doc-topic #topic-title .badge-category__name,
-html.wecom-doc-topic #topic-title .badge-category-bg {
-  color: var(--wecom-text-2) !important;
-  font-weight: 500 !important;
-}
-
 /* 主帖 (#post_1) 作为核心文档画布 */
 html.wecom-doc-topic .topic-post:first-child {
   border: none !important;

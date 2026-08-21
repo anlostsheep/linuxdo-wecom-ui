@@ -5,8 +5,6 @@ import {
   WECOM_BRAND_SVG,
   applyColorMode,
   applyPageMode,
-  collectTocEntries,
-  findOpPost,
   isDarkFromScheme,
   readDarkSchemeMedia,
   runStep,

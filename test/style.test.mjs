@@ -28,7 +28,9 @@ describe("wecom-style tokens and layout", () => {
     assert.match(css, /aside\.wecom-toc/);
     assert.doesNotMatch(css, /\.wecom-shell/);
     assert.doesNotMatch(css, /aside\.wecom-comments/);
+    assert.doesNotMatch(css, /\.wecom-toc-level-3/);
   });
 });
+
 
 

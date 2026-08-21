@@ -10,13 +10,17 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v2.0.0 with WeCom brand and theme bootstrap", () => {
-    assert.match(userscript, /@version\s+2\.0\.0/);
+  it("ships v2.0.1 without leftover left TOC copy", () => {
+    assert.match(userscript, /@version\s+2\.0\.1/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);
+    assert.match(userscript, /topic-navigation/);
+    assert.doesNotMatch(userscript, /TOC目录/);
+    assert.doesNotMatch(userscript, /wecom-toc-level-3/);
     assert.doesNotMatch(userscript, /disableDiscourseCloaking/);
     assert.doesNotMatch(userscript, /dockComments/);
   });
 });
+
 
