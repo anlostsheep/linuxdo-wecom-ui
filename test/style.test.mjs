@@ -30,6 +30,17 @@ describe("wecom-style tokens and layout", () => {
     assert.doesNotMatch(css, /aside\.wecom-comments/);
     assert.doesNotMatch(css, /\.wecom-toc-level-3/);
   });
+  it("restyles the OP topic-map as a compact document footer", () => {
+    assert.match(css, /\.post__topic-map|\.topic-map\.--op/);
+    assert.match(css, /\.topic-map__stats/);
+    assert.match(css, /\.topic-map__users-list/);
+    assert.match(css, /\.topic-map__links-trigger/);
+    assert.match(css, /content:\s*["']评论["']/);
+    assert.doesNotMatch(
+      css,
+      /html\.wecom-doc-topic \.topic-map,\s*\nhtml\.wecom-doc-topic \.post__topic-map \{\s*display:\s*none/
+    );
+  });
   it("keeps homepage poster avatars on one row instead of wrapping the fifth", () => {
     assert.match(css, /\.topic-list\s+\.posters\s+\{[^}]*white-space:\s*nowrap/);
     assert.match(css, /\.topic-list\s+\.posters\s+a\s+\{[^}]*float:\s*none/);

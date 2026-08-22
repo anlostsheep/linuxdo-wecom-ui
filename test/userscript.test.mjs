@@ -10,8 +10,8 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v2.0.2 without leftover left TOC copy", () => {
-    assert.match(userscript, /@version\s+2\.0\.2/);
+  it("ships v2.0.3 without leftover left TOC copy", () => {
+    assert.match(userscript, /@version\s+2\.0\.3/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);

@@ -342,18 +342,99 @@ html.wecom-doc-topic #topic-title .badge-category-bg {
   font-weight: 500 !important;
 }
 
-/* 彻底隐藏任何残留的 aside.wecom-toc 及论坛式阅读统计大地图 (topic-map)，绝不占用左侧空间 */
+/* 去掉自建左栏 TOC；文末 --bottom 地图仍藏，避免 flex 多出一列 */
 aside.wecom-toc,
 .wecom-toc,
 html.wecom-doc-topic .container.posts > .topic-map,
-html.wecom-doc-topic .topic-map,
-html.wecom-doc-topic .post__topic-map {
+html.wecom-doc-topic .topic-map.--bottom {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
+}
+
+/* 主帖 topic-map 收成文档页脚：阅读 · 赞，藏掉头像墙/链接/用户/总结 */
+html.wecom-doc-topic .post__topic-map,
+html.wecom-doc-topic .topic-map.--op {
+  display: flex !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 8px 0 4px !important;
+  padding: 10px 0 2px !important;
+  border: none !important;
+  border-top: 1px solid var(--wecom-line) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  align-items: center;
+}
+
+html.wecom-doc-topic .topic-map__contents {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+
+html.wecom-doc-topic .topic-map__stats {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 2px;
+}
+
+html.wecom-doc-topic .topic-map__stats > .btn {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 2px !important;
+  color: var(--wecom-text-3) !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  min-height: 0 !important;
+}
+
+html.wecom-doc-topic .topic-map__stats > .btn .number {
+  color: var(--wecom-text-2) !important;
+  font-weight: 500 !important;
+  margin-right: 4px;
+}
+
+html.wecom-doc-topic .topic-map__stat-label {
+  color: var(--wecom-text-3) !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+}
+
+html.wecom-doc-topic .topic-map__stats > .btn + .btn::before {
+  content: "·";
+  margin-right: 8px;
+  color: var(--wecom-text-3);
+}
+
+html.wecom-doc-topic .topic-map__links-trigger,
+html.wecom-doc-topic .topic-map__users-trigger,
+html.wecom-doc-topic .topic-map__users-list,
+html.wecom-doc-topic .topic-map__buttons,
+html.wecom-doc-topic .topic-map__additional-contents {
+  display: none !important;
+}
+
+html.wecom-doc-topic .topic-owner,
+html.wecom-doc-topic .post-info.owner,
+html.wecom-doc-topic .topic-status-info {
+  display: none !important;
+}
+
+/* 主帖与第一条回复之间的评论分隔 */
+html.wecom-doc-topic .topic-post:has(#post_1) + .topic-post::before {
+  content: "评论";
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wecom-text-2);
+  margin: 4px 0 12px;
+  padding-top: 8px;
 }
 
 /* 话题正文流与右侧时间线自然布局（正文在左中，时间线在右侧） */
@@ -417,7 +498,7 @@ html.wecom-doc-topic .timeline-container .timeline-controls button {
 /* 主帖 (#post_1) 作为核心文档画布 */
 html.wecom-doc-topic .topic-post:first-child {
   border: none !important;
-  margin-bottom: 36px !important;
+  margin-bottom: 12px !important;
 }
 
 html.wecom-doc-topic .topic-post:first-child .topic-body {
