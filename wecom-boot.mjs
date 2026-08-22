@@ -158,6 +158,21 @@ export function removeLeftoverToc(document) {
   }
 }
 
+const CLOAK_MODULE = "discourse/modifiers/post-stream-viewport-tracker";
+
+export function disableDiscourseCloaking(win) {
+  try {
+    const req = win?.require;
+    if (typeof req !== "function") return false;
+    const mod = req(CLOAK_MODULE);
+    if (typeof mod?.disableCloaking !== "function") return false;
+    mod.disableCloaking();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function applyTheme(document, css) {
   injectStyle(document, css);
   document.documentElement.classList.add(THEME_CLASS);
@@ -173,6 +188,7 @@ export function applyTheme(document, css) {
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
+    runStep(() => disableDiscourseCloaking(document.defaultView || globalThis));
     runStep(() => makeTopicContext(document));
     runStep(() => makeDocumentTitle(document, true));
   }
@@ -214,10 +230,17 @@ export function bindNavigation(window, document, css) {
       }
     });
   };
-  observer?.observe(document.documentElement, {
-    childList: true,
-    subtree: true
-  });
+  const observeRoot = () => {
+    if (!document.body) {
+      document.addEventListener("DOMContentLoaded", observeRoot, { once: true });
+      return;
+    }
+    observer?.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  };
+  observeRoot();
   for (const method of ["pushState", "replaceState"]) {
     const original = window.history[method];
     window.history[method] = function (...args) {

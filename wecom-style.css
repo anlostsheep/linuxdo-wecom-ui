@@ -426,14 +426,14 @@ html.wecom-doc-topic .topic-status-info {
   display: none !important;
 }
 
-/* 主帖与第一条回复之间的评论分隔 */
-html.wecom-doc-topic .topic-post:has(#post_1) + .topic-post::before {
+/* 评论分隔挂在主帖末尾，避免主帖 cloak 时第一层回复高度跳动 */
+html.wecom-doc-topic .topic-post:has(#post_1)::after {
   content: "评论";
   display: block;
   font-size: 13px;
   font-weight: 600;
   color: var(--wecom-text-2);
-  margin: 4px 0 12px;
+  margin: 12px 0 4px;
   padding-top: 8px;
 }
 

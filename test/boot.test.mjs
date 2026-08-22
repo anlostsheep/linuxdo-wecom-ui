@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import { THEME_CLASS } from "../wecom-core.mjs";
-import { bindNavigation, start } from "../wecom-boot.mjs";
+import { applyTheme, bindNavigation, start } from "../wecom-boot.mjs";
 
 describe("bootstrap", () => {
   it("applies theme class and coalesces history updates", async () => {
@@ -24,6 +24,28 @@ describe("bootstrap", () => {
     window.history.pushState({}, "", "/t/demo/1");
     await new Promise((r) => window.requestAnimationFrame(r));
     assert.ok(window.document.documentElement.classList.contains("wecom-doc-topic"));
+  });
+
+  it("calls Discourse disableCloaking on topic pages", () => {
+    const { window } = new JSDOM(
+      `<!doctype html><html><body>
+        <div class="container posts"><div class="post-stream">
+          <div class="topic-post"><article id="post_1"></article></div>
+        </div></div>
+      </body></html>`,
+      { url: "https://linux.do/t/x/1" }
+    );
+    let called = false;
+    window.require = (name) => {
+      if (name === "discourse/modifiers/post-stream-viewport-tracker") {
+        return { disableCloaking() { called = true; } };
+      }
+      throw new Error(name);
+    };
+    globalThis.window = window;
+    globalThis.location = window.location;
+    applyTheme(window.document, "/* css */");
+    assert.equal(called, true);
   });
 });
 
