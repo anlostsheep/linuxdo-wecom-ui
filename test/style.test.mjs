@@ -37,6 +37,10 @@ describe("wecom-style tokens and layout", () => {
     assert.match(css, /\.topic-map__links-trigger/);
     assert.match(css, /content:\s*["']评论["']/);
     assert.match(css, /\.topic-post:has\(#post_1\)::after/);
+    assert.match(css, /\.topic-post:has\(#post_1\)/);
+    assert.match(css, /\.topic-post:not\(:has\(#post_1\)\)/);
+    assert.doesNotMatch(css, /\.topic-post:first-child\s*\{/);
+    assert.doesNotMatch(css, /\.topic-post:not\(:first-child\)/);
     assert.doesNotMatch(css, /\.topic-post:has\(#post_1\)\s*\+\s*\.topic-post::before/);
     assert.doesNotMatch(
       css,

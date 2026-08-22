@@ -30,15 +30,19 @@ describe("bootstrap", () => {
     const { window } = new JSDOM(
       `<!doctype html><html><body>
         <div class="container posts"><div class="post-stream">
-          <div class="topic-post"><article id="post_1"></article></div>
+          <div class="topic-post"><article id="post_1" data-post-id="99"></article></div>
         </div></div>
       </body></html>`,
       { url: "https://linux.do/t/x/1" }
     );
     let called = false;
+    const prevented = [];
     window.require = (name) => {
       if (name === "discourse/modifiers/post-stream-viewport-tracker") {
-        return { disableCloaking() { called = true; } };
+        return {
+          disableCloaking() { called = true; },
+          preventCloaking(id) { prevented.push(id); }
+        };
       }
       throw new Error(name);
     };
@@ -46,6 +50,8 @@ describe("bootstrap", () => {
     globalThis.location = window.location;
     applyTheme(window.document, "/* css */");
     assert.equal(called, true);
+    assert.deepEqual(prevented, [99]);
+    assert.ok(window.document.querySelector(".topic-post.wecom-op-post"));
   });
 });
 

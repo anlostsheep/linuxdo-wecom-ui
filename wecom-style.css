@@ -495,17 +495,23 @@ html.wecom-doc-topic .timeline-container .timeline-controls button {
   font-size: 12px !important;
 }
 
-/* 主帖 (#post_1) 作为核心文档画布 */
-html.wecom-doc-topic .topic-post:first-child {
+/* 主帖按 #post_1 识别，不靠 :first-child（前面常有 cloak 占位） */
+html.wecom-doc-topic .topic-post:has(#post_1),
+html.wecom-doc-topic .topic-post.wecom-op-post {
   border: none !important;
   margin-bottom: 12px !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
-html.wecom-doc-topic .topic-post:first-child .topic-body {
+html.wecom-doc-topic .topic-post:has(#post_1) .topic-body,
+html.wecom-doc-topic .topic-post.wecom-op-post .topic-body {
   border-top: none !important;
 }
 
-html.wecom-doc-topic .topic-post:first-child .topic-meta-data {
+html.wecom-doc-topic .topic-post:has(#post_1) .topic-meta-data,
+html.wecom-doc-topic .topic-post.wecom-op-post .topic-meta-data {
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
@@ -515,7 +521,7 @@ html.wecom-doc-topic .topic-post:first-child .topic-meta-data {
 }
 
 /* 2 楼及以后的回复呈现为轻量「批注与讨论流」 */
-html.wecom-doc-topic .topic-post:not(:first-child) {
+html.wecom-doc-topic .topic-post:not(:has(#post_1)):not(.wecom-op-post) {
   background: var(--wecom-sidebar) !important;
   border: 1px solid var(--wecom-line) !important;
   border-radius: 8px !important;
@@ -524,12 +530,18 @@ html.wecom-doc-topic .topic-post:not(:first-child) {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
 }
 
-html.wecom-doc-topic .topic-post:not(:first-child) .topic-body {
+html.wecom-doc-topic .topic-post:not(:has(#post_1)):not(.wecom-op-post) .topic-body {
   border-top: none !important;
 }
 
-html.wecom-doc-topic .topic-post:not(:first-child) .topic-meta-data {
+html.wecom-doc-topic .topic-post:not(:has(#post_1)):not(.wecom-op-post) .topic-meta-data {
   padding-bottom: 4px !important;
+}
+
+html.wecom-doc-topic .post-stream--cloaked#post_1,
+html.wecom-doc-topic .post-stream--cloaked[data-post-number="1"] {
+  min-height: 320px !important;
+  height: 320px !important;
 }
 
 html.wecom-doc-topic .names span.first.username {

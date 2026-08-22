@@ -159,14 +159,35 @@ export function removeLeftoverToc(document) {
 }
 
 const CLOAK_MODULE = "discourse/modifiers/post-stream-viewport-tracker";
+let cloakingNudgedFor = "";
 
-export function disableDiscourseCloaking(win) {
+export function markOpPost(document) {
+  for (const post of document.querySelectorAll(".topic-post.wecom-op-post")) {
+    if (!post.querySelector("#post_1")) post.classList.remove("wecom-op-post");
+  }
+  const op = document.querySelector("#post_1")?.closest(".topic-post");
+  if (op) op.classList.add("wecom-op-post");
+}
+
+export function disableDiscourseCloaking(win, document) {
   try {
     const req = win?.require;
     if (typeof req !== "function") return false;
     const mod = req(CLOAK_MODULE);
     if (typeof mod?.disableCloaking !== "function") return false;
     mod.disableCloaking();
+    const postId = Number(
+      document?.querySelector("article#post_1")?.dataset?.postId ||
+        document?.querySelector("#post_1")?.dataset?.postId
+    );
+    if (postId && typeof mod.preventCloaking === "function") {
+      mod.preventCloaking(postId);
+    }
+    const path = win?.location?.pathname || "";
+    if (path && cloakingNudgedFor !== path) {
+      cloakingNudgedFor = path;
+      win.dispatchEvent(new Event("resize"));
+    }
     return true;
   } catch {
     return false;
@@ -188,7 +209,8 @@ export function applyTheme(document, css) {
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
-    runStep(() => disableDiscourseCloaking(document.defaultView || globalThis));
+    runStep(() => disableDiscourseCloaking(document.defaultView || globalThis, document));
+    runStep(() => markOpPost(document));
     runStep(() => makeTopicContext(document));
     runStep(() => makeDocumentTitle(document, true));
   }
