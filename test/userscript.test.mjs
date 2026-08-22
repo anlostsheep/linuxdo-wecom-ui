@@ -10,8 +10,8 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v2.0.5 without leftover left TOC copy", () => {
-    assert.match(userscript, /@version\s+2\.0\.5/);
+  it("ships v2.0.7 without leftover left TOC copy", () => {
+    assert.match(userscript, /@version\s+2\.0\.7/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);
@@ -20,6 +20,7 @@ describe("built userscript", () => {
     assert.doesNotMatch(userscript, /TOC目录/);
     assert.doesNotMatch(userscript, /wecom-toc-level-3/);
     assert.doesNotMatch(userscript, /dockComments/);
+    assert.doesNotMatch(userscript, /html\.wecom-doc-topic \.topic-owner,/);
   });
 });
 

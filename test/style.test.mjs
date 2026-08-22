@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { JSDOM } from "jsdom";
 
 const css = readFileSync(
   join(dirname(fileURLToPath(import.meta.url)), "../wecom-style.css"),
@@ -47,6 +48,88 @@ describe("wecom-style tokens and layout", () => {
       /html\.wecom-doc-topic \.topic-map,\s*\nhtml\.wecom-doc-topic \.post__topic-map \{\s*display:\s*none/
     );
   });
+  it("does not hide the OP wrapper that Discourse marks as topic-owner", () => {
+    const { window } = new JSDOM(
+      `<!doctype html><html class="wecom-doc-theme wecom-doc-topic">
+        <head><style>${css}</style></head>
+        <body>
+          <div class="post-stream">
+            <div class="topic-post clearfix post--topic-owner topic-owner">
+              <article id="post_1"><div class="cooked">OP body</div></article>
+            </div>
+            <span class="post-info owner">楼主</span>
+          </div>
+        </body>
+      </html>`
+    );
+    const op = window.document.querySelector(".topic-post.topic-owner");
+    const badge = window.document.querySelector(".post-info.owner");
+    assert.notEqual(window.getComputedStyle(op).display, "none");
+    assert.equal(window.getComputedStyle(badge).display, "none");
+  });
+
+  it("keeps OP topic-map views and likes on one horizontal line", () => {
+    const { window } = new JSDOM(
+      `<!doctype html><html class="wecom-doc-theme wecom-doc-topic">
+        <head>
+          <style>
+            .topic-map__stats > .btn {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            .topic-map__stats > .btn .number,
+            .topic-map__stats > .btn .topic-map__stat-label { display: block; }
+          </style>
+          <style>${css}</style>
+        </head>
+        <body>
+          <div class="post__topic-map topic-map --op">
+            <section class="topic-map__contents">
+              <div class="topic-map__stats --many-stats">
+                <button class="btn no-text topic-map__views-trigger">
+                  <span class="number">469</span>
+                  <span class="topic-map__stat-label">浏览量</span>
+                </button>
+                <button class="btn no-text topic-map__likes-trigger">
+                  <span class="number">11</span>
+                  <span class="topic-map__stat-label">赞</span>
+                </button>
+                <button class="btn no-text topic-map__links-trigger">
+                  <span class="number">50+</span>
+                  <span class="topic-map__stat-label">链接</span>
+                </button>
+                <button class="btn no-text topic-map__users-trigger">
+                  <span class="number">4.0k</span>
+                  <span class="topic-map__stat-label">用户</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </body>
+      </html>`
+    );
+    const views = window.document.querySelector(".topic-map__views-trigger");
+    const likes = window.document.querySelector(".topic-map__likes-trigger");
+    const number = views.querySelector(".number");
+    const label = views.querySelector(".topic-map__stat-label");
+    assert.equal(window.getComputedStyle(views).flexDirection, "row");
+    assert.equal(window.getComputedStyle(likes).flexDirection, "row");
+    assert.equal(window.getComputedStyle(views).alignItems, "baseline");
+    assert.notEqual(window.getComputedStyle(number).display, "block");
+    assert.notEqual(window.getComputedStyle(label).display, "block");
+    assert.equal(
+      window.getComputedStyle(window.document.querySelector(".topic-map__links-trigger")).display,
+      "none"
+    );
+    assert.equal(
+      window.getComputedStyle(window.document.querySelector(".topic-map__users-trigger")).display,
+      "none"
+    );
+    assert.match(css, /\.topic-map__stats\s*>\s*\.topic-map__links-trigger/);
+    assert.match(css, /\.topic-map__stats\s*>\s*\.topic-map__users-trigger/);
+  });
+
   it("keeps homepage poster avatars on one row instead of wrapping the fifth", () => {
     assert.match(css, /\.topic-list\s+\.posters\s+\{[^}]*white-space:\s*nowrap/);
     assert.match(css, /\.topic-list\s+\.posters\s+a\s+\{[^}]*float:\s*none/);
