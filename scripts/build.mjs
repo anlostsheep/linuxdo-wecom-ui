@@ -13,7 +13,7 @@ function stripModule(src) {
 const header = `// ==UserScript==
 // @name         Linux DO · 企业微信智能文档外观
 // @namespace    https://linux.do/
-// @version      2.0.7
+// @version      2.0.8
 // @description  将 Linux DO 深度改版为企业微信智能文档/团队知识库版式。主页文件表、话题页文档画布、右侧原生时间线、轻量协作评论流。
 // @author       lostsheep
 // @match        https://linux.do/*

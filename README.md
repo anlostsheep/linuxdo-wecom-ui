@@ -6,7 +6,8 @@
 - **话题页**：中栏当文档画布（大标题、协作者元信息、正文与 Callout）；回复做成正文下方的轻量卡片；右侧保留 Discourse 原生时间线 / 大纲（帖子本身有才会出现）。
 - **顶栏**：官方企微图标 +「企业微信」；话题页路径为 `知识库 › 分类 › 标题`；标签页标题跟文档名走。
 - **色彩**：浅色跟企微网页；深色跟 GitHub Primer `dark_dimmed`（`#212830`）+ 智能文档蓝。
-- **架构**：不把回复搬出 `.post-stream`，不破坏 Discourse 虚拟滚动和无限加载。
+- **架构**：不把回复搬出 `.post-stream`，不破坏 Discourse 虚拟滚动（只让主帖免于 cloak）和无限加载。
+- **标签页**：后台标签页里 Discourse 改写标题也会被立刻改回，标签栏不露「LINUX DO」。
 
 ## 效果图
 
@@ -44,7 +45,7 @@
 2. 打开 [`linuxdo-wecom.user.js`](./linuxdo-wecom.user.js)，点 **Raw** 后按提示安装。
 3. 访问 <https://linux.do/>。
 
-当前安装包版本 **2.0.2**。改 `wecom-*.mjs` / `wecom-style.css` 后必须重新构建再装：
+当前安装包版本 **2.0.8**。改 `wecom-*.mjs` / `wecom-style.css` 后必须重新构建再装：
 
 ```bash
 npm test

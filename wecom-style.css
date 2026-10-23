@@ -120,8 +120,22 @@ html.wecom-doc-theme .wecom-app-icon {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
 }
 
+/* 路径排在品牌后面（脚本把它挂在 .contents 末尾，按 flex order 前移，不挪 Discourse 的节点） */
+html.wecom-doc-theme .d-header .contents > .header-sidebar-toggle,
+html.wecom-doc-theme .d-header .contents > .home-logo-wrapper-outlet {
+  order: -2;
+}
+
+/* 话题页顶栏只留企微路径：藏掉 Discourse 滚动后出现的标题，避免重复 */
+html.wecom-doc-topic .d-header .extra-info-wrapper {
+  display: none !important;
+}
+
 html.wecom-doc-theme .wecom-topic-context {
+  order: -1;
   margin-left: 14px;
+  margin-right: auto;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   overflow: hidden;
@@ -440,6 +454,12 @@ html.wecom-doc-topic .topic-map__additional-contents {
 /* 只藏楼主角标/状态条，不要匹配 .topic-post.topic-owner（那是整篇主帖） */
 html.wecom-doc-topic .post-info.owner,
 html.wecom-doc-topic .topic-status-info {
+  display: none !important;
+}
+
+/* linux.do 主题在楼主每层正文末尾用 .cooked::after 写 "TOPIC OWNER"，只去掉这个伪元素 */
+html.wecom-doc-topic .topic-post.topic-owner .cooked::after {
+  content: none !important;
   display: none !important;
 }
 

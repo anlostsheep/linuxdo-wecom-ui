@@ -26,6 +26,19 @@ describe("brand", () => {
     assert.ok(icon);
     assert.match(icon.getAttribute("href"), /^data:image\/svg\+xml/);
   });
+  it("writes the svg favicon before the brand exists (background-opened tabs)", () => {
+    const { window } = new JSDOM(`<!doctype html><html><head>
+      <link rel="icon" href="https://cdn3.ldstatic.com/favicon.png"></head><body></body></html>`);
+    const document = window.document;
+    makeFavicon(document);
+    assert.equal(document.querySelector(".wecom-brand"), null);
+    const hrefs = [...document.querySelectorAll("link[rel~='icon']")].map((l) => l.getAttribute("href"));
+    assert.ok(hrefs.length >= 1);
+    for (const href of hrefs) {
+      assert.match(href, /^data:image\/svg\+xml,/);
+      assert.match(decodeURIComponent(href), /<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" /);
+    }
+  });
   it("does not keep rewriting favicon attributes once set", async () => {
     const { window } = new JSDOM(`<!doctype html><html><head></head>
       <body><header class="d-header"><div class="title"><a href="/"></a></div></header></body></html>`);

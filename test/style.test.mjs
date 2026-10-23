@@ -68,6 +68,41 @@ describe("wecom-style tokens and layout", () => {
     assert.equal(window.getComputedStyle(badge).display, "none");
   });
 
+  it("drops the linux.do TOPIC OWNER pseudo badge without hiding owner posts", () => {
+    assert.match(
+      css,
+      /html\.wecom-doc-topic \.topic-post\.topic-owner \.cooked::after \{\s*content:\s*none !important;/
+    );
+    const { window } = new JSDOM(
+      `<!doctype html><html class="wecom-doc-theme wecom-doc-topic">
+        <head><style>${css}</style></head>
+        <body><div class="topic-post topic-owner"><article id="post_3"><div class="cooked">reply</div></article></div></body>
+      </html>`
+    );
+    const cooked = window.document.querySelector(".cooked");
+    assert.notEqual(window.getComputedStyle(cooked).display, "none");
+  });
+
+  it("shows one header title on topics: hides Discourse extra-info, puts crumbs after the brand", () => {
+    const { window } = new JSDOM(
+      `<!doctype html><html class="wecom-doc-theme wecom-doc-topic">
+        <head><style>${css}</style></head>
+        <body><header class="d-header"><div class="contents">
+          <span class="header-sidebar-toggle"></span>
+          <div class="home-logo-wrapper-outlet"></div>
+          <div class="two-rows extra-info-wrapper"><h1 class="header-title">t</h1></div>
+          <div class="panel"></div>
+          <div class="wecom-topic-context">知识库 › t</div>
+        </div></header></body>
+      </html>`
+    );
+    const q = (s) => window.getComputedStyle(window.document.querySelector(s));
+    assert.equal(q(".extra-info-wrapper").display, "none");
+    assert.equal(q(".home-logo-wrapper-outlet").order, "-2");
+    assert.equal(q(".wecom-topic-context").order, "-1");
+    assert.equal(q(".wecom-topic-context").marginRight, "auto");
+  });
+
   it("keeps OP topic-map views and likes on one horizontal line", () => {
     const { window } = new JSDOM(
       `<!doctype html><html class="wecom-doc-theme wecom-doc-topic">

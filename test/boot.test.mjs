@@ -26,7 +26,7 @@ describe("bootstrap", () => {
     assert.ok(window.document.documentElement.classList.contains("wecom-doc-topic"));
   });
 
-  it("calls Discourse disableCloaking on topic pages", () => {
+  it("keeps only the OP uncloaked instead of disabling cloaking globally", () => {
     const { window } = new JSDOM(
       `<!doctype html><html><body>
         <div class="container posts"><div class="post-stream">
@@ -49,9 +49,28 @@ describe("bootstrap", () => {
     globalThis.window = window;
     globalThis.location = window.location;
     applyTheme(window.document, "/* css */");
-    assert.equal(called, true);
+    assert.equal(called, false);
     assert.deepEqual(prevented, [99]);
     assert.ok(window.document.querySelector(".topic-post.wecom-op-post"));
+  });
+
+  it("restores the disguised title in hidden tabs where rAF never runs", async () => {
+    const { window } = new JSDOM(
+      `<!doctype html><html><head><title>t</title></head><body>
+        <header class="d-header"><div class="title"><a href="/"></a></div><div class="contents"></div></header>
+        <div id="topic-title"><h1>文档标题</h1></div>
+      </body></html>`,
+      { url: "https://linux.do/t/topic/1" }
+    );
+    window.requestAnimationFrame = () => 0;
+    globalThis.window = window;
+    globalThis.location = window.location;
+    globalThis.MutationObserver = window.MutationObserver;
+    start(window.document, "/* css */");
+    assert.equal(window.document.title, "文档标题 - 企业微信");
+    window.document.title = "(3) 文档标题 - 前沿快讯 - LINUX DO";
+    await new Promise((r) => setTimeout(r, 0));
+    assert.equal(window.document.title, "文档标题 - 企业微信");
   });
 });
 

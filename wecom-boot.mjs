@@ -6,6 +6,7 @@ import {
   applyColorMode,
   applyPageMode,
   isDarkFromScheme,
+  isTopicPath,
   readDarkSchemeMedia,
   runStep,
   topicContextText,
@@ -60,11 +61,15 @@ function setAttrIfChanged(el, name, value) {
   return true;
 }
 
+// 直接用常量生成，不等品牌插进 DOM（后台打开的标签页里品牌要等切到前台才有）
+const FAVICON_HREF = `data:image/svg+xml,${encodeURIComponent(
+  WECOM_BRAND_SVG.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ')
+)}`;
+
 export function makeFavicon(document) {
   const head = document.head;
-  const logo = document.querySelector(".wecom-brand svg");
-  if (!head || !logo || typeof XMLSerializer === "undefined") return;
-  const href = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(logo))}`;
+  if (!head) return;
+  const href = FAVICON_HREF;
   let favicon = document.getElementById(FAVICON_ID);
   if (!favicon) {
     favicon = document.createElement("link");
@@ -152,6 +157,30 @@ export function makeDocumentTitle(document, isTopic) {
   }
 }
 
+const tabWatched = new WeakSet();
+
+// 后台标签页不跑 rAF：标题和 favicon 都在 head 里同步纠正，否则标签栏露出 LINUX DO
+export function watchTabDisguise(document) {
+  const Observer = document.defaultView?.MutationObserver;
+  if (tabWatched.has(document) || typeof Observer !== "function") return;
+  if (!document.head) {
+    document.addEventListener("DOMContentLoaded", () => watchTabDisguise(document), { once: true });
+    return;
+  }
+  tabWatched.add(document);
+  const sync = () =>
+    runStep(() =>
+      makeDocumentTitle(document, isTopicPath(document.defaultView?.location?.pathname || ""))
+    );
+  new Observer(sync).observe(document.head, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  sync();
+  runStep(() => makeFavicon(document));
+}
+
 export function removeLeftoverToc(document) {
   for (const toc of document.querySelectorAll("aside.wecom-toc")) {
     toc.remove();
@@ -169,20 +198,19 @@ export function markOpPost(document) {
   if (op) op.classList.add("wecom-op-post");
 }
 
-export function disableDiscourseCloaking(win, document) {
+// 只让主帖免于 cloak；全局 disableCloaking 会让长帖 DOM 线性膨胀
+export function keepOpUncloaked(win, document) {
   try {
     const req = win?.require;
     if (typeof req !== "function") return false;
     const mod = req(CLOAK_MODULE);
-    if (typeof mod?.disableCloaking !== "function") return false;
-    mod.disableCloaking();
+    if (typeof mod?.preventCloaking !== "function") return false;
     const postId = Number(
       document?.querySelector("article#post_1")?.dataset?.postId ||
         document?.querySelector("#post_1")?.dataset?.postId
     );
-    if (postId && typeof mod.preventCloaking === "function") {
-      mod.preventCloaking(postId);
-    }
+    if (!postId) return false;
+    mod.preventCloaking(postId);
     const path = win?.location?.pathname || "";
     if (path && cloakingNudgedFor !== path) {
       cloakingNudgedFor = path;
@@ -209,7 +237,7 @@ export function applyTheme(document, css) {
     runStep(() => makeCreateTopicButton(document));
     runStep(() => makeDocIcons(document));
   } else if (mode === "topic") {
-    runStep(() => disableDiscourseCloaking(document.defaultView || globalThis, document));
+    runStep(() => keepOpUncloaked(document.defaultView || globalThis, document));
     runStep(() => markOpPost(document));
     runStep(() => makeTopicContext(document));
     runStep(() => makeDocumentTitle(document, true));
@@ -286,5 +314,6 @@ export function bindNavigation(window, document, css) {
 export function start(document, css) {
   bootstrap(document, css);
   bindNavigation(window, document, css);
+  watchTabDisguise(document);
 }
 

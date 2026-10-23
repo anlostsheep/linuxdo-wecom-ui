@@ -10,13 +10,15 @@ const userscript = readFileSync(
 );
 
 describe("built userscript", () => {
-  it("ships v2.0.7 without leftover left TOC copy", () => {
-    assert.match(userscript, /@version\s+2\.0\.7/);
+  it("ships v2.0.8 without leftover left TOC copy", () => {
+    assert.match(userscript, /@version\s+2\.0\.8/);
     assert.match(userscript, /wecom-doc-theme/);
     assert.match(userscript, /WECOM_BRAND_SVG/);
     assert.match(userscript, /wecom-doc-icon/);
     assert.match(userscript, /topic-navigation/);
-    assert.match(userscript, /disableDiscourseCloaking/);
+    assert.match(userscript, /keepOpUncloaked/);
+    assert.match(userscript, /watchTabDisguise/);
+    assert.doesNotMatch(userscript, /\.disableCloaking\(\)/);
     assert.doesNotMatch(userscript, /TOC目录/);
     assert.doesNotMatch(userscript, /wecom-toc-level-3/);
     assert.doesNotMatch(userscript, /dockComments/);
